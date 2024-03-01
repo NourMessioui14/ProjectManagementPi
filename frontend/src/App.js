@@ -5,6 +5,7 @@ import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 import ProjectList from './components/ProjectList';
 import NavbarFront from './components/NavbarFront';
+import TicketList from './components/TicketList';
 
 function App() {
   return (
@@ -29,6 +30,9 @@ function MainContent() {
 
         <Routes>
           <Route path="/projects" element={<ProjectList />} />
+
+          <Route path="/ticket" element={<TicketList/>} />
+
           <Route path="/navbarfront" element={<NavbarFront />} />
           {/* Ajoutez d'autres routes si nécessaire */}
         </Routes>
