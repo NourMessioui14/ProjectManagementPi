@@ -2,39 +2,39 @@ pipeline {
     agent any
 
     tools {
-        nodejs 'NodeJs' 
+        nodejs 'NodeJs'
     }
 
     stages {
-        stage('Print Environment') {
+        stage('Declarative: Checkout SCM') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Declarative: Tool Install') {
             steps {
                 script {
-                    sh('env')
+                    // Perform any tool installations if needed
                 }
             }
         }
 
-        stage('Install dependencies') {
+        stage('Install Dependencies') {
             steps {
-                script {
-                    sh('npm install')
-                }
+                sh 'npm install'
             }
         }
 
         stage('Unit Test') {
             steps {
-                script {
-                    sh('npm test')
-                }
+                sh 'npm test'
             }
         }
 
-        stage('Build application') {
+        stage('Build Application') {
             steps {
-                script {
-                    sh('npm run build-dev')
-                }
+                sh 'npm run build-dev'
             }
         }
     }
