@@ -1,6 +1,6 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { User } from './schemas/user.schema';
 
 import * as bcrypt from 'bcryptjs';
@@ -35,23 +35,67 @@ export class AuthService {
     return { token };
   }
 
-  async login(loginDto: LoginDto): Promise<{ token: string }> {
-    const { email, password } = loginDto;
+// authService.ts
 
-    const user = await this.userModel.findOne({ email });
+async login(loginDto: LoginDto): Promise<{ token: string }> {
+  const { email, password } = loginDto;
 
-    if (!user) {
-      throw new UnauthorizedException('Invalid email or password');
-    }
+  const user = await this.userModel.findOne({ email });
 
-    const isPasswordMatched = await bcrypt.compare(password, user.password);
-
-    if (!isPasswordMatched) {
-      throw new UnauthorizedException('Invalid email or password');
-    }
-
-    const token = this.jwtService.sign({ id: user._id });
-
-    return { token };
+  if (!user) {
+    throw new UnauthorizedException('Invalid email or password');
   }
+
+  const isPasswordMatched = await bcrypt.compare(password, user.password);
+
+  if (!isPasswordMatched) {
+    throw new UnauthorizedException('Invalid email or password');
+  }
+
+  const token = this.jwtService.sign({ id: user._id, role: user.role }); // Include user role in the token
+
+  return { token };
+}
+
+
+ findAll(){
+  return this.userModel.find();
+ }
+
+ findOne(id:string){
+  return this.userModel.findOne({_id:id});
+}
+
+update(id:string, body:SignUpDto){
+  const objectId = new Types.ObjectId(id);
+
+  return this.userModel.findOneAndUpdate(
+      {_id: objectId},
+      {$set:body},
+      {new:true}
+  );
+}
+
+async delete(id: string) {
+  try {
+    const result = await this.userModel.deleteOne({ _id: id });
+
+    if (result.deletedCount === 0) {
+      throw new NotFoundException(`Utilisateur avec l'ID ${id} non trouvé`);
+    }
+
+    return { success: true, message: 'Utilisateur supprimé avec succès' };
+  } catch (error) {
+    throw new Error(`Erreur lors de la suppression de l'utilisateur : ${error.message}`);
+  }
+}
+
+
+
+
+
+
+
+
+
 }

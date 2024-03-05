@@ -1,6 +1,6 @@
 import { IsEmail, IsNotEmpty, IsNumber, IsString, MinLength } from 'class-validator';
 
-enum UserRole {
+export enum UserRole {
   Admin = 'admin',
   ScrumMaster = 'scrum_master',
   ProductOwner = 'product_owner',

@@ -6,6 +6,8 @@ import Register from './FrontOffice/pages/Register';
 import Navbar from './Backoffice/components/Navbar';
 import Sidebar from './Backoffice/components/Sidebar';
 import Footer from './Backoffice/components/Footer';
+import RegisterForm from './FrontOffice/pages/RegisterForm';
+import UserList from './Backoffice/pages/UserList';
 
 function App() {
   return (
@@ -22,7 +24,8 @@ function App() {
                   <div className="container-fluid p-0">
                     <Routes>
                       <Route index element={<Dashboard />} />
-                      {/* Ajoutez d'autres routes spécifiques au back office ici */}
+                      {/* Ajoutez la route pour /users ici */}
+                      <Route path="/users" element={<UserList />} />
                     </Routes>
                   </div>
                 </main>
@@ -31,6 +34,7 @@ function App() {
             </div>
           }
         />
+        <Route path="/" element={<RegisterForm />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         {/* Ajoutez d'autres routes spécifiques au front office ici */}
