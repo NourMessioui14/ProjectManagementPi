@@ -1,14 +1,31 @@
-pipeline{
+pipeline {
     agent any
-    tools{
+    tools {
         nodejs 'NodeJs'
     }
     stages {
+        stage('Declarative: Checkout SCM') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Declarative: Tool Install') {
+            steps {
+                script {
+                    // You may perform tool installations here if needed
+                }
+            }
+        }
+
         stage('Install dependencies') {
-            steps{
+            steps {
                 script {
                     try {
-                        sh('npm install')
+                        // Navigate to the project's workspace before running npm install
+                        dir('ProjectManagement_main') {
+                            sh 'npm install'
+                        }
                     } catch (err) {
                         currentBuild.result = 'FAILURE'
                         error("Failed to install dependencies: ${err}")
@@ -16,6 +33,7 @@ pipeline{
                 }
             }
         }
+
         stage('Unit Test') {
             steps {
                 script {
@@ -23,6 +41,7 @@ pipeline{
                 }
             }
         }
+
         stage('Build application') {
             steps {
                 script {
