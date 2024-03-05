@@ -25,7 +25,8 @@ pipeline {
             steps {
                 script {
                     echo 'Running unit tests...'
-                    // Add your unit test command here
+                    // Ajoutez votre commande de test unitaire ici
+                    // Exemple: sh 'npm test'
                 }
             }
         }
@@ -34,7 +35,8 @@ pipeline {
             steps {
                 script {
                     echo 'Building the application...'
-                    // Add your build command here
+                    // Ajoutez votre commande de construction ici
+                    // Exemple: sh 'mvn clean install'
                 }
             }
         }
@@ -42,7 +44,11 @@ pipeline {
 
     post {
         always {
-            // Cleanup or post-build actions can be added here
+            // Ajoutez des actions de nettoyage ou post-build ici
+            // Exemple:
+            // sh 'clean build artifacts'
+            // archiveArtifacts '**/*.war'
+            // emailaddress 'recipient@example.com', subject: 'Build Status: ${currentBuild.result}', body: 'Build completed with status: ${currentBuild.result}'
         }
     }
 }
