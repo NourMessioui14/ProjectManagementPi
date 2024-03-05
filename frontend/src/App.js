@@ -1,16 +1,20 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
-import Footer from "./components/Footer";
-import Navbar from "./components/Navbar";
-import Sidebar from "./components/Sidebar";
+import Footer from "./components/Backoffice/Footer";
+import Sidebar from "./components/Backoffice/Sidebar";
+import Navbar from "./components/Backoffice/Navbar";
 import ProjectList from './components/ProjectList';
-import NavbarFront from './components/NavbarFront';
+import NavbarFront from './components/Frontoffice/NavbarFront';
 import TicketList from './components/TicketList';
+import FooterFront from './components/Frontoffice/FooterFront';
+import HomePage from './components/HomePage';
 
 function App() {
   return (
     <BrowserRouter>
-      <MainContent />
+      <div className="app-wrapper">
+        <MainContent />
+      </div>
     </BrowserRouter>
   );
 }
@@ -18,28 +22,35 @@ function App() {
 function MainContent() {
   const location = useLocation();
 
-  // Condition pour déterminer si le Sidebar doit être affiché
-  const showSidebar = !location.pathname.startsWith("/navbarfront");
+  const showBackOffice = !location.pathname.startsWith("/navbarfront") && !location.pathname.startsWith("/footerfront")&& !location.pathname.startsWith("/home");
+
+  const showFooter = true;
+
+  const showFrontComponents = !location.pathname.startsWith("/projects") && !location.pathname.startsWith("/ticket");
 
   return (
     <div className="wrapper">
-      {/* Condition pour afficher le Sidebar */}
-      {showSidebar && <Sidebar />}
+      {/* Afficher le Sidebar uniquement pour les pages de back-office */}
+      {showBackOffice && <Sidebar />}
       <div className="main">
-        {showSidebar && <Navbar />} {/* Afficher le Navbar précédent si le Sidebar est affiché */}
+        {/* Afficher la Navbar uniquement pour les pages de back-office */}
+        {showBackOffice && <Navbar />}
+        {showFrontComponents && <NavbarFront />}
 
         <Routes>
-          <Route path="/projects" element={<ProjectList />} />
-
-          <Route path="/ticket" element={<TicketList/>} />
-
+          {/* Defining routes */}
+          <Route path="/" element={<NavbarFront />} />
           <Route path="/navbarfront" element={<NavbarFront />} />
-          {/* Ajoutez d'autres routes si nécessaire */}
+          <Route path="/home" element={<HomePage />} />
+          <Route path="/projects" element={<ProjectList />} />
+          <Route path="/ticket" element={<TicketList />} />
+          <Route path="/footerfront" element={<FooterFront />} />
+          
+          {/* Ajoutez d'autres routes de back-office si nécessaire */}
         </Routes>
-
-        <Footer />
-       {/* Placer le Footer en   dehors de la div "main" */}
       </div>
+      {/* Afficher le       {showFooter && <Footer />}
+Footer pour toutes les pages */}
     </div>
   );
 }

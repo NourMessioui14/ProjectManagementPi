@@ -5,7 +5,7 @@ import InputForm from './InputForm';
 
 
 export default function DrawerForm() {
-  const { isOpen, onOpen, onClose, Add, Update, errors, setErrors, project } = useContext(GlobalContext);
+  const { isOpen, onOpen, onClose, AddProject, Update, errors, setErrors, project } = useContext(GlobalContext);
   const [form, setForm] = useState({});
 
 
@@ -17,14 +17,18 @@ export default function DrawerForm() {
   };
 
   const onSave = () => {
-    Add(form,setForm);
+    AddProject(form,setForm);
   };
-
+  const onUpdate = () => {
+    Update(form, setForm, form._id);
+  };
+  
   useEffect(() => {
     if (project) {
       setForm(project);
     }
-  }, [isOpen, project]);
+  }, 
+  [isOpen, project]);
 
   
 
@@ -33,18 +37,21 @@ export default function DrawerForm() {
       <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
         <DrawerOverlay />
         <DrawerContent>
-          <DrawerCloseButton onClick={() => {
-            onClose();
-            setErrors({});
-            setForm({});
-          }} />
-          <DrawerHeader>{form._id ? 'Update Project' : 'Create Project'}</DrawerHeader>
+        <DrawerCloseButton
+        onClick={() => {
+          onClose();
+          setErrors({});
+          setForm({});
+        }}
+      />
+      <DrawerHeader>Create / Update Project</DrawerHeader>
 
           <DrawerBody>
             <Stack spacing={'24px'}>
               <InputForm
                 name="projectname"
                 onChangeHandler={onChangeHandler}
+                
                 value={form?.projectname || ''}
                 errors={errors?.projectname}
               />
@@ -74,14 +81,18 @@ export default function DrawerForm() {
           </DrawerBody>
 
           <DrawerFooter>
-            <Button variant="outline" mr={3} onClick={() => {
-              onClose();
-              setErrors({});
-              setForm({});
-            }}>
-              Cancel
-            </Button>
-            <Button colorScheme="blue" onClick={onSave}>
+          <Button
+          variant="outline"
+          mr={3}
+          onClick={() => {
+            onClose();
+            setErrors({});
+            setForm({});
+          }}
+        >
+          Cancel
+        </Button>
+            <Button colorScheme="blue" onClick={()=> form._id? onUpdate(): onSave()}>
               Save
             </Button>
           </DrawerFooter>

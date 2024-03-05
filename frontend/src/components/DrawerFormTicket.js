@@ -1,10 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Button, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, Stack, Input, FormControl, FormLabel, Select, Textarea } from '@chakra-ui/react';
 import { GlobalContext } from '../context/GlobalWrapper';
-import InputForm from './InputForm';
 
 export default function DrawerFormTicket() {
-  const { isOpen, onClose, AddTicket, errors, setErrors, tickets, projects, FetchProjects } = useContext(GlobalContext);
+  const { isOpen, onClose, AddTicket, errors, setErrors,UpdateTicket, tickets, ticket,projects, FetchProjects } = useContext(GlobalContext);
   const [formT, setFormT] = useState({});
 
 
@@ -29,14 +28,21 @@ export default function DrawerFormTicket() {
   const onSave = () => {
     AddTicket(formT, setFormT);
   };
+  const onUpdate = () => {
+    UpdateTicket(formT, setFormT, formT._id);
+  };
+
+  
 
   useEffect(() => {
-    if (tickets) {
-      setFormT(tickets);
+    if (ticket) {
+      setFormT(ticket);
+    } else {
+      setFormT({}); // Assurez-vous que formT est initialisé si ticket est null
     }
     // Récupérer la liste des projets lors de l'ouverture du formulaire
     FetchProjects();
-  }, [isOpen, tickets]);
+  }, [isOpen, ticket]); // Assurez-vous que useEffect s'ex
 
   return (
     <>
@@ -95,7 +101,9 @@ export default function DrawerFormTicket() {
             }}>
               Cancel
             </Button>
-            <Button colorScheme="blue" onClick={onSave}>
+            <Button colorScheme="blue" onClick={()=> formT._id? onUpdate(): onSave()}>
+
+µ
               Save
             </Button>
           </DrawerFooter>

@@ -4,7 +4,7 @@ import { AiFillDelete, AiFillEdit } from "react-icons/ai";
 import { GlobalContext } from '../context/GlobalWrapper';
 
 function Row({ id, projectname, chefdeprojet, description, startdate, enddate}) {
-  const { Deleteproject,isOpen, onOpen, onClose  } = useContext(GlobalContext);
+  const { Deleteproject,isOpen, onOpen, onClose,FindOneProject  } = useContext(GlobalContext);
 
 
   const onChangeHandler = () => {
@@ -27,6 +27,7 @@ function Row({ id, projectname, chefdeprojet, description, startdate, enddate}) 
             <AiFillEdit
             onClick={() => {
               onOpen();
+              FindOneProject(id);
             }}/>
           </Button>
 

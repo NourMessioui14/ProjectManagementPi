@@ -1,19 +1,21 @@
 import React, { createContext, useState } from "react";
 import axios from "axios";
-import { useDisclosure, useToast } from '@chakra-ui/react'
+import { useDisclosure, useToast } from '@chakra-ui/react';
 
 export const GlobalContext = createContext();
 
 export default function Wrapper({ children }) {
-  const [projects, setProjects] = useState([]);
-  const [tickets, setTickets] = useState([]);
+    const [projects, setProjects] = useState([]);
+    const [project, setProject] = useState({}); // pour la fonction update 
 
-  const [errors,setErrors] = useState({});
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const toast = useToast();
+    const [tickets, setTickets] = useState([]);
+    const [ticket, setTicket] = useState({});
+
+    const [errors, setErrors] = useState({});
+    const { isOpen, onOpen, onClose } = useDisclosure();
+
+    const toast = useToast();
     
-
-    // Define FetchProjects function
     const FetchProjects = async () => {
         try {
             const res = await axios.get('/api/project');
@@ -23,12 +25,11 @@ export default function Wrapper({ children }) {
         }
     };
 
-
-    const Deleteproject = (id) => {
+    const DeleteProject = (id) => {
         axios
           .delete(`/api/project/${id}`)
           .then((res) => {
-            setProjects(projects.filter((u) => u._id != id));
+            setProjects(projects.filter((u) => u._id !== id));
             toast({
               title: 'User Deleted',
               status: 'success',
@@ -37,15 +38,15 @@ export default function Wrapper({ children }) {
             });
           })
           .catch((err) => {
-            console.log(err.reponse.data);
+            console.log(err.response.data);
           });
-      };
+    };
 
-      const Add = (form, setForm) => {
+    const AddProject = (form, setForm) => {
         axios
-          .post('/api/project', form)  // Correction: '/api/project' au lieu de '/api/users'
+          .post('/api/project', form)
           .then((res) => {
-            setProjects([...projects,res.data])
+            setProjects([...projects, res.data])
             toast({
               title: 'Project Added',
               status: 'success',
@@ -59,21 +60,35 @@ export default function Wrapper({ children }) {
           .catch((err) => {
             setErrors(err.response.data.error);
           });
-      };
+    };
 
-      const FetchTickets = async () => {
-        try {
-          const res = await axios.get('/api/ticket');
-          setTickets(res.data);
-        } catch (err) {
+    const FindOneProject = async (id) => {
+      try {
+          const res = await axios.get(`/api/project/${id}`);
+          setProject(res.data);
+      } catch (err) {
           console.log(err.response.data);
-        }
-      };
+      }
+  };
+  
+
+
+
+  const FetchTickets = async () => {
+    try {
+        const res = await axios.get('/api/ticket');
+        setTickets(res.data); // Correction de l'utilisation de setTickets
+    } catch (err) {
+        console.log(err.response.data);
+    }
+};
+
     
-      const AddTicket = (formT, setFormT) => {
-        axios .post('/api/ticket', formT) 
+    const AddTicket = (formT, setFormT) => {
+        axios
+          .post('/api/ticket', formT) 
           .then((res) => {
-            setTickets([...tickets,res.data])
+            setTickets([...tickets, res.data])
             toast({
               title: 'Ticket Added',
               status: 'success',
@@ -87,13 +102,13 @@ export default function Wrapper({ children }) {
           .catch((err) => {
             setErrors(err.response.data.error);
           });
-      };
+    };
     
-      const Deleteticket = (id) => {
+    const DeleteTicket = (id) => {
         axios
           .delete(`/api/ticket/${id}`)
           .then((res) => {
-            setTickets(tickets.filter((u) => u._id != id));
+            setTickets(tickets.filter((u) => u._id !== id));
             toast({
               title: 'Ticket is Deleted',
               status: 'success',
@@ -102,18 +117,86 @@ export default function Wrapper({ children }) {
             });
           })
           .catch((err) => {
-            console.log(err.reponse.data);
+            console.log(err.response.data);
           });
-      };
-  
+    };
+
+    const FindOneTicket = async (id) => {
+        try {
+            const res = await axios.get(`/api/ticket/${id}`);
+            setTickets(res.data);
+        } catch (err) {
+            console.log(err.response.data);
+        }
+    };
+    
+    const UpdateTicket = (formT, setFormT, id) => {
+        axios
+          .put(`/api/ticket/${id}`, formT)
+          .then((res) => {
+            toast({
+              title: 'Ticket Updated',
+              status: 'success',
+              duration: 4000,
+              isClosable: true,
+            });
+            setErrors({});
+            setFormT({});
+            onClose();
+            FetchTickets();
+          })
+          .catch((err) => {
+            setErrors(err.response.data.error);
+          });
+    };
+
+    const Update = (form, setForm, id) => {
+      axios
+        .put(`/api/project/${id}`, form)
+        .then((res) => {
+          toast({
+            title: 'User Updated',
+            status: 'success',
+            duration: 4000,
+            isClosable: true,
+          });
+          setErrors({});
+          setForm({});
+          onClose();
+          FetchProjects();
+        })
+        .catch((err) => {
+          setErrors(err.response.data.error);
+        });
+    };
+
     return (
-        <GlobalContext.Provider value={{ FetchProjects, projects, Deleteproject, Add, isOpen, onOpen, onClose, errors, setErrors,FetchTickets,tickets,AddTicket
-          ,Deleteticket}}>
+        <GlobalContext.Provider value={{ 
+            FetchProjects, 
+            projects, 
+            DeleteProject, 
+            AddProject, 
+            FetchTickets,
+            tickets,
+            AddTicket,
+            DeleteTicket,
+            FindOneTicket,
+            UpdateTicket,
+            isOpen,
+            onOpen,
+            onClose,
+            errors,
+            setErrors,
+            FindOneProject,
+            project,
+            ticket,
+            setProject,
+            setTicket,
+            Update
+
+  
+        }}>
             {children}
         </GlobalContext.Provider>
     );
-
-    
 }
-
-

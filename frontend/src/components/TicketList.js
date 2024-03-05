@@ -2,8 +2,6 @@ import React, { useContext, useEffect } from 'react'
 import { Box, Button, Table, TableContainer, Tbody, Text, Th, Thead, Tr } from '@chakra-ui/react';
 import { GlobalContext } from '../context/GlobalWrapper';
 import { AiOutlinePlus } from 'react-icons/ai';
-import Row from './Row';
-import DrawerForm from './DrawerForm';
 import RowTicket from './RowTicket';
 import DrawerFormTicket from './DrawerFormTicket';
 
@@ -15,6 +13,8 @@ function TicketList({})
   useEffect(() => {
     FetchTickets();
   }, []);
+
+
   return (
     <Box mt="5" rounded={'lg'} boxShadow="base">
       <Box p="4" display={'flex'} justifyContent="space-between">
@@ -66,4 +66,4 @@ function TicketList({})
   );
 }
 
-export default TicketList
+export default TicketList;
