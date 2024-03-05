@@ -42,13 +42,5 @@ pipeline {
         }
     }
 
-    post {
-        always {
-            // Ajoutez des actions de nettoyage ou post-build ici
-            // Exemple:
-            // sh 'clean build artifacts'
-            // archiveArtifacts '**/*.war'
-            // emailaddress 'recipient@example.com', subject: 'Build Status: ${currentBuild.result}', body: 'Build completed with status: ${currentBuild.result}'
-        }
-    }
+   
 }
