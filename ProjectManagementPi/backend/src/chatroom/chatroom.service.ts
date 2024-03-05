@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { ChatroomDto } from 'src/dto/chaatroom.dto';
+import { ChatroomDto } from 'src/dto/chaatroom.dto';  // Veuillez corriger la faute de frappe dans le chemin d'importation
 import { Chatroom, ChatroomDocument } from 'src/models/chatroom.models';
 
 @Injectable()
