@@ -1,28 +1,15 @@
 pipeline {
     agent any
+
     tools {
         nodejs 'NodeJs'
     }
+
     stages {
-        stage('Declarative: Checkout SCM') {
-            steps {
-                checkout scm
-            }
-        }
-
-        stage('Declarative: Tool Install') {
-            steps {
-                script {
-                    // You may perform tool installations here if needed
-                }
-            }
-        }
-
         stage('Install dependencies') {
             steps {
                 script {
                     try {
-                        // Navigate to the project's workspace before running npm install
                         dir('ProjectManagement_main') {
                             sh 'npm install'
                         }
@@ -37,7 +24,8 @@ pipeline {
         stage('Unit Test') {
             steps {
                 script {
-                    echo 'This is a testing stage for unit tests.'
+                    echo 'Running unit tests...'
+                    // Add your unit test command here
                 }
             }
         }
@@ -45,9 +33,16 @@ pipeline {
         stage('Build application') {
             steps {
                 script {
-                    echo 'This is a testing stage for building the application.'
+                    echo 'Building the application...'
+                    // Add your build command here
                 }
             }
+        }
+    }
+
+    post {
+        always {
+            // Cleanup or post-build actions can be added here
         }
     }
 }
