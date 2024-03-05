@@ -12,13 +12,7 @@ pipeline {
             }
         }
 
-        stage('Declarative: Tool Install') {
-            steps {
-                script {
-                    // Perform any tool installations if needed
-                }
-            }
-        }
+       
 
         stage('Install Dependencies') {
             steps {
