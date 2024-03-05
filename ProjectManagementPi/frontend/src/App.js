@@ -2,14 +2,16 @@ import React from 'react';
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
-import Dashboard from "./pages/Dashboard";
 import { BrowserRouter, Route,Routes } from 'react-router-dom';
+import Chatrooms from './components/Chatrooms'; // Corrected import path
+import { Wrapper } from './context/GlobalWrapper';
+
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* eli yheb yaamel route yhotha hne */}
+        {<Route path="/" element={<Wrapper><Chatrooms /></Wrapper>} />}
       </Routes>
       
       <div className='wrapper'>
@@ -18,7 +20,7 @@ function App() {
           <Navbar />
           <main className="content">
             <div className="container-fluid p-0">
-              <Dashboard />
+              <Chatrooms/>
             </div>
           </main>
           <Footer />
