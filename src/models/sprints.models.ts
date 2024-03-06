@@ -6,6 +6,8 @@ export type SprintsDocument = Sprints & Document
 @Schema()
 export class Sprints {
   @Prop()
+  name:String;
+  @Prop()
   startDate: Date;
 
   @Prop()

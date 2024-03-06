@@ -64,4 +64,14 @@ async updateSprint(sprintId: string, updatedSprint: Sprints): Promise<Sprints> {
   async deleteSprint(id){
     return this.sprintModel.findByIdAndDelete(id)
   }
+
+  Search(key:String){
+    const keyword = key?
+    {
+      $or: [
+        {name: {$regex: key, $options:'i'}},
+      ],
+    } : {};
+    return this.sprintModel.find(keyword);
+  }
 }

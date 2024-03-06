@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { SprintsService } from './sprints.service';
 import { Sprints } from 'src/models/sprints.models';
 
@@ -36,5 +36,11 @@ export class SprintsController {
     async deleteSprint(@Param('id') id:string){
       return this.sprintService.deleteSprint(id)
     }
+
+    @Post('/search')
+    Search(@Query('key') key){
+      return this.sprintService.Search(key);
+    }
+
 
 }
