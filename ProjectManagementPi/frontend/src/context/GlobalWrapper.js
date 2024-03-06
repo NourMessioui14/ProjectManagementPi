@@ -6,6 +6,7 @@ import { useDisclosure, useToast } from '@chakra-ui/react';
 export const GlobalContext = createContext();
 
 export const Wrapper = ({ children }) => {
+  
   const [chatrooms, setChatrooms] = useState([]);
   const [errors, setErrors] = useState({});
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -14,16 +15,18 @@ export const Wrapper = ({ children }) => {
   // Define FetchChatrooms function
   const FetchChatrooms = async () => {
     try {
-      const res = await axios.get('/api/chatrooms');
+      const res = await axios.get('http://localhost:5000/api/chatrooms');
       setChatrooms(res.data);
     } catch (err) {
       console.log(err.response.data);
     }
   };
 
+
+  
   const DeleteChatroom = (id) => {
     axios
-      .delete(`/api/chatrooms/${id}`)
+      .delete(`http://localhost:5000/api/chatrooms/${id}`)
       .then((res) => {
         setChatrooms(chatrooms.filter((u) => u._id !== id));
         toast({
@@ -40,7 +43,7 @@ export const Wrapper = ({ children }) => {
 
   const AddChatroom = (form, setForm) => {
     axios
-      .post('/api/chatrooms', form)
+      .post('http://localhost:5000/api/chatrooms', form)
       .then((res) => {
         setChatrooms([...chatrooms, res.data]);
         toast({
@@ -56,7 +59,7 @@ export const Wrapper = ({ children }) => {
       .catch((err) => {
         setErrors(err.response.data.error);
       });
-  };
+  };   
 
   return (
     <GlobalContext.Provider value={{ FetchChatrooms, chatrooms, DeleteChatroom, AddChatroom, isOpen, onOpen, onClose, errors, setErrors }}>

@@ -42,22 +42,39 @@ export default function DrawerForm() {
           <DrawerHeader>{form._id ? 'Update Chatroom' : 'Create Chatroom'}</DrawerHeader>
 
           <DrawerBody>
-            <Stack spacing={'24px'}>
-              <InputForm
-                name="chatroomName"
-                onChangeHandler={onChangeHandler}
-                value={form?.chatroomName || ''}
-                errors={errors?.chatroomName}
-              />
-              <InputForm
-                name="projectName"
-                onChangeHandler={onChangeHandler}
-                value={form?.projectName || ''}
-                errors={errors?.projectName}
-              />
-              {/* Add more fields as needed for chatrooms */}
-            </Stack>
-          </DrawerBody>
+  <Stack spacing={'24px'}>
+    <InputForm
+      name="chatroomName"
+      onChangeHandler={onChangeHandler}
+      value={form?.chatroomName || ''}
+      errors={errors?.chatroomName}
+      label="Chatroom Name"
+    />
+    <InputForm
+      name="creator"
+      onChangeHandler={onChangeHandler}
+      value={form?.creator || ''}
+      errors={errors?.creator}
+      label="Creator"
+    />
+    <InputForm
+      name="description"
+      onChangeHandler={onChangeHandler}
+      value={form?.description || ''}
+      errors={errors?.description}
+      label="Description"
+    />
+    <InputForm
+      name="createdAt"
+      onChangeHandler={onChangeHandler}
+      value={form?.createdAt || ''}
+      errors={errors?.createdAt}
+      label="Creation Date"
+    />
+    {/* Add more fields as needed for chatrooms */}
+  </Stack>
+</DrawerBody>
+
 
           <DrawerFooter>
             <Button variant="outline" mr={3} onClick={() => {

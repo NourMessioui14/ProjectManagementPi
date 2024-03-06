@@ -33,24 +33,24 @@ const Chatrooms = () => {
 
       <TableContainer>
         <Table variant="simple">
-          <Thead>
+        <Thead>
             <Tr>
               <Th>Chatroom Name</Th>
-              <Th>Project Name</Th>
-              <Th>Members Count</Th>
+              <Th>Creator</Th>
+              <Th>Description</Th>
               <Th>Creation Date</Th>
               <Th>Actions</Th>
             </Tr>
           </Thead>
           <Tbody>
-            {chatrooms?.map(({ _id, chatroomName, projectName, membersCount, creationDate }) => (
+            {chatrooms?.map(({ _id, chatroomname, creator, description, createdAt }) => (
               <ChatroomRow
                 key={_id}
                 id={_id}
-                chatroomName={chatroomName}
-                projectName={projectName}
-                membersCount={membersCount}
-                creationDate={creationDate}
+                chatroomName={chatroomname}
+                creator={creator} // Assuming creator is the project name
+                description={description} // Assuming description is the members count
+                creationDate={createdAt}
               />
             ))}
           </Tbody>
