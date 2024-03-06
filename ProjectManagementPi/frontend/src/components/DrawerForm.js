@@ -44,10 +44,10 @@ export default function DrawerForm() {
           <DrawerBody>
   <Stack spacing={'24px'}>
     <InputForm
-      name="chatroomName"
+      name="chatroomname"
       onChangeHandler={onChangeHandler}
-      value={form?.chatroomName || ''}
-      errors={errors?.chatroomName}
+      value={form?.chatroomname || ''}
+      errors={errors?.chatroomname}
       label="Chatroom Name"
     />
     <InputForm

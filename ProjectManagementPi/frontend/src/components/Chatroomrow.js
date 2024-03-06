@@ -3,7 +3,7 @@ import { Td, Tr, Box, Button, Avatar } from '@chakra-ui/react';
 import { AiFillDelete, AiFillEdit } from "react-icons/ai";
 import { GlobalContext } from '../context/GlobalWrapper';
 
-const ChatroomRow = ({id, chatroomName, creator, description, createdAt}) => {
+const ChatroomRow = ({id, chatroomname, creator, description, createdAt}) => {
   const { DeleteChatroom, onOpen } = useContext(GlobalContext);
 
   const onChangeHandler = () => {
@@ -12,10 +12,8 @@ const ChatroomRow = ({id, chatroomName, creator, description, createdAt}) => {
 
   return (
     <Tr>
-      <Td>
-        <Avatar name={chatroomName} />
-      </Td>
-      <Td>{chatroomName}</Td>
+     
+      <Td>{chatroomname}</Td>
       <Td>{creator}</Td>
       <Td>{description}</Td>
       <Td>{createdAt}</Td>

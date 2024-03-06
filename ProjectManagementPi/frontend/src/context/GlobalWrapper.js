@@ -61,6 +61,8 @@ export const Wrapper = ({ children }) => {
       });
   };   
 
+  
+
   return (
     <GlobalContext.Provider value={{ FetchChatrooms, chatrooms, DeleteChatroom, AddChatroom, isOpen, onOpen, onClose, errors, setErrors }}>
       {children}

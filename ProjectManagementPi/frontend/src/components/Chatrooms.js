@@ -47,7 +47,7 @@ const Chatrooms = () => {
               <ChatroomRow
                 key={_id}
                 id={_id}
-                chatroomName={chatroomname}
+                chatroomname={chatroomname}
                 creator={creator} // Assuming creator is the project name
                 description={description} // Assuming description is the members count
                 creationDate={createdAt}
