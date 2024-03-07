@@ -2,20 +2,20 @@ import { IsDateString, IsNotEmpty } from "class-validator";
 
 export class MessageDto {
     @IsNotEmpty()
-    content: string;
+    messageId: string;
 
     @IsNotEmpty()
-    sender: string;
+    chatroomId: string;
 
     @IsNotEmpty()
-    receiver: string;
+    dateId: string;
 
     @IsNotEmpty()
-    chatroomName: string;
+    messageText: string;
 
-    @IsDateString()
-    dateSent: string;
+    @IsNotEmpty()
+    timeId: string;
 
-    @IsDateString()
-    timeSent: string;
+    @IsNotEmpty()
+    senderId: string;
 }

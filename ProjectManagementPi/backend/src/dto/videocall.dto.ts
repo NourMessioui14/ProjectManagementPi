@@ -2,17 +2,24 @@ import { IsDateString, IsNotEmpty, IsNumber } from "class-validator";
 
 export class VideoCallDto {
     @IsNotEmpty()
-    title: string;
+    videocallId: string;
 
     @IsNotEmpty()
-    description: string;
+    projectId: string;
+
+    @IsNotEmpty()
+    videocallCreatorId: string;
+
+    @IsNotEmpty()
+    subject: string;
 
     @IsDateString()
     date: string;
 
     @IsDateString()
-    startTime: string;
+    time: string;
 
+    @IsNotEmpty()
     @IsNumber()
-    estimatedDuration: number;
+    estimatedDurationMinutes: number;
 }

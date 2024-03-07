@@ -6,22 +6,22 @@ export type MessageDocument = Message & Document;
 @Schema()
 export class Message {
     @Prop({ required: true })
-    content: string;
+    messageId: string;
 
     @Prop({ required: true })
-    sender: string;
+    chatroomId: string;
 
     @Prop({ required: true })
-    receiver: string;
+    dateId: string;
 
     @Prop({ required: true })
-    chatroomName: string;
+    messageText: string;
 
     @Prop({ required: true })
-    dateSent: Date;
+    timeId: string;
 
     @Prop({ required: true })
-    timeSent: Date;
+    senderId: string;
 }
 
 export const MessageSchema = SchemaFactory.createForClass(Message);

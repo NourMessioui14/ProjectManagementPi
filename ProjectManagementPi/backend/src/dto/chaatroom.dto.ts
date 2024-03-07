@@ -2,14 +2,17 @@ import { IsDateString, IsNotEmpty } from "class-validator";
 
 export class ChatroomDto {
     @IsNotEmpty()
-    chatroomname: string;
+    chatroomId: string;
 
     @IsNotEmpty()
-    creator: string; // Assuming this is the creator of the chatroom
+    projectId: string;
+
+    @IsNotEmpty()
+    chatroomCreatorId: string;
+
+    @IsNotEmpty()
+    chatroomName: string;
 
     @IsDateString()
-    createdAt: string; // Format "YYYY-MM-DD", assuming you want to provide the creation date during DTO input
-
-    @IsNotEmpty()
-    description: string;
+    creationDate: string;
 }

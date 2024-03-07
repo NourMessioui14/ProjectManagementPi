@@ -6,19 +6,25 @@ export type VideoCallDocument = VideoCall & Document;
 @Schema()
 export class VideoCall {
     @Prop({ required: true })
-    title: string;
+    videocallId: string;
 
     @Prop({ required: true })
-    description: string;
+    projectId: string;
+
+    @Prop({ required: true })
+    videocallCreatorId: string;
+
+    @Prop({ required: true })
+    subject: string;
 
     @Prop({ required: true })
     date: Date;
 
     @Prop({ required: true })
-    startTime: Date; // Assuming this is the start time of the video call
+    time: Date;
 
     @Prop({ required: true })
-    estimatedDuration: number; // Assuming this is the estimated duration in minutes
+    estimatedDurationMinutes: number;
 }
 
 export const VideoCallSchema = SchemaFactory.createForClass(VideoCall);
