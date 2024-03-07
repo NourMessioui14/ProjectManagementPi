@@ -14,17 +14,17 @@ const Chatrooms = () => {
   }, []);
 
   return (
-    <Box mt="5" rounded={'lg'} boxShadow="base">
-      <Box p="4" display={'flex'} justifyContent="space-between">
+    <Box mt="5" rounded="lg" boxShadow="base">
+      <Box p="4" display="flex" justifyContent="space-between">
         <Text fontSize="xl" fontWeight="bold">
           List Chatrooms
         </Text>
         <Button
           colorScheme="teal"
           variant="outline"
-          maxW={'300px'}
+          maxW="300px"
           minW="150px"
-          leftIcon={<AiOutlinePlus fontSize={'20px'} />}
+          leftIcon={<AiOutlinePlus fontSize="20px" />}
           onClick={onOpen}
         >
           Add New Chatroom
@@ -33,24 +33,25 @@ const Chatrooms = () => {
 
       <TableContainer>
         <Table variant="simple">
-        <Thead>
+          <Thead>
             <Tr>
+              <Th>Chatroom id</Th>
               <Th>Chatroom Name</Th>
-              <Th>Creator</Th>
-              <Th>Description</Th>
-              <Th>Creation Date</Th>
-              <Th>Actions</Th>
+              <Th>Project ID</Th>
+              <Th>Chatroom Creator</Th>
+              
             </Tr>
           </Thead>
           <Tbody>
-            {chatrooms?.map(({ _id, chatroomname, creator, description, createdAt }) => (
+            {chatrooms?.map(({ _id, projectId,chatroomId, chatroomCreatorId, chatroomName }) => (
               <ChatroomRow
                 key={_id}
                 id={_id}
-                chatroomname={chatroomname}
-                creator={creator} // Assuming creator is the project name
-                description={description} // Assuming description is the members count
-                creationDate={createdAt}
+                chatroomId={chatroomId}
+                projectId={projectId}
+                chatroomCreatorId={chatroomCreatorId}
+                chatroomName={chatroomName}
+                //creationDate={creationDate}
               />
             ))}
           </Tbody>

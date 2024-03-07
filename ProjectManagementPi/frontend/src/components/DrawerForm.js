@@ -2,7 +2,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Button, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, Stack } from '@chakra-ui/react';
 import { GlobalContext } from '../context/GlobalWrapper';
-import InputForm from './InputForm'; // Assuming you have this component
+import InputForm from './InputForm';
 
 export default function DrawerForm() {
   const { isOpen, onOpen, onClose, AddChatroom, UpdateChatroom, errors, setErrors, chatroom } = useContext(GlobalContext);
@@ -15,6 +15,16 @@ export default function DrawerForm() {
     });
   };
 
+  useEffect(() => {
+    // Check if chatroom has an _id and it's not an empty object
+    if (chatroom && chatroom._id !== undefined && Object.keys(chatroom).length > 0) {
+      setForm(chatroom);
+      
+    } else {
+      setForm({});
+    }
+  }, [isOpen, chatroom]);
+
   const onSave = () => {
     if (form._id) {
       UpdateChatroom(form, setForm);
@@ -22,12 +32,6 @@ export default function DrawerForm() {
       AddChatroom(form, setForm);
     }
   };
-
-  useEffect(() => {
-    if (chatroom) {
-      setForm(chatroom);
-    }
-  }, [isOpen, chatroom]);
 
   return (
     <>
@@ -42,38 +46,37 @@ export default function DrawerForm() {
           <DrawerHeader>{form._id ? 'Update Chatroom' : 'Create Chatroom'}</DrawerHeader>
 
           <DrawerBody>
-  <Stack spacing={'24px'}>
-    <InputForm
-      name="chatroomname"
-      onChangeHandler={onChangeHandler}
-      value={form?.chatroomname || ''}
-      errors={errors?.chatroomname}
-      label="Chatroom Name"
-    />
-    <InputForm
-      name="creator"
-      onChangeHandler={onChangeHandler}
-      value={form?.creator || ''}
-      errors={errors?.creator}
-      label="Creator"
-    />
-    <InputForm
-      name="description"
-      onChangeHandler={onChangeHandler}
-      value={form?.description || ''}
-      errors={errors?.description}
-      label="Description"
-    />
-    <InputForm
-      name="createdAt"
-      onChangeHandler={onChangeHandler}
-      value={form?.createdAt || ''}
-      errors={errors?.createdAt}
-      label="Creation Date"
-    />
-    {/* Add more fields as needed for chatrooms */}
-  </Stack>
-</DrawerBody>
+            <Stack spacing={'24px'}>
+              <InputForm
+                name="chatroomId"
+                onChangeHandler={onChangeHandler}
+                value={form?.chatroomId || ''}
+                errors={errors?.chatroomId}
+                label="Chatroom ID"
+              />
+              <InputForm
+                name="projectId"
+                onChangeHandler={onChangeHandler}
+                value={form?.projectId || ''}
+                errors={errors?.projectId}
+                label="Project ID"
+              />
+              <InputForm
+                name="chatroomCreatorId"
+                onChangeHandler={onChangeHandler}
+                value={form?.chatroomCreatorId || ''}
+                errors={errors?.chatroomCreatorId}
+                label="Chatroom Creator ID"
+              />
+              <InputForm
+                name="chatroomName"
+                onChangeHandler={onChangeHandler}
+                value={form?.chatroomName || ''}
+                errors={errors?.chatroomName}
+                label="Chatroom Name"
+              />
+            </Stack>
+          </DrawerBody>
 
 
           <DrawerFooter>

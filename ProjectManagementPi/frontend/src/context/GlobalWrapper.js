@@ -61,10 +61,30 @@ export const Wrapper = ({ children }) => {
       });
   };   
 
+  const UpdateChatroom = (form, setForm, id) => {
+    axios
+      .put(`http://localhost:5000/api/chatrooms/${id}`, form)
+      .then((res) => {
+        toast({
+          title: 'Chatroom Updated',
+          status: 'success',
+          duration: 4000,
+          isClosable: true,
+        });
+        setErrors({});
+        setForm({});
+        onClose();
+        FetchChatrooms();
+      })
+      .catch((err) => {
+        setErrors(err.response.data.error);
+      });
+  };
+
   
 
   return (
-    <GlobalContext.Provider value={{ FetchChatrooms, chatrooms, DeleteChatroom, AddChatroom, isOpen, onOpen, onClose, errors, setErrors }}>
+    <GlobalContext.Provider value={{ FetchChatrooms, chatrooms, DeleteChatroom, AddChatroom,UpdateChatroom , isOpen, onOpen, onClose, errors, setErrors }}>
       {children}
     </GlobalContext.Provider>
   );
