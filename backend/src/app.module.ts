@@ -1,0 +1,17 @@
+import { Module } from '@nestjs/common';
+import { ProjectModule } from './project/project.module';
+
+import { ConfigModule } from '@nestjs/config';
+import { MongooseModule } from '@nestjs/mongoose';
+import { TicketModule } from './ticket/ticket.module';
+import { SprintModule } from './sprint/sprint.module';
+
+
+@Module({
+  imports: [
+    ConfigModule.forRoot(),
+    MongooseModule.forRoot(process.env.MONGO_URI), // Use process.env.MONGO_URI to access the environment variable
+    ProjectModule, TicketModule, SprintModule
+  ],
+})
+export class AppModule {}
