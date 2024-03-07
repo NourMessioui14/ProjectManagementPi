@@ -17,6 +17,17 @@ const RegisterForm = () => {
     password: '',
     role: '',
   });
+  const resetForm = () => {
+    setRegisterForm({
+      name: '',
+      adresse: '',
+      age: new Date(),
+      email: '',
+      password: '',
+      role: '',
+    });
+  };
+
 
 
   const navigate = useNavigate();
@@ -57,7 +68,7 @@ const RegisterForm = () => {
         localStorage.setItem('token', responseData.token);
         setIsSignUpSuccess(true);
         setSuccessMessage('You signed up to our application. Now you can sign in.');
-      
+        resetForm();
       }
     } catch (error) {
       console.error('Error during signup request:', error);
@@ -85,10 +96,8 @@ const RegisterForm = () => {
         const responseData = await response.json();
         console.log('Login successful! Received token:', responseData.token);
 
-        // Save the token to localStorage
         localStorage.setItem('token', responseData.token);
 
-        // Redirect to the desired page after login (e.g., the dashboard)
         navigate('/backoffice');
       }
     } catch (error) {
@@ -118,12 +127,11 @@ const RegisterForm = () => {
     sign_up_btn.addEventListener("click", handleSignUpClick);
     sign_in_btn.addEventListener("click", handleSignInClick);
 
-    // Clean up event listeners when the component is unmounted
     return () => {
       sign_up_btn.removeEventListener("click", handleSignUpClick);
       sign_in_btn.removeEventListener("click", handleSignInClick);
     };
-  }, []); // Empty dependency array means this effect will only run once, similar to componentDidMount
+  }, []); 
 
   return (
     <div className="container">
@@ -274,11 +282,10 @@ const RegisterForm = () => {
       <div className="panels-container">
         <div className="panel left-panel">
           <div className="content">
-            <h3>New here ?</h3>
+            <h3>You don't have an account?</h3>
             <p>
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-              Debitis, ex ratione. Aliquid!
-            </p>
+              Sign up to our application and start managing your projects!
+          </p>
             <button className="btn transparent" id="sign-up-btn">
               Sign up
             </button>
@@ -288,10 +295,9 @@ const RegisterForm = () => {
 
         <div className="panel right-panel">
           <div className="content">
-            <h3>One of us ?</h3>
+            <h3>You have an account?</h3>
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum
-              laboriosam ad deleniti.
+              Enter your personal details and start journey with us!
             </p>
             <button className="btn transparent" id="sign-in-btn">
               Sign in

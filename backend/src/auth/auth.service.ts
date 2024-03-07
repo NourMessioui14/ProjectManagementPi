@@ -14,7 +14,8 @@ export class AuthService {
     @InjectModel(User.name)
     private userModel: Model<User>,
     private jwtService: JwtService,
-  ) {}
+  
+    ) {}
 
   async signUp(signUpDto: SignUpDto): Promise<{ token: string }> {
     const { name, email, password ,adresse,age,role} = signUpDto;
@@ -62,9 +63,9 @@ async login(loginDto: LoginDto): Promise<{ token: string }> {
   return this.userModel.find();
  }
 
- findOne(id:string){
+/*  findOne(id:string){
   return this.userModel.findOne({_id:id});
-}
+} */
 
 update(id:string, body:SignUpDto){
   const objectId = new Types.ObjectId(id);
@@ -90,6 +91,13 @@ async delete(id: string) {
   }
 }
 
+
+
+
+findOneByEmail(email: string) {
+  console.log('Searching for user by email:', email);
+  return this.userModel.findOne({ email: email });
+}
 
 
 

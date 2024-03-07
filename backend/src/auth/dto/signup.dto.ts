@@ -29,7 +29,6 @@ export class SignUpDto {
   @MinLength(6)
   readonly password: string;
 
-  // Utiliser le type enum pour le rôle
   @IsNotEmpty()
   @IsString()
   readonly role: UserRole;

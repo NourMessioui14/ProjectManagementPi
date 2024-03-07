@@ -24,11 +24,11 @@ export class AuthController {
   findAll(){
      return this.authService.findAll();
   }
-  @Get("users/:id")
+ /*  @Get("users/:id")
   findOne(@Param('id') id: string){
          return this.authService.findOne(id);
-      }
-      @Put("users/:id")
+      } */
+    @Put("users/:id")
       update(@Param('id') id: string, @Body() body: SignUpDto){
          return this.authService.update(id, body);
       }
@@ -38,13 +38,16 @@ export class AuthController {
          return this.authService.delete(id);
       }
 
-    
-
+      @Get(":email")
+      findEmail(@Param('email') email: string) {
+        return this.authService.findOneByEmail(email);
+      }
+      
+      
 
   @Get('/backoffice')
   @Roles('Admin') 
   @UseGuards(RolesGuard) 
   getProtectedResource() {
-    // Your protected route logic here
   }
 }

@@ -17,72 +17,30 @@ function Sidebar() {
 
             <li className="sidebar-item active">
   <Link to="/users" className="sidebar-link">
-    <i className="align-middle" data-feather="sliders"></i> <span className="align-middle">Users</span>
+    <i className="align-middle" data-feather="sliders"></i> <span className="align-middle">User Management</span>
   </Link>
 </li>
 
 
             <li className="sidebar-item">
                 <a className="sidebar-link" href="pages-profile.html">
-      <i className="align-middle" data-feather="user"></i> <span className="align-middle">Profile</span>
+      <i className="align-middle" data-feather="user"></i> <span className="align-middle">Project Management</span>
     </a>
             </li>
 
             <li className="sidebar-item">
                 <a className="sidebar-link" href="pages-sign-in.html">
-      <i className="align-middle" data-feather="log-in"></i> <span className="align-middle">Sign In</span>
+      <i className="align-middle" data-feather="log-in"></i> <span className="align-middle">Sprint Management</span>
     </a>
             </li>
 
             <li className="sidebar-item">
                 <a className="sidebar-link" href="pages-sign-up.html">
-      <i className="align-middle" data-feather="user-plus"></i> <span className="align-middle">Sign Up</span>
+      <i className="align-middle" data-feather="user-plus"></i> <span className="align-middle">Claim Management</span>
     </a>
             </li>
 
-            <li className="sidebar-item">
-                <a className="sidebar-link" href="pages-blank.html">
-      <i className="align-middle" data-feather="book"></i> <span className="align-middle">Blank</span>
-    </a>
-            </li>
-
-            <li className="sidebar-header">
-                Tools & Components
-            </li>
-
-            <li className="sidebar-item">
-                <a className="sidebar-link" href="ui-buttons.html">
-      <i className="align-middle" data-feather="square"></i> <span className="align-middle">Buttons</span>
-    </a>
-            </li>
-
-            <li className="sidebar-item">
-                <a className="sidebar-link" href="ui-forms.html">
-      <i className="align-middle" data-feather="check-square"></i> <span className="align-middle">Forms</span>
-    </a>
-            </li>
-
-            <li className="sidebar-item">
-                <a className="sidebar-link" href="ui-cards.html">
-      <i className="align-middle" data-feather="grid"></i> <span className="align-middle">Cards</span>
-    </a>
-            </li>
-
-            <li className="sidebar-item">
-                <a className="sidebar-link" href="ui-typography.html">
-      <i className="align-middle" data-feather="align-left"></i> <span className="align-middle">Typography</span>
-    </a>
-            </li>
-
-            <li className="sidebar-item">
-                <a className="sidebar-link" href="icons-feather.html">
-      <i className="align-middle" data-feather="coffee"></i> <span className="align-middle">Icons</span>
-    </a>
-            </li>
-
-            <li className="sidebar-header">
-                Plugins & Addons
-            </li>
+           
 
             <li className="sidebar-item">
                 <a className="sidebar-link" href="charts-chartjs.html">

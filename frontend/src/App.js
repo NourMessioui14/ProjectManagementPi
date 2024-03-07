@@ -8,6 +8,7 @@ import Sidebar from './Backoffice/components/Sidebar';
 import Footer from './Backoffice/components/Footer';
 import RegisterForm from './FrontOffice/pages/RegisterForm';
 import UserList from './Backoffice/pages/UserList';
+import EmailVerification from './FrontOffice/pages/EmailVerification';
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
         <Route path="/" element={<RegisterForm />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/email" element={<EmailVerification />} />
         {/* Ajoutez d'autres routes spécifiques au front office ici */}
       </Routes>
     </Router>

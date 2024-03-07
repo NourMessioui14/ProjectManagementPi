@@ -20,9 +20,8 @@ export class User extends Document {
   @Prop()
   password: string;
 
-  // Ajouter la propriété de rôle
   @Prop()
-  role: string; // Vous pouvez définir le type de rôle selon vos besoins
+  role: string; 
 
 }
 
