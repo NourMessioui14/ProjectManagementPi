@@ -1,22 +1,28 @@
-import React, { useContext } from 'react';
-import { AiFillDelete, AiFillEdit } from "react-icons/ai";
+// RowTicket.js
+import React, { useContext, useState } from 'react';
+import { AiFillDelete, AiFillEdit, AiOutlineInfoCircle } from "react-icons/ai";
 import { GlobalContext } from '../context/GlobalWrapper';
 import { Box, Button, Td, Tr } from '@chakra-ui/react';
+import TicketDetailsModal from './TicketDetailsModal'; // Importez le composant du modal
 
-function RowTicket({ id, project, typeOfticket, etat, description, responsable}) {
+function RowTicket({ id, project, sprint, etat, description, typeOfticket, responsable }) {
   const { DeleteTicket, onOpen, FindOneProject } = useContext(GlobalContext);
+  const [showDetailsModal, setShowDetailsModal] = useState(false); // État pour afficher ou masquer le modal
 
   const handleEditClick = () => {
-    FindOneProject(id); // Appeler FindOneProject avec l'ID lors du clic sur le bouton "Edit"
+    FindOneProject(id);
     onOpen();
+  };
+
+  const handleInfoClick = () => {
+    setShowDetailsModal(true);
   };
 
   return (
     <Tr>
       <Td>{project}</Td>
-      <Td>{typeOfticket}</Td>
+      <Td>{sprint}</Td>
       <Td>{etat}</Td>
-      <Td>{description}</Td>
       <Td>{responsable}</Td>
       <Td> 
         <Box display="flex" gap="1">
@@ -26,8 +32,12 @@ function RowTicket({ id, project, typeOfticket, etat, description, responsable})
           <Button colorScheme="red" onClick={() => DeleteTicket(id)}>
             <AiFillDelete />
           </Button>
+          <Button colorScheme="teal" onClick={handleInfoClick}>
+            <AiOutlineInfoCircle />
+          </Button>
         </Box>
       </Td>
+      <TicketDetailsModal isOpen={showDetailsModal} onClose={() => setShowDetailsModal(false)} ticket={{ id, project, sprint, etat, description, typeOfticket, responsable }} />
     </Tr>
   );
 }

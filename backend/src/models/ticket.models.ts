@@ -7,6 +7,9 @@ export type TicketDocument = Ticket & Document ;
     @Prop({ type: ProjectSchema }) // Utilisez la référence au schéma du modèle de projet
     project: ProjectDocument; // Utilisez le type du document du modèle de projet ici
 
+    @Prop({required:true})
+    sprint : string ; 
+
 
     @Prop({required:true})
     typeOfticket : string ; 

@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Button, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, Stack, Input, FormControl, FormLabel, Select, Textarea } from '@chakra-ui/react';
 import { GlobalContext } from '../context/GlobalWrapper';
+import { FcHighPriority } from "react-icons/fc";
 
 export default function DrawerFormTicket() {
   const { isOpen, onClose, AddTicket, errors, setErrors,UpdateTicket, tickets, ticket,projects, FetchProjects } = useContext(GlobalContext);
@@ -66,12 +67,19 @@ export default function DrawerFormTicket() {
                   ))}
                 </Select>
               </FormControl>
+
+              <FormControl>
+              <FormLabel>Sprint</FormLabel>
+              <Input type="text" name="sprint" onChange={onChangeHandler} value={formT?.sprint || ''} />
+            </FormControl>
+
               <FormControl>
                 <FormLabel>Type of Ticket</FormLabel>
                 <Select name="typeOfticket" onChange={onChangeHandler} value={formT?.typeOfticket || ''}>
                   <option value="Story">Story</option>
                   <option value="Tache">Tache</option>
-                  <option value="Bug">Bug</option>
+                  <option value="Bug">   <FcHighPriority/>Bug </option>
+
                   <option value="Epic">Epic</option>
                 </Select>
               </FormControl>
@@ -102,8 +110,6 @@ export default function DrawerFormTicket() {
               Cancel
             </Button>
             <Button colorScheme="blue" onClick={()=> formT._id? onUpdate(): onSave()}>
-
-µ
               Save
             </Button>
           </DrawerFooter>

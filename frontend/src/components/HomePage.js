@@ -8,7 +8,6 @@ function HomePage() {
           <div className="row">
             <div className="offset-xl-3 col-xl-6 offset-lg-2 col-lg-8 col-md-12 col-sm-12">
               <h1>Elevate your ideas  <strong>to success with DeamTim:</strong><br />Simplify ,<strong>Organize, Succeed</strong></h1>
-              <p>Softy Pinko is a professional Bootstrap 4.0 theme designed by Template Mo for your company at absolutely free of charge</p>
               <a href="#features" className="main-button-slider">Discover More</a>
 
 

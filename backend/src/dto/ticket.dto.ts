@@ -9,6 +9,10 @@ export class TicketDto{
     project: string;
 
     @IsNotEmpty()
+    sprint: string;
+
+
+    @IsNotEmpty()
     etat: string;
 
     @IsNotEmpty()
