@@ -7,12 +7,14 @@ export const GlobalContext = createContext();
 
 export const Wrapper = ({ children }) => {
   
-  const [chatrooms, setChatrooms] = useState([]);
+  const [chatrooms, setChatrooms] = useState([]); // Add state for chatrooms
   const [errors, setErrors] = useState({});
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
 
-  // Define FetchChatrooms function
+  const [videoCalls, setVideoCalls] = useState([]); // Add state for video calls
+
+  // chatroom functions
   const FetchChatrooms = async () => {
     try {
       const res = await axios.get('http://localhost:5000/api/chatrooms');
@@ -81,10 +83,94 @@ export const Wrapper = ({ children }) => {
       });
   };
 
+  // VideoCall functions
+
+  const fetchVideoCalls = async () => {
+    try {
+      const res = await axios.get('http://localhost:5000/api/videocalls');
+      setVideoCalls(res.data);
+    } catch (err) {
+      console.log(err.response.data);
+    }
+  };
+
+  const deleteVideoCall = (id) => {
+    axios
+      .delete(`http://localhost:5000/api/videocalls/${id}`)
+      .then((res) => {
+        setVideoCalls(videoCalls.filter((u) => u._id !== id));
+        toast({
+          title: 'Video Call Deleted',
+          status: 'success',
+          duration: 4000,
+          isClosable: true,
+        });
+      })
+      .catch((err) => {
+        console.log(err.response.data);
+      });
+  };
+
+  const addVideoCall = (form, setForm) => {
+    axios
+      .post('http://localhost:5000/api/videocalls', form)
+      .then((res) => {
+        setVideoCalls([...videoCalls, res.data]);
+        toast({
+          title: 'Video Call Added',
+          status: 'success',
+          duration: 4000,
+          isClosable: true,
+        });
+        setErrors({});
+        setForm({});
+        onClose();
+      })
+      .catch((err) => {
+        setErrors(err.response.data.error);
+      });
+  };
+
+  const updateVideoCall = (form, setForm, id) => {
+    axios
+      .put(`http://localhost:5000/api/videocalls/${id}`, form)
+      .then((res) => {
+        toast({
+          title: 'Video Call Updated',
+          status: 'success',
+          duration: 4000,
+          isClosable: true,
+        });
+        setErrors({});
+        setForm({});
+        onClose();
+        fetchVideoCalls();
+      })
+      .catch((err) => {
+        setErrors(err.response.data.error);
+      });
+  };  
+
   
 
   return (
-    <GlobalContext.Provider value={{ FetchChatrooms, chatrooms, DeleteChatroom, AddChatroom,UpdateChatroom , isOpen, onOpen, onClose, errors, setErrors }}>
+    <GlobalContext.Provider value={{
+      FetchChatrooms,
+      fetchVideoCalls,
+      chatrooms,
+      videoCalls,
+      DeleteChatroom,
+      deleteVideoCall,
+      AddChatroom,
+      addVideoCall,
+      UpdateChatroom,
+      updateVideoCall,
+      isOpen,
+      onOpen,
+      onClose,
+      errors,
+      setErrors,
+    }}>
       {children}
     </GlobalContext.Provider>
   );

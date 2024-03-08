@@ -1,36 +1,30 @@
 import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
-import { BrowserRouter, Route,Routes } from 'react-router-dom';
-import Chatrooms from './components/Chatrooms'; // Corrected import path
-import { Wrapper } from './context/GlobalWrapper';
-
-
+import Chatrooms from './components/Chatrooms';
+import VideoCalls from './components/videocalls';
 
 function App() {
-
-
-  
   return (
-    <BrowserRouter>
-      <Routes>
-        {}
-      </Routes>
-      
+    <Router>
       <div className='wrapper'>
-        
+        <Sidebar />
         <div className="main">
-          
+          <Navbar />
           <main className="content">
             <div className="container-fluid p-0">
-              <Chatrooms/>
+              <Routes>
+                <Route path="/chatrooms" element={<Chatrooms />} />
+                <Route path="/videocalls" element={<VideoCalls />} />
+              </Routes>
             </div>
           </main>
-          
+          <Footer />  
         </div>
       </div>
-    </BrowserRouter>
+    </Router>
   );
 }
 
