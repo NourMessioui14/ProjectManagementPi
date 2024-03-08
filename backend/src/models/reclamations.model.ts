@@ -11,6 +11,9 @@ export class Reclamation {
   @Prop({ required: true})
   UserId: number;
 
+  @Prop({ required: true})
+  UserName: string;
+
 
   @Prop( { required: true})
   Category: string;

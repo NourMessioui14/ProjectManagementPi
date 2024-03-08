@@ -14,8 +14,6 @@ export default function Wrapper({ children }) {
 
 
 
-  
-
     const [ Reclamations , setClaims] = useState([]);
     //update 
     const [Reclamation, SetReclamation] = useState({});
@@ -163,13 +161,17 @@ const FetchReclamations = () => {
        });
   };
 
-
-const AddRecalamation = (form , setForm) => {  
-   axios .post(`/api/reclamations`, form)
-
-  .then(( res ) => {
-      setClaims([ ...Reclamations , res.data]);
-      toast({
+  const AddRecalamation = (form, setForm) => {
+    const requestData = {
+      ...form,
+      UserId: parseInt(form.UserId), // Convertir en nombre
+    };
+  
+    axios
+      .post('/api/reclamations', requestData)
+      .then((res) => {
+        setClaims([...Reclamations, res.data]);
+        toast({
           title: 'Claim Added',
           status: 'success',
           duration: 4000,
@@ -178,14 +180,14 @@ const AddRecalamation = (form , setForm) => {
         setErrors({});
         setForm({});
         onClose();
-
-      console.log(res.data);
-  })
-  .catch((err) => {
-    setErrors(err.response.data.error);
-  });
   
-};
+        console.log(res.data);
+      })
+      .catch((err) => {
+        setErrors(err.response.data.error);
+      });
+  };
+
 
 
 const FindOneRecalamation = async (id) => {
@@ -240,7 +242,7 @@ const UpdateRecalamation = (form, setForm, id) =>{
 
   
     return (
-        <GlobalContext.Provider value={{ FetchProjects, projects, Deleteproject, Add, isOpen, onOpen, onClose, errors, setErrors,FetchTickets,tickets,AddTicket
+        <GlobalContext.Provider value={{ UpdateRecalamation, FindOneRecalamation,AddRecalamation,DeleteRecalamation, FetchReclamations,Reclamations , setClaims ,Reclamation, SetReclamation, FetchProjects, projects, Deleteproject, Add, isOpen, onOpen, onClose, errors, setErrors,FetchTickets,tickets,AddTicket
           ,Deleteticket}}>
             {children}
         </GlobalContext.Provider>

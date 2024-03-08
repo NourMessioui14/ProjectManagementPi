@@ -7,6 +7,11 @@ export class ReclamationDto {
 
   UserId: number;
 
+  
+  @IsNotEmpty()
+
+  UserName:string;
+
   @IsNotEmpty()
  
   Category: string;

@@ -18,7 +18,7 @@ import InputsReclamations from "./InputsReclamations";
 
 export default function AddReclamation() {
   
-    const { onOpen, isOpen, onClose , AddReclamation  ,errors, setErrors, Reclamation , UpdateReclamation} = useContext(GlobalContext);
+    const { onOpen, isOpen, onClose , AddRecalamation  ,errors, setErrors, Reclamation , UpdateRecalamation} = useContext(GlobalContext);
 
     //form ta3 add claim
     const [form , setForm]= useState({});
@@ -33,12 +33,12 @@ export default function AddReclamation() {
 
     const onAdd = () => {
         console.log(form)
-        AddReclamation(form , setForm);
+        AddRecalamation(form , setForm);
     };
 
 
     const onUpdate =() => {
-      UpdateReclamation(form, setForm , form._id);
+      UpdateRecalamation(form, setForm , form._id);
       console.log(form, );
     };
 
