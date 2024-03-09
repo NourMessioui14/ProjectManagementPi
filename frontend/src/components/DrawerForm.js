@@ -1,13 +1,39 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, Stack, Input, FormControl, FormErrorMessage, FormLabel, IconButton } from '@chakra-ui/react';
+import { Button, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, Stack, Input, FormControl, FormErrorMessage, FormLabel, IconButton, Textarea } from '@chakra-ui/react';
 import { GlobalContext } from '../context/GlobalWrapper';
-import InputForm from './InputForm';
-import { AiOutlineInfoCircle } from 'react-icons/ai'; // Importer l'icône d'information
 
 export default function DrawerForm() {
-  const { isOpen, onOpen, onClose, AddProject, Update, errors, setErrors, project } = useContext(GlobalContext);
+  const { isOpen, onClose, AddProject, Update, errors, setErrors, project } = useContext(GlobalContext);
   const [form, setForm] = useState({});
 
+  // Fonction de validation du formulaire
+    const validateForm = () => {
+      const validationErrors = {};
+    
+      if (!form.projectname) {
+        validationErrors.projectname = 'Project name is required';
+      }
+    
+      if (!form.chefdeprojet) {
+        validationErrors.chefdeprojet = 'Project manager is required';
+      }
+    
+      if (!form.description) {
+        validationErrors.description = 'Description is required';
+      }
+    
+      if (!form.startdate) {
+        validationErrors.startdate = 'Start date is required';
+      }
+    
+      if (!form.enddate) {
+        validationErrors.enddate = 'End date is required';
+      }
+    
+      return validationErrors;
+    };
+
+  // Gérer les changements de champ
   const onChangeHandler = (e) => {
     setForm({
       ...form,
@@ -15,12 +41,24 @@ export default function DrawerForm() {
     });
   };
 
+  // Fonction pour enregistrer le projet
   const onSave = () => {
-    AddProject(form, setForm);
+    const validationErrors = validateForm();
+    if (Object.keys(validationErrors).length === 0) {
+      AddProject(form, setForm);
+    } else {
+      setErrors(validationErrors);
+    }
   };
 
+  // Fonction pour mettre à jour le projet
   const onUpdate = () => {
-    Update(form, setForm, form._id);
+    const validationErrors = validateForm();
+    if (Object.keys(validationErrors).length === 0) {
+      Update(form, setForm, form._id);
+    } else {
+      setErrors(validationErrors);
+    }
   };
 
   useEffect(() => {
@@ -30,70 +68,64 @@ export default function DrawerForm() {
   }, [isOpen, project]);
 
   return (
-    <>
-      <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
-        <DrawerOverlay />
-        <DrawerContent>
-          <DrawerCloseButton
-            onClick={() => {
-              onClose();
-              setErrors({});
-              setForm({});
-            }}
-          />
-          <DrawerHeader>Create / Update Project</DrawerHeader>
+    <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
+      <DrawerOverlay />
+      <DrawerContent>
+        <DrawerCloseButton onClick={() => {
+          onClose();
+          setErrors({});
+          setForm({});
+        }} />
+        <DrawerHeader>{form._id ? 'Update Project' : 'Create Project'}</DrawerHeader>
 
-          <DrawerBody>
-            <Stack spacing={'24px'}>
-              <InputForm
-                name="projectname"
-                onChangeHandler={onChangeHandler}
-                value={form?.projectname || ''}
-                errors={errors?.projectname}
-              />
-              <InputForm
-                name="chefdeprojet"
-                onChangeHandler={onChangeHandler}
-                value={form?.chefdeprojet || ''}
-                errors={errors?.chefdeprojet}
-              />
-              <InputForm
-                name="description"
-                onChangeHandler={onChangeHandler}
-                value={form?.description || ''}
-                errors={errors?.description}
-              />
-              <FormControl>
-                <FormLabel>Start Date</FormLabel>
-                <Input type="date" name="startdate" onChange={onChangeHandler} value={form?.startdate || ''} />
-                {errors?.startdate && <FormErrorMessage>{errors.startdate}</FormErrorMessage>}
-              </FormControl>
-              <FormControl>
-                <FormLabel>End Date</FormLabel>
-                <Input type="date" name="enddate" onChange={onChangeHandler} value={form?.enddate || ''} />
-                {errors?.enddate && <FormErrorMessage>{errors.enddate}</FormErrorMessage>}
-              </FormControl>
-            </Stack>
-          </DrawerBody>
+        <DrawerBody>
+        <Stack spacing={'24px'}>
+          <FormControl isInvalid={!!errors.projectname}>
+            <FormLabel>Project Name</FormLabel>
+            <Input name="projectname" onChange={onChangeHandler} value={form?.projectname || ''} />
+            <FormErrorMessage>{errors.projectname}</FormErrorMessage>
+          </FormControl>
+      
+          <FormControl isInvalid={!!errors.chefdeprojet}>
+            <FormLabel>Project Manager</FormLabel>
+            <Input name="chefdeprojet" onChange={onChangeHandler} value={form?.chefdeprojet || ''} />
+            <FormErrorMessage>{errors.chefdeprojet}</FormErrorMessage>
+          </FormControl>
+      
+          <FormControl isInvalid={!!errors.description}>
+            <FormLabel>Description</FormLabel>
+            <Textarea name="description" onChange={onChangeHandler} value={form?.description || ''} />
+            <FormErrorMessage>{errors.description}</FormErrorMessage>
+          </FormControl>
+      
+          <FormControl isInvalid={!!errors.startdate}>
+            <FormLabel>Start Date</FormLabel>
+            <Input type="date" name="startdate" onChange={onChangeHandler} value={form?.startdate || ''} />
+            <FormErrorMessage>{errors.startdate}</FormErrorMessage>
+          </FormControl>
+      
+          <FormControl isInvalid={!!errors.enddate}>
+            <FormLabel>End Date</FormLabel>
+            <Input type="date" name="enddate" onChange={onChangeHandler} value={form?.enddate || ''} />
+            <FormErrorMessage>{errors.enddate}</FormErrorMessage>
+          </FormControl>
+        </Stack>
+      </DrawerBody>
+      
 
-          <DrawerFooter>
-            <Button
-              variant="outline"
-              mr={3}
-              onClick={() => {
-                onClose();
-                setErrors({});
-                setForm({});
-              }}
-            >
-              Cancel
-            </Button>
-            <Button colorScheme="blue" onClick={() => (form._id ? onUpdate() : onSave())}>
-              Save
-            </Button>
-          </DrawerFooter>
-        </DrawerContent>
-      </Drawer>
-    </>
+        <DrawerFooter>
+          <Button variant="outline" mr={3} onClick={() => {
+            onClose();
+            setErrors({});
+            setForm({});
+          }}>
+            Cancel
+          </Button>
+          <Button colorScheme="blue" onClick={() => (form._id ? onUpdate() : onSave())}>
+            Save
+          </Button>
+        </DrawerFooter>
+      </DrawerContent>
+    </Drawer>
   );
 }

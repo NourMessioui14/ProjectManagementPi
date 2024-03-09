@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Box, Button, Table, TableContainer, Tbody, Text, Th, Thead, Tr, Input, Flex } from '@chakra-ui/react';
+import { Box, Button, Table, TableContainer, Tbody, Text, Th, Thead, Tr, Input, Flex, Center } from '@chakra-ui/react';
 import { AiOutlinePlus, AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
 import RowTicket from './RowTicket';
 import DrawerFormTicket from './DrawerFormTicket';
@@ -33,22 +33,22 @@ function TicketList() {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <Box mt="5" rounded={'lg'} boxShadow="base">
-      <Box p="4" display={'flex'} justifyContent="space-between" alignItems="center">
+    <Box mt="5" rounded="lg" boxShadow="base" p="4">
+      <Flex justifyContent="space-between" alignItems="center">
         <Text fontSize="xl" fontWeight="bold">
           List of Tickets
         </Text>
         <Button
           colorScheme="teal"
           variant="outline"
-          maxW={'300px'}
+          maxW="300px"
           minW="150px"
-          leftIcon={<AiOutlinePlus fontSize={'20px'} />}
+          leftIcon={<AiOutlinePlus fontSize="20px" />}
           onClick={onOpen}
         >
           Add New Ticket
         </Button>
-      </Box>
+      </Flex>
 
       {/* Champ de recherche */}
       <Box p="4">
@@ -75,7 +75,7 @@ function TicketList() {
               <RowTicket
                 key={_id}
                 id={_id}
-                project={project.projectname} // Utilisez project.projectname pour accéder au nom du projet s'il est présent
+                project={project.projectname}
                 sprint={sprint}
                 typeOfticket={typeOfticket}
                 etat={etat}
@@ -87,12 +87,14 @@ function TicketList() {
         </Table>
       </TableContainer>
       <Flex justifyContent="center" alignItems="center" mt="4">
-        <Button onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1} leftIcon={<AiOutlineArrowLeft />}>
-          Previous
+        <Button onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1} leftIcon={<AiOutlineArrowLeft />} mr="2">
+          
         </Button>
-        <Text mx="2">Page {currentPage}</Text>
-        <Button onClick={() => paginate(currentPage + 1)} disabled={indexOfLastTicket >= filteredTickets.length} rightIcon={<AiOutlineArrowRight />}>
-          Next
+        <Center bg="teal" color="white" borderRadius="md" w="30px" h="30px">
+          {currentPage}
+        </Center>
+        <Button onClick={() => paginate(currentPage + 1)} disabled={indexOfLastTicket >= filteredTickets.length} rightIcon={<AiOutlineArrowRight />} ml="2">
+          
         </Button>
       </Flex>
       <DrawerFormTicket />

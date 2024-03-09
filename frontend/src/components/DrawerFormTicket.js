@@ -1,16 +1,40 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, Stack, Input, FormControl, FormLabel, Select, Textarea } from '@chakra-ui/react';
+import { Button, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, Stack, Input, FormControl, FormLabel, Select, Textarea, FormErrorMessage } from '@chakra-ui/react';
 import { GlobalContext } from '../context/GlobalWrapper';
 import { FcHighPriority } from "react-icons/fc";
 
 export default function DrawerFormTicket() {
-  const { isOpen, onClose, AddTicket, errors, setErrors,UpdateTicket, tickets, ticket,projects, FetchProjects } = useContext(GlobalContext);
+  const { isOpen, onClose, AddTicket, errors, setErrors, UpdateTicket, tickets, ticket, projects, FetchProjects } = useContext(GlobalContext);
   const [formT, setFormT] = useState({});
+  const [validationErrors, setValidationErrors] = useState({});
 
+  // Fonction de validation du formulaire
+  const validateForm = () => {
+    const errors = {};
+  
+    if (!formT.project) {
+      errors.project = 'Project is required';
+    }
+    if (!formT.sprint) {
+      errors.sprint = 'Sprint is required';
+    }
+    if (!formT.typeOfticket) {
+      errors.typeOfticket = 'Type of Ticket is required';
+    }
+    if (!formT.etat) {
+      errors.etat = 'etat is required';
+    }
+    if (!formT.description) {
+      errors.description = 'Description is required';
+    }
+    if (!formT.responsable) {
+      errors.responsable = 'Responsible is required';
+    }
+  
+    return errors;
+  };
 
-
-    // ki tselectioni lista mtaa projet t7awwl ll id mn string ll projet lkol 
-
+  // Gérer le changement de champ et la validation
   const onChangeHandler = (e) => {
     if (e.target.name === 'project') {
       const selectedProject = projects.find(project => project._id === e.target.value);
@@ -26,24 +50,34 @@ export default function DrawerFormTicket() {
     }
   };
 
+  // Fonction pour enregistrer le ticket
   const onSave = () => {
-    AddTicket(formT, setFormT);
-  };
-  const onUpdate = () => {
-    UpdateTicket(formT, setFormT, formT._id);
+    const validationErrors = validateForm();
+    if (Object.keys(validationErrors).length === 0) {
+      AddTicket(formT, setFormT);
+    } else {
+      setValidationErrors(validationErrors);
+    }
   };
 
-  
+  // Fonction pour mettre à jour le ticket
+  const onUpdate = () => {
+    const validationErrors = validateForm();
+    if (Object.keys(validationErrors).length === 0) {
+      UpdateTicket(formT, setFormT, formT._id);
+    } else {
+      setValidationErrors(validationErrors);
+    }
+  };
 
   useEffect(() => {
     if (ticket) {
       setFormT(ticket);
     } else {
-      setFormT({}); // Assurez-vous que formT est initialisé si ticket est null
+      setFormT({});
     }
-    // Récupérer la liste des projets lors de l'ouverture du formulaire
     FetchProjects();
-  }, [isOpen, ticket]); // Assurez-vous que useEffect s'ex
+  }, [isOpen, ticket]);
 
   return (
     <>
@@ -59,45 +93,64 @@ export default function DrawerFormTicket() {
 
           <DrawerBody>
             <Stack spacing={'24px'}>
-              <FormControl>
+              <FormControl isInvalid={!!validationErrors.project}>
                 <FormLabel>Project</FormLabel>
                 <Select name="project" onChange={onChangeHandler} value={formT?.project?._id || ''}>
                   {projects.map(project => (
                     <option key={project._id} value={project._id}>{project.projectname}</option>
                   ))}
                 </Select>
+                <FormErrorMessage>{validationErrors.project}</FormErrorMessage>
               </FormControl>
 
-              <FormControl>
-              <FormLabel>Sprint</FormLabel>
-              <Input type="text" name="sprint" onChange={onChangeHandler} value={formT?.sprint || ''} />
-            </FormControl>
+              <FormControl isInvalid={!!validationErrors.sprint}>
+                <FormLabel>Sprint</FormLabel>
+                <Input type="text" name="sprint" onChange={onChangeHandler} value={formT?.sprint || ''} />
+                <FormErrorMessage>{validationErrors.sprint}</FormErrorMessage>
+              </FormControl>
 
-              <FormControl>
+              <FormControl isInvalid={!!validationErrors.typeOfticket}>
                 <FormLabel>Type of Ticket</FormLabel>
                 <Select name="typeOfticket" onChange={onChangeHandler} value={formT?.typeOfticket || ''}>
                   <option value="Story">Story</option>
                   <option value="Tache">Tache</option>
-                  <option value="Bug">   <FcHighPriority/>Bug </option>
-
+                  <option value="Bug">   <FcHighPriority />Bug </option>
                   <option value="Epic">Epic</option>
                 </Select>
+                <FormErrorMessage>{validationErrors.typeOfticket}</FormErrorMessage>
               </FormControl>
-              <FormControl>
-                <FormLabel>State</FormLabel>
+              {/* Ajoutez d'autres champs avec validation ici */}
+
+
+              <FormControl isInvalid={!!validationErrors.description}>
                 <Select name="etat" onChange={onChangeHandler} value={formT?.etat || ''}>
                   <option value="To Do">To do</option>
                   <option value="In progress">In progress</option>
                 </Select>
               </FormControl>
-              <FormControl>
-                <FormLabel>Description</FormLabel>
-                <Textarea name="description" onChange={onChangeHandler} value={formT?.description || ''} />
-              </FormControl>
-              <FormControl>
-                <FormLabel>Responsible</FormLabel>
-                <Input type="text" name="responsable" onChange={onChangeHandler} value={formT?.responsable || ''} />
-              </FormControl>
+              <FormControl isInvalid={!!validationErrors.description}>
+              <FormLabel>Description</FormLabel>
+              <Textarea name="description" onChange={onChangeHandler} value={formT?.description || ''} />
+              <FormErrorMessage>{validationErrors.description}</FormErrorMessage>
+            </FormControl>
+            
+            <FormControl isInvalid={!!validationErrors.typeOfticket}>
+              <FormLabel>Type of Ticket</FormLabel>
+              <Select name="typeOfticket" onChange={onChangeHandler} value={formT?.typeOfticket || ''}>
+                <option value="Story">Story</option>
+                <option value="Tache">Tache</option>
+                <option value="Bug">   <FcHighPriority />Bug </option>
+                <option value="Epic">Epic</option>
+              </Select>
+              <FormErrorMessage>{validationErrors.typeOfticket}</FormErrorMessage>
+            </FormControl>
+            
+            <FormControl isInvalid={!!validationErrors.responsable}>
+              <FormLabel>Responsible</FormLabel>
+              <Input type="text" name="responsable" onChange={onChangeHandler} value={formT?.responsable || ''} />
+              <FormErrorMessage>{validationErrors.responsable}</FormErrorMessage>
+            </FormControl>
+            
             </Stack>
           </DrawerBody>
 
@@ -109,7 +162,7 @@ export default function DrawerFormTicket() {
             }}>
               Cancel
             </Button>
-            <Button colorScheme="blue" onClick={()=> formT._id? onUpdate(): onSave()}>
+            <Button colorScheme="blue" onClick={() => formT._id ? onUpdate() : onSave()}>
               Save
             </Button>
           </DrawerFooter>
