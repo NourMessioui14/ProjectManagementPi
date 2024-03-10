@@ -1,4 +1,4 @@
-import { IsDate, IsDateString, IsNotEmpty } from "class-validator";
+import { IsArray, IsDate, IsDateString, IsNotEmpty } from "class-validator";
 
 
 export class SprintDto{
@@ -15,6 +15,10 @@ export class SprintDto{
 
     @IsNotEmpty()
     description: string;
+
+    @IsArray()
+    @IsNotEmpty()
+    tickets: string[]; // Tableau d'identifiants de tickets
 
 
 }

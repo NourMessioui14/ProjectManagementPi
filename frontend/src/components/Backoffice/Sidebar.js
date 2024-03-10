@@ -24,6 +24,12 @@ function Sidebar() {
           </li>
 
           <li className="sidebar-item">
+            <a className="sidebar-link" href="/scrum">
+              <i className="align-middle" data-feather="log-in"></i> <span className="align-middle">ScrumBoard</span>
+            </a>
+          </li>
+
+          <li className="sidebar-item">
             <a className="sidebar-link" href="pages-sign-in.html">
               <i className="align-middle" data-feather="log-in"></i> <span className="align-middle">Claim Managment</span>
             </a>

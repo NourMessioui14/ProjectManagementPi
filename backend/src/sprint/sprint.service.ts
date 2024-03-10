@@ -7,11 +7,25 @@ import { Sprint, SprintDocument } from 'src/models/sprint.models';
 @Injectable()
 export class SprintService {
 
-    constructor(@InjectModel(Sprint.name) private sprintModel: Model<SprintDocument>) {}
+    constructor(
+        @InjectModel(Sprint.name) private sprintModel: Model<SprintDocument>) {}
 
-    Add(body: SprintDto){
-        return this.sprintModel.create(body);
-    }
+
+    //  async Add(body: SprintDto) {
+    //     // Récupérez les tickets à partir des identifiants fournis
+    //      const tickets = await this.ticketModel.find({ _id: { $in: body.tickets } });
+
+    //      // Ajoutez les tickets associés au sprint
+    //      const sprint = await this.sprintModel.create({ ...body, tickets });
+        
+    //      // Retournez le sprint créé
+    //      return sprint;
+    //  }
+
+    
+     Add(body: SprintDto){
+         return this.sprintModel.create(body);
+     }
 
     FindAllsprint(){
         return this.sprintModel.find();

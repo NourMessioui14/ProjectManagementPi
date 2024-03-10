@@ -9,6 +9,7 @@ import TicketList from './components/TicketList';
 import FooterFront from './components/Frontoffice/FooterFront';
 import HomePage from './components/HomePage';
 import SprintList from './components/SprintList';
+import ScrumList from './components/ScrumList';
 
 function App() {
   return (
@@ -27,7 +28,7 @@ function MainContent() {
 
   const showFooter = true;
 
-  const showFrontComponents = !location.pathname.startsWith("/projects") && !location.pathname.startsWith("/ticket") && !location.pathname.startsWith("/sprints");
+  const showFrontComponents = !location.pathname.startsWith("/projects") && !location.pathname.startsWith("/ticket") && !location.pathname.startsWith("/sprints") && !location.pathname.startsWith("/scrum");
 
   return (
     <div className="wrapper">
@@ -46,6 +47,7 @@ function MainContent() {
           <Route path="/projects" element={<ProjectList />} />
           <Route path="/ticket" element={<TicketList />} />
           <Route path="/sprints" element={<SprintList />} />
+          <Route path="/scrum" element={<ScrumList />} />
           <Route path="/footerfront" element={<FooterFront />} />
           
           {/* Ajoutez d'autres routes de back-office si nécessaire */}

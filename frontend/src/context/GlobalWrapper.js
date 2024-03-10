@@ -19,6 +19,7 @@ export default function Wrapper({ children }) {
 
     const toast = useToast();
     
+    
     const FetchProjects = async () => {
         try {
             const res = await axios.get('/api/project');
@@ -75,16 +76,25 @@ export default function Wrapper({ children }) {
   };
   
 
-
-
   const FetchTickets = async () => {
     try {
-        const res = await axios.get('/api/ticket');
-        setTickets(res.data); // Correction de l'utilisation de setTickets
+      const res = await axios.get('/api/ticket');
+      console.log('Tickets API Response:', res.data);
+      setTickets(res.data);
     } catch (err) {
-        console.log(err.response.data);
+      console.error('Error fetching tickets:', err);
     }
-};
+  };
+  
+
+//   const FetchTickets = async () => {
+//     try {
+//         const res = await axios.get('/api/ticket');
+//         setTickets(res.data); // Correction de l'utilisation de setTickets
+//     } catch (err) {
+//         console.log(err.response.data);
+//     }
+// };
 
     
     const AddTicket = (formT, setFormT) => {
