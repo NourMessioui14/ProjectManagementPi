@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Header } from "./Header";
 import Draggable from 'react-draggable';
-
-
 export default function ScrumList() {
 
   const [board, setBoard] = useState([])

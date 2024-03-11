@@ -71,6 +71,7 @@ function RowSprint({ id, sprintname, description, startdate, enddate, tickets })
 
   const toggleTickets = () => {
     setShowTickets(!showTickets);
+    console.log("Show Tickets button clicked");
   };
 
   useEffect(() => {
