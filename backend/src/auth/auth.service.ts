@@ -5,7 +5,7 @@ import { User } from './schemas/user.schema';
 
 import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
-import { SignUpDto } from './dto/signup.dto';
+import { SignUpDto, UserRole } from './dto/signup.dto';
 import { LoginDto } from './dto/login.dto';
 
 @Injectable()
@@ -38,7 +38,7 @@ export class AuthService {
 
 // authService.ts
 
-async login(loginDto: LoginDto): Promise<{ token: string }> {
+async login(loginDto: LoginDto): Promise<{ id: string; token: string; role: string }> {
   const { email, password } = loginDto;
 
   const user = await this.userModel.findOne({ email });
@@ -53,9 +53,9 @@ async login(loginDto: LoginDto): Promise<{ token: string }> {
     throw new UnauthorizedException('Invalid email or password');
   }
 
-  const token = this.jwtService.sign({ id: user._id, role: user.role }); // Include user role in the token
+  const token = this.jwtService.sign({ id: user._id, role: user.role });
 
-  return { token };
+  return { id: user._id, token, role: user.role };
 }
 
 
@@ -63,10 +63,9 @@ async login(loginDto: LoginDto): Promise<{ token: string }> {
   return this.userModel.find();
  }
 
-/*  findOne(id:string){
-  return this.userModel.findOne({_id:id});
-} */
-
+ async findOne(id: string): Promise<User> {
+  return this.userModel.findOne({ _id: id }).exec();
+}
 update(id:string, body:SignUpDto){
   const objectId = new Types.ObjectId(id);
 
@@ -98,6 +97,22 @@ findOneByEmail(email: string) {
   console.log('Searching for user by email:', email);
   return this.userModel.findOne({ email: email });
 }
+
+
+
+async getAdminData(userId: string): Promise<any> {
+  const user = await this.userModel.findById(userId);
+
+  if (!user || user.role !== UserRole.Admin) {
+    throw new UnauthorizedException('Only admin can access this resource');
+  }
+
+  const allUsers = await this.userModel.find();
+
+  return { allUsers };
+}
+
+
 
 
 

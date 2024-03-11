@@ -1,5 +1,11 @@
 import UserList from "./UserList"
 import { Route, Routes } from 'react-router-dom';
+import LogoutButton from "../components/LogoutButton";
+
+
+
+
+
 
 function Dashboard() {
   return (
@@ -9,7 +15,7 @@ function Dashboard() {
         </h1>
 
 <UserList />
-    
+    <LogoutButton />
 		
     
     </>

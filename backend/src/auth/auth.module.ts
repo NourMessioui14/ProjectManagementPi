@@ -8,10 +8,15 @@ import { AuthService } from './auth.service';
 import { JwtStrategy } from './jwt.strategy';
 import { UserSchema } from './schemas/user.schema';
 import { RolesGuard } from 'src/roles/roles.guard';
-
+import { Type } from 'class-transformer';
+import { SessionSerializer } from './utils/SessionSerializer';
+import { LocalStrategy } from './utils/LocalStrategy';
 @Module({
   imports: [
-    PassportModule.register({ defaultStrategy: 'jwt' }),
+    
+    
+    PassportModule.register({ defaultStrategy: 'jwt' , session: true}),
+   
     JwtModule.registerAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => {
@@ -26,7 +31,8 @@ import { RolesGuard } from 'src/roles/roles.guard';
     MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy,RolesGuard],
-  exports: [JwtStrategy, PassportModule],
+  providers: [  AuthService,
+   JwtStrategy,LocalStrategy,SessionSerializer,RolesGuard],
+  exports: [JwtStrategy, PassportModule,AuthService],
 })
 export class AuthModule {}

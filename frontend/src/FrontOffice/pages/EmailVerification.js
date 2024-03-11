@@ -13,71 +13,48 @@ function EmailVerification() {
     setEmail(e.target.value);
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
 
-    if (!email) {
-      toast.error('Please fill in all the fields');
-    } else {
-      axios
-        .get(`http://localhost:3000/auth/${email}`)
-        .then((response) => {
-          const responseData = response.data;
-          const data = JSON.stringify(responseData);
-          const parsedData = JSON.parse(data);
+    try {
+      if (!email) {
+        toast.error('Please fill in all the fields');
+        return;
+      }
 
-          const nameFromResponse = parsedData.name;
-          const emailFromResponse = parsedData.email;
-          const verificationCode = parsedData.Verification;
-          const id = parsedData.id;
+      // Fetch data from your API
+      const response = await axios.get(`http://localhost:5000/auth/${email}`);
+      const responseData = response.data;
 
-          if (email === emailFromResponse) {
-            const obj = {
-              to_name: nameFromResponse,
-              message: verificationCode,
-              from_name: 'Team-Notify',
-            };
+      // Extract data from the response
+      const { name, email: emailFromResponse, Verification, id } = responseData;
 
-            const form = document.createElement('form');
-            form.style.display = 'none';
+      if (email === emailFromResponse) {
+        // Prepare email data
+        const emailData = {
+          to_name: name,
+          message: Verification,
+          from_name: 'Team-Notify',
+        };
 
-            for (const key in obj) {
-              const input = document.createElement('input');
-              input.type = 'hidden';
-              input.name = key;
-              input.value = obj[key];
-              form.appendChild(input);
-            }
+        // Use EmailJS to send the email
+        await emailjs.send('service_t20b3rv', 'template_ou1e3gd', emailData, 'Z14sqvbqFSCBB7Khq');
 
-            document.body.appendChild(form);
-
-            emailjs
-              .sendForm('service_t20b3rv', 'template_ou1e3gd', form, 'SMRWpYFXWqKKIH6IF')
-              .then(() => {
-                toast.warn('We have sent you a 4-Digit Verification Number on your given Email');
-                navigate(`/NewPassword/${id}`);
-              })
-              .catch((error) => {
-                console.error('Error sending email:', error);
-                toast.error('Failed to send email. Please try again later.');
-              });
-          } else {
-            toast.error('This Email Does not Exist');
-          }
-        })
-        .catch((err) => {
-          console.error('Error:', err);
-          toast.error('An error occurred. Please try again later.');
-        });
+        toast.warn('We have sent you a 4-Digit Verification Number on your given Email');
+        navigate(`/NewPassword/${id}`);
+      } else {
+        toast.error('This Email Does not Exist');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      toast.error('An error occurred. Please try again later.');
     }
   };
 
   return (
     <>
       <section className="max-w-screen-xl mx-auto grid grid-cols-1 md:grid-cols-2">
-        <article className="writing-section flex justify-center items-center p-8 text-center">
-        
-        </article>
+        <article className="writing-section flex justify-center items-center p-8 text-center"></article>
         <article className="form-section bg-gray-100 flex justify-center items-center p-4">
           <form action="/" className="bg-white p-6 w-96 rounded-lg" onSubmit={onSubmit}>
             <div className="my-4">

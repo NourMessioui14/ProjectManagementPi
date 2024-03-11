@@ -10,7 +10,7 @@ const UserList = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch('http://localhost:3000/auth/users');
+      const response = await fetch('http://localhost:5000/auth/users');
       if (!response.ok) {
         throw new Error('Error fetching users');
       }

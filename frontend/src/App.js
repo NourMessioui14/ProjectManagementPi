@@ -9,7 +9,8 @@ import Footer from './Backoffice/components/Footer';
 import RegisterForm from './FrontOffice/pages/RegisterForm';
 import UserList from './Backoffice/pages/UserList';
 import EmailVerification from './FrontOffice/pages/EmailVerification';
-
+import NewPassword from './FrontOffice/pages/NewPassword';
+import FourDigitVerification from './FrontOffice/pages/FourDigitVerification';
 function App() {
   return (
     <Router>
@@ -38,8 +39,9 @@ function App() {
         <Route path="/" element={<RegisterForm />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/email" element={<EmailVerification />} />
-        {/* Ajoutez d'autres routes spécifiques au front office ici */}
+        <Route path="/forgetPassword" element={<EmailVerification />} />
+        <Route path='/NewPassword/:id' element={<NewPassword />} />
+        <Route path='/Digitverify' element={<FourDigitVerification/>}/>
       </Routes>
     </Router>
   );
