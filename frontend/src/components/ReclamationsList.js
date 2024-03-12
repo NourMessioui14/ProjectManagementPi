@@ -30,7 +30,7 @@ function ReclamationsList() {
 
   return (
     <div className="App">
-      <Container maxW={'full'} p="4" fontSize={'18px'}>
+      <Container maxW={'full'} p="4" fontSize={'18px'} >
         <Box rounded="lg" boxShadow="base " p="4">
           <Stack direction="row" spacing="4" alignItems="center">
             <Input
@@ -38,6 +38,8 @@ function ReclamationsList() {
               placeholder="Search"
               value={searchTerm}
               onChange={handleSearchChange}
+              bg="white"
+              borderColor="gray.200" 
             />
           </Stack>
         </Box>
