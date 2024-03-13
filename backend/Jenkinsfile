@@ -1,34 +1,24 @@
-pipeline {
+pipeline{
     agent any
-    tools {
-        nodejs '18.17.0'
-    }
     stages {
-        stage('Checkout and Install dependencies') {
-            steps {
+        stage('Install dependencies') {
+            steps{
                 script {
-                    // Check out the repository
-                    checkout scm
-
-                    // Install dependencies inside the 'backend' directory
-                    dir('backend') {
-                        sh 'npm install'
-                    }
+                    sh('npm install')
                 }
             }
         }
-        stage('Unit Test and Build application') {
-            steps {
+        stage('Unit Test') {
+            steps{
                 script {
-                    // Run unit tests (customize as needed)
-                    dir('backend') {
-                        sh 'npm test'
-                    }
-
-                    // Build the application (customize as needed)
-                    dir('backend') {
-                        sh 'npm run build-dev'
-                    }
+                    sh('npm test')
+                }
+            }
+        }
+        stage('Build application') {
+            steps{
+                script {
+                    sh('npm run build-dev')
                 }
             }
         }
