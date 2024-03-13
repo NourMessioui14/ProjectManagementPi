@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Box, Text, Input, InputGroup, InputRightElement, Button } from '@chakra-ui/react';
+import { Box, Text, Input, InputGroup, InputRightElement, Button,AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter } from '@chakra-ui/react';
+
 import { AiOutlinePlus, AiOutlineSearch } from 'react-icons/ai';
 import { GlobalContext } from '../context/GlobalWrapper';
 import DrawerFormSprint from './DrawerFormSprint';
@@ -7,6 +8,22 @@ import './SprintFront.css';
 
 function SprintCard({ id, sprintname, description, startdate, enddate }) {
   const { DeleteSprint, onOpen, FindOneSprint } = useContext(GlobalContext);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+    // Fonction pour ouvrir la boîte de dialogue
+  const openDialog = () => {
+    setIsDialogOpen(true);
+  };
+
+  // Fonction pour fermer la boîte de dialogue
+  const closeDialog = () => {
+    setIsDialogOpen(false);
+  };
+
+  const confirmDelete = () => {
+    DeleteSprint(id);
+    closeDialog();
+  };
 
   // Fonction pour gérer la suppression du sprint
   const handleDelete = () => {
@@ -29,7 +46,34 @@ function SprintCard({ id, sprintname, description, startdate, enddate }) {
           console.log("RowSprint ID:", id);
           FindOneSprint(id);
         }}>update</Button>
-        <Button className="decline" onClick={handleDelete}>Delete</Button>
+        <Button className="decline" onClick={openDialog}>Delete</Button>
+
+
+        
+
+          {/* Boîte de dialogue de confirmation */}
+          <AlertDialog isOpen={isDialogOpen} onClose={closeDialog}>
+            <AlertDialogOverlay>
+              <AlertDialogContent>
+                <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                  Confirm Delete
+                </AlertDialogHeader>
+
+                <AlertDialogBody>
+                  Are you sure you want to delete this sprint? This action cannot be undone.
+                </AlertDialogBody>
+
+                <AlertDialogFooter>
+                  <Button onClick={closeDialog}>
+                    Cancel
+                  </Button>
+                  <Button colorScheme="red" onClick={confirmDelete} ml={3}>
+                    Delete
+                  </Button>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialogOverlay>
+          </AlertDialog>
       </div>
     </Box>
   );
