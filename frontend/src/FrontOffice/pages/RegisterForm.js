@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Alert, AlertIcon,FormErrorMessage } from '@chakra-ui/react';
+import { Alert, AlertIcon } from '@chakra-ui/react';
 import { Select } from '@chakra-ui/react';
-import { FormControl } from '@chakra-ui/react';
 
 const RegisterForm = () => {
   const [loginForm, setLoginForm] = useState({
@@ -18,24 +17,12 @@ const RegisterForm = () => {
     password: '',
     role: '',
   });
-  const resetForm = () => {
-    setRegisterForm({
-      name: '',
-      adresse: '',
-      age: new Date(),
-      email: '',
-      password: '',
-      role: '',
-    });
-  };
 
 
-
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [isSignUpSuccess, setIsSignUpSuccess] = useState(false);
-  const [formErrors, setFormErrors] = useState({});
 
   const onChange = (e) => {
     setRegisterForm({
@@ -44,61 +31,15 @@ const RegisterForm = () => {
       [e.target.name]: e.target.value,
     });
   };
-
-
-  const validateForm = () => {
-    const errors = {};
-  
-    // Validate name
-    if (!registerForm.name) {
-      errors.name = 'Username is required';
-    }
-  
-    // Validate email
-    if (!registerForm.email) {
-      errors.email = 'Email is required';
-    }
-  
-    // Validate password
-    if (!registerForm.password) {
-      errors.password = 'Password is required';
-    }
-  
-    // Validate address
-    if (!registerForm.adresse) {
-      errors.adresse = 'Address is required';
-    }
-  
-    // Validate age
-    if (!registerForm.age) {
-      errors.age = 'Age is required';
-    }
-  
-    // Validate role
-    if (!registerForm.role) {
-      errors.role = 'Role is required';
-    }
-  
-    return errors;
-  };
-  
   
   
   const handleSignUp = async (e) => {
     e.preventDefault();
-  
-    const errors = validateForm();
-  
-    if (Object.keys(errors).length > 0) {
-      setFormErrors(errors);
-      return;
-    }
-      setFormErrors({});
-  
-    const ageAsNumber = parseInt(registerForm.age, 10);
+      const ageAsNumber = parseInt(registerForm.age, 10);
+
   
     try {
-      const response = await fetch('http://localhost:5000/auth/signup', {
+      const response = await fetch('http://localhost:3000/auth/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -116,68 +57,44 @@ const RegisterForm = () => {
         localStorage.setItem('token', responseData.token);
         setIsSignUpSuccess(true);
         setSuccessMessage('You signed up to our application. Now you can sign in.');
-        resetForm();
+      
       }
     } catch (error) {
       console.error('Error during signup request:', error);
     }
   };
-    
+  
   
 
   const handleSignIn = async (e) => {
     e.preventDefault();
-    const errors = validateForm();
-  
-    if (Object.keys(errors).length > 0) {
-      setFormErrors(errors);
-      return;
-    }
-      setFormErrors({});
-  
 
-  
     try {
-      const response = await fetch('http://localhost:5000/auth/login', {
+      const response = await fetch('http://localhost:3000/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(loginForm),
       });
-  
+
       if (!response.ok) {
         const errorData = await response.json();
         console.error('Error during login:', errorData.message);
       } else {
         const responseData = await response.json();
         console.log('Login successful! Received token:', responseData.token);
-        console.log('Role:', responseData.role);
-  
-        // Log pour indiquer que le code atteint ce point
-        console.log('Before redirection');
-  
-        if (responseData.role === 'admin') {
-          try {
-            navigate('/backoffice');
-            console.log('After navigating to /backoffice');
-          } catch (error) {
-            console.error('Error during navigation:', error);
-          }
-        } else {
-          try {
-            navigate('/dashboard');
-            console.log('After navigating to /dashboard');
-          } catch (error) {
-            console.error('Error during navigation:', error);
-          }
-        }
+
+        localStorage.setItem('token', responseData.token);
+
+        navigate('/backoffice');
       }
     } catch (error) {
       console.error('Error during login request:', error);
     }
   };
-  
+
+
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
   };
@@ -212,7 +129,6 @@ const RegisterForm = () => {
           {/* Sign in Form */}
           <form onSubmit={handleSignIn} className="sign-in-form">
             <h2 className="title">Sign in</h2>
-            <FormControl isInvalid={!!formErrors.email}>
             <div className="input-field">
               <i className="fas fa-user"></i>
               <input
@@ -222,10 +138,7 @@ const RegisterForm = () => {
                 value={loginForm.email}
                 onChange={(e) => setLoginForm({ ...loginForm, email: e.target.value })}
               />
-              <FormErrorMessage>{formErrors.email}</FormErrorMessage>
             </div>
-            </FormControl>
-            <FormControl isInvalid={!!formErrors.password}>
             <div className="input-field">
               <i className="fas fa-lock"></i>
               <input
@@ -235,10 +148,7 @@ const RegisterForm = () => {
                 value={loginForm.password}
                 onChange={(e) => setLoginForm({ ...loginForm, password: e.target.value })}
               />
-              <FormErrorMessage>{formErrors.password}</FormErrorMessage>
             </div>
-            </FormControl>
-
             <input type="submit" value="Login" className="btn solid" />
             <p className="social-text">Or Sign in with social platforms</p>
             <div className="social-media">
@@ -261,8 +171,6 @@ const RegisterForm = () => {
 {/* Sign up Form */}
 <form onSubmit={handleSignUp} className="sign-up-form">
   <h2 className="title">Sign up</h2>
-  <FormControl isInvalid={!!formErrors.name}>
-
   <div className="input-field">
     <i className="fas fa-user"></i>
     <input
@@ -272,12 +180,7 @@ const RegisterForm = () => {
       value={registerForm.name}
       onChange={onChange}
     />
-      <FormErrorMessage>{formErrors.name}</FormErrorMessage>
-
   </div>
-  </FormControl>
-  <FormControl isInvalid={!!formErrors.email}>
-
   <div className="input-field">
     <i className="fas fa-envelope"></i>
     <input
@@ -287,11 +190,7 @@ const RegisterForm = () => {
       value={registerForm.email}
       onChange={onChange}
     />
-   <FormErrorMessage>{formErrors.email}</FormErrorMessage>
-
   </div>
-  </FormControl>
-  <FormControl isInvalid={!!formErrors.password}>
   <div className="input-field">
     <i className="fas fa-lock"></i>
     <input
@@ -301,11 +200,7 @@ const RegisterForm = () => {
       value={registerForm.password}
       onChange={onChange}
     />
-   <FormErrorMessage>{formErrors.password}</FormErrorMessage>
-
   </div>
-  </FormControl>
-  <FormControl isInvalid={!!formErrors.adresse}>
   <div className="input-field">
     <i className="fas fa-map-marker-alt"></i>
     <input
@@ -315,10 +210,8 @@ const RegisterForm = () => {
       value={registerForm.adresse}
       onChange={onChange}
     />
-    <FormErrorMessage>{formErrors.adresse}</FormErrorMessage>
   </div>
-  </FormControl>
-  <FormControl isInvalid={!!formErrors.age}>
+  
 <div className="input-field" style={{ display: 'flex', alignItems: 'center' }}>
   <i className="fas fa-calendar"></i>
   <input
@@ -329,10 +222,8 @@ const RegisterForm = () => {
     onChange={(e) => setRegisterForm({ ...registerForm, age: parseInt(e.target.value, 10) })}
     style={{ marginLeft: '8px' }}
   />
-  <FormErrorMessage>{formErrors.age}</FormErrorMessage>
 </div>
-</FormControl>
-<FormControl isInvalid={!!formErrors.role}>
+
 <div className="input-field">
   <i className="fas fa-cogs"></i>
   <Select
@@ -346,9 +237,7 @@ const RegisterForm = () => {
     <option value="product_owner">Product Owner</option>
     <option value="simple_user">Simple User</option>
   </Select>
-  <FormErrorMessage>{formErrors.role}</FormErrorMessage>
 </div>
-</FormControl>
 
   {/* Ajoutez d'autres champs au besoin */}
   <input type="submit" className="btn" value="Sign up" />
@@ -412,4 +301,3 @@ const RegisterForm = () => {
 
 
 export default RegisterForm;
-

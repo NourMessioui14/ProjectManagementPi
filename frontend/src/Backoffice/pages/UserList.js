@@ -10,7 +10,7 @@ const UserList = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch('http://localhost:5001/auth/users');
+      const response = await fetch('http://localhost:5000/auth/users');
       if (!response.ok) {
         throw new Error('Error fetching users');
       }
@@ -36,6 +36,7 @@ const UserList = () => {
         throw new Error('Error deleting user');
       }
 
+      // If deletion is successful, refetch the updated user list
       await fetchUsers();
     } catch (error) {
       console.error('Error deleting user:', error.message);
