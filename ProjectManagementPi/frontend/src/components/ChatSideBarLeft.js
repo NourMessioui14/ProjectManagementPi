@@ -9,11 +9,11 @@ const ChatSideBarLeft = () => {
   }));
 
   return (
-    <div style={{  height: '100vh', width: '250px', padding: '15px', backgroundColor: '#e74c3c', borderRadius: '5px', overflowY: 'auto', color: '#fff' }}>
+    <div className='py-2' style={{  height: '100vh', width: '250px', padding: '15px', backgroundColor: '#e74c3c', borderRadius: '5px', overflowY: 'auto', color: '#fff' }}>
       <h3 style={{ textAlign: 'center', marginBottom: '15px', fontSize: '18px' }}>
         My Messages
       </h3>
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <div className='mb-2 ' style={{ display: 'flex', flexDirection: 'column' }}>
         {randomMessages.map(message => (
           <div
             key={message.id}

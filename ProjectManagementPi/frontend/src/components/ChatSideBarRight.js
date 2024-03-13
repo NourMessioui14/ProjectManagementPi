@@ -29,12 +29,12 @@ const ChatSideBarRight = () => {
       <input
         type="text"
         placeholder="Search users..."
-        style={{ width: '100%', padding: '8px', marginBottom: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
+        style={{ width: '100%', padding: '8px', marginBottom: '10px', borderRadius: '5px', border: '1px solid #ccc' , color: "black"}}
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
-      <div style={{ overflowY: 'auto', maxHeight: 'calc(100vh - 150px)' }}>
-        {filteredUsers.map(user => (
+      <div  className='p-2' style={{ overflowY: 'auto', maxHeight: 'calc(100vh - 150px)' }}>
+        {filteredUsers?.map(user => (
           <div
             key={user.id}
             style={{
@@ -50,10 +50,10 @@ const ChatSideBarRight = () => {
             }}
           >
             <div style={{ fontSize: '14px', marginBottom: '5px' }}>
-              {user.name}
+              {user?.name || ""}
             </div>
             <div style={{ fontSize: '12px' }}>
-              {user.online ? 'Online' : 'Offline'}
+              {user?.online ? 'Online' : 'Offline'}
             </div>
           </div>
         ))}
