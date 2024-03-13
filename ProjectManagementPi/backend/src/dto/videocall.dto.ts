@@ -1,4 +1,4 @@
-import { IsDateString, IsNotEmpty, IsNumber } from "class-validator";
+import { IsNotEmpty, IsNumber, IsString, ArrayNotEmpty, IsArray, IsMongoId } from "class-validator";
 
 export class VideoCallDto {
     @IsNotEmpty()
@@ -13,13 +13,20 @@ export class VideoCallDto {
     @IsNotEmpty()
     subject: string;
 
-    @IsDateString()
-    date: string;
+    // You can uncomment these lines if you want to validate date and time strings
+    // @IsDateString()
+    // date: string;
 
-    @IsDateString()
-    time: string;
+    // @IsDateString()
+    // time: string;
 
     @IsNotEmpty()
     @IsNumber()
     estimatedDurationMinutes: number;
+
+    @IsNotEmpty()
+    @IsArray()
+    @ArrayNotEmpty()
+    @IsMongoId({ each: true }) // Validate that each element in the array is a valid MongoDB ObjectId
+    invitedUsers: string[]; // Array of user IDs invited to the video call
 }

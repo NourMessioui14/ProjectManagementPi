@@ -5,7 +5,7 @@ const styles = {
   chatRoomBody: {
     display: 'flex',
     flexDirection: 'column',
-    maxHeight: '400px',
+    maxHeight: 550,
     overflowY: 'auto',
   },
   message: {

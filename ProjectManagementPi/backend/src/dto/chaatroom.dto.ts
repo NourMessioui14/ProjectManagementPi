@@ -1,4 +1,4 @@
-import { IsDateString, IsNotEmpty } from "class-validator";
+import { IsNotEmpty, IsArray, IsMongoId } from "class-validator";
 
 export class ChatroomDto {
     @IsNotEmpty()
@@ -13,6 +13,7 @@ export class ChatroomDto {
     @IsNotEmpty()
     chatroomName: string;
 
-    @IsDateString()
-    creationDate: string;
+    @IsArray()
+    @IsMongoId({ each: true }) // Validate that each element in the array is a valid MongoDB ObjectId
+    users: string[]; // Array of user IDs who are part of the chatroom
 }

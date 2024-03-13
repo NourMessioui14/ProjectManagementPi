@@ -12,16 +12,18 @@ const ChatPage = () => {
   const currentMessages = sampleMessages; // Replace with actual messages for the active room
 
   return (
-    <div className="chat-page" style={{ display: 'flex', flexDirection: 'row', height: '100vh' }}>
-      <div className="chat-page-left" style={{ flex: '0 0 20%', backgroundColor: '#f0f0f0' }}>
+    <div className="chat-page" style={{ display: 'flex', flexDirection: 'row', height: '100vh', overflow: 'hidden' }}>
+      <div className="chat-page-left" style={{ width: '250px', backgroundColor: '#f0f0f0', position: 'fixed', top: 0, bottom: 0 }}>
         <ChatSideBarLeft />
       </div>
-      <div className="chat-page-center" style={{ flex: '0 0 60%', display: 'flex', flexDirection: 'column', width: '100%' }}>
-        <ChatroomHeader roomName={currentRoom.name} />
+      <div className="chat-page-center" style={{ marginLeft: '250px', flex: '1', display: 'flex', flexDirection: 'column', width: '100%', overflowY: 'auto' }}>
+        <div className="chatroom-header" style={{ backgroundColor: '#f0f0f0', position: 'fixed', top: 0, width: '100%' }}>
+          <ChatroomHeader roomName={currentRoom.name} />
+        </div>
         <ChatroomBody messages={currentMessages} />
-        <InputBar />
+        <InputBar style={{ position: 'fixed', bottom: 0, width: '100%' }} />
       </div>
-      <div className="chat-page-right" style={{ flex: '0 0 20%', padding: '15px', backgroundColor: '#f0f0f0' }}>
+      <div className="chat-page-right" style={{ width: '250px', backgroundColor: '#f0f0f0', position: 'fixed', top: 0, bottom: 0, right: 0 }}>
         <ChatSideBarRight />
       </div>
     </div>

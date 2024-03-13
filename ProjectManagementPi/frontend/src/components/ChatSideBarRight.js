@@ -22,8 +22,8 @@ const ChatSideBarRight = () => {
   );
 
   return (
-    <div className="sidebar-right" style={{ width: '200px', padding: '15px' }}>
-      <h3 style={{ textAlign: 'center', marginBottom: '15px', fontSize: '16px', color: '#333' }}>
+    <div className="sidebar-right" style={{ width: '250px', padding: '15px', backgroundColor: '#3498db', borderRadius: '5px', color: '#fff', height: '100vh' }}>
+      <h3 style={{ textAlign: 'center', marginBottom: '15px', fontSize: '18px' }}>
         Users
       </h3>
       <input
@@ -33,7 +33,7 @@ const ChatSideBarRight = () => {
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
-      <div style={{ overflowY: 'auto', maxHeight: 'calc(100vh - 80px)' }}>
+      <div style={{ overflowY: 'auto', maxHeight: 'calc(100vh - 150px)' }}>
         {filteredUsers.map(user => (
           <div
             key={user.id}
@@ -44,14 +44,15 @@ const ChatSideBarRight = () => {
               borderRadius: '5px',
               cursor: 'pointer',
               transition: 'background-color 0.3s',
-              backgroundColor: '#fff',
+              backgroundColor: '#2ecc71', // Green color for online users
               fontWeight: user.online ? 'bold' : 'normal',
+              color: '#fff',
             }}
           >
-            <div style={{ fontSize: '14px', marginBottom: '5px', color: '#333' }}>
+            <div style={{ fontSize: '14px', marginBottom: '5px' }}>
               {user.name}
             </div>
-            <div style={{ fontSize: '12px', color: '#666' }}>
+            <div style={{ fontSize: '12px' }}>
               {user.online ? 'Online' : 'Offline'}
             </div>
           </div>

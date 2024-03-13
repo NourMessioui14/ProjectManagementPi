@@ -1,4 +1,4 @@
-import { IsDateString, IsNotEmpty } from "class-validator";
+import { IsDateString, IsNotEmpty, IsMongoId } from "class-validator";
 
 export class MessageDto {
     @IsNotEmpty()
@@ -13,9 +13,11 @@ export class MessageDto {
     @IsNotEmpty()
     messageText: string;
 
-    @IsNotEmpty()
-    timeId: string;
+    // If you want to keep timeId property
+    // @IsNotEmpty()
+    // timeId: string;
 
     @IsNotEmpty()
-    senderId: string;
+    @IsMongoId() // Validate that senderId is a valid MongoDB ObjectId
+    senderId: string; // Assuming senderId is a User's ObjectId
 }

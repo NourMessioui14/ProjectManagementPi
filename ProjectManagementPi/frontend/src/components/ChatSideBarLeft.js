@@ -9,9 +9,9 @@ const ChatSideBarLeft = () => {
   }));
 
   return (
-    <div style={{ height: 'calc(100vh - 80px)', width: '250px', padding: '15px', backgroundColor: '#f0f0f0', borderRadius: '5px', overflowY: 'auto' }}>
-      <h3 style={{ textAlign: 'center', marginBottom: '15px', fontSize: '18px', color: '#333' }}>
-        Random Messages
+    <div style={{  height: '100vh', width: '250px', padding: '15px', backgroundColor: '#e74c3c', borderRadius: '5px', overflowY: 'auto', color: '#fff' }}>
+      <h3 style={{ textAlign: 'center', marginBottom: '15px', fontSize: '18px' }}>
+        My Messages
       </h3>
       <div style={{ display: 'flex', flexDirection: 'column' }}>
         {randomMessages.map(message => (
@@ -24,14 +24,14 @@ const ChatSideBarLeft = () => {
               borderRadius: '5px',
               cursor: 'pointer',
               transition: 'background-color 0.3s',
-              backgroundColor: '#fff',
+              backgroundColor: '#3498db', // Blue color for messages
             }}
             title={`Sent by: ${message.sender}`}
           >
-            <div style={{ fontSize: '14px', marginBottom: '5px', color: '#333' }}>
+            <div style={{ fontSize: '14px', marginBottom: '5px' }}>
               {message.content}
             </div>
-            <div style={{ fontSize: '12px', color: '#666' }}>
+            <div style={{ fontSize: '12px' }}>
               {message.sender}
             </div>
           </div>

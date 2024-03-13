@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { Document } from 'mongoose';
+import { Document, Schema as MongooseSchema } from 'mongoose';
+import { User } from './user.models'; // Adjust the import based on your actual file structure
 
 export type VideoCallDocument = VideoCall & Document;
 
@@ -17,11 +18,14 @@ export class VideoCall {
     @Prop({ required: true })
     subject: string;
 
-    @Prop({ required: true })
-    date: Date;
+    @Prop({ type: [{ type: MongooseSchema.Types.ObjectId, ref: 'User' }] })
+    invitedUsers: User[]; // Array of users invited to the video call
 
-    @Prop({ required: true })
-    time: Date;
+    // @Prop({ required: true })
+    // date: Date;
+
+    // @Prop({ required: true })
+    // time: Date;
 
     @Prop({ required: true })
     estimatedDurationMinutes: number;
