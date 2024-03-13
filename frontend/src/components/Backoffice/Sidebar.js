@@ -29,6 +29,12 @@ function Sidebar() {
             </a>
           </li>
 
+          {/* <li className="sidebar-item">
+            <a className="sidebar-link" href="/SprintFront">
+              <i className="align-middle" data-feather="user"></i> <span className="align-middle">Sprint Front</span>
+            </a>
+          </li> */}
+
           <li className="sidebar-item">
             <a className="sidebar-link" href="pages-sign-in.html">
               <i className="align-middle" data-feather="log-in"></i> <span className="align-middle">Claim Managment</span>

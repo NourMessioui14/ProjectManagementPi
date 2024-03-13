@@ -19,7 +19,7 @@ import RowSprint from './RowSprint';
 import DrawerFormSprint from './DrawerFormSprint';
 
 function SprintList({}) {
-  const { FetchSprints, sprints, isOpen, onOpen, onClose } = useContext(GlobalContext);
+  const { FetchSprints, sprints, isOpen, onOpen } = useContext(GlobalContext);
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
