@@ -1,8 +1,8 @@
 pipeline {
     agent any
 
-    tools {
-        nodejs 'NodeJs'
+     tools {
+        NodeJS 'NodeJs'
     }
 
     stages {
