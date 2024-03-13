@@ -1,27 +1,21 @@
-<<<<<<< HEAD
-pipeline{
+pipeline {
     agent any
-    tools{
+    tools {
         nodejs '12.22.9'
     }
     stages {
         stage('Install dependencies') {
-            steps{
+            steps {
                 script {
                     try {
-                        sh('npm install')
+                        sh 'npm install'
                     } catch (err) {
                         currentBuild.result = 'FAILURE'
                         error("Failed to install dependencies: ${err}")
-=======
-pipeline {
-    agent any
-
-    tools {
-        nodejs 'NodeJs'
-    }
-
-    stages {
+                    }
+                }
+            }
+        }
         stage('Checkout and Install dependencies') {
             steps {
                 script {
@@ -31,12 +25,10 @@ pipeline {
                     // Install dependencies inside the 'backend' directory
                     dir('backend') {
                         sh 'npm install'
->>>>>>> c5e9821c569bc13e6f185a1e032070e578dc3190
                     }
                 }
             }
         }
-<<<<<<< HEAD
         stage('Unit Test') {
             steps {
                 script {
@@ -44,13 +36,7 @@ pipeline {
                 }
             }
         }
-        stage('Build application') {
-            steps {
-                script {
-                    echo 'This is a testing stage for building the application.'
-=======
-
-        stage('Unit Test') {
+        stage('Run Unit Tests') {
             steps {
                 script {
                     // Run unit tests (customize as needed)
@@ -60,23 +46,16 @@ pipeline {
                 }
             }
         }
-
         stage('Build application') {
             steps {
                 script {
+                    echo 'This is a testing stage for building the application.'
                     // Build the application (customize as needed)
                     dir('backend') {
                         sh 'npm run build-dev'
                     }
->>>>>>> c5e9821c569bc13e6f185a1e032070e578dc3190
                 }
             }
         }
     }
-<<<<<<< HEAD
 }
-=======
-
-   
-}
->>>>>>> c5e9821c569bc13e6f185a1e032070e578dc3190
