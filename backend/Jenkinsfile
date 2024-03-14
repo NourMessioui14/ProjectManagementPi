@@ -21,8 +21,11 @@ pipeline {
         
         stage('Unit Test') {
             steps {
-                dir('backend/test') {
-                    sh 'npm test'
+                script {
+                    // Run unit tests (customize as needed)
+                    dir('backend') {
+                        sh 'npm test'
+                    }
                 }
             }
         }
