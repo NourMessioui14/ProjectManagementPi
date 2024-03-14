@@ -18,6 +18,14 @@ pipeline {
                 }
             }
         }
+
+        stage('Build application') {
+            steps {
+                script {
+                    sh('npm run build-dev')
+                }
+            }
+        }
         
         stage('Unit Test') {
             steps {
@@ -30,12 +38,6 @@ pipeline {
             }
         }
         
-        stage('Build application') {
-            steps {
-                script {
-                    sh('npm run build-dev')
-                }
-            }
-        }
+        
     }
 }
