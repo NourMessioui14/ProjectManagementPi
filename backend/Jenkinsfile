@@ -1,7 +1,7 @@
 pipeline {
     agent any
     tools {
-        node 'nodejs'
+        NodeJS 'nodejs'
     }
     stages {
         stage('Checkout and Install dependencies') {
