@@ -20,12 +20,12 @@ stage('Install dependencies') {
 }
 
 stage('Unit Test') {
-steps{
-script {
-sh('npm test')
-}
-}
-}
+            steps {
+                dir('backend') {
+                    sh 'npm test'
+                }
+            }
+        }
 stage('Build application') {
 steps{
 script {
