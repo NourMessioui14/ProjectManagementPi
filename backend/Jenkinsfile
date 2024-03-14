@@ -1,7 +1,7 @@
 pipeline {
     agent any
     tools {
-        nodejs "NodeJs"
+        nodejs "NodeJS"
     }
     stages {
         stage('Install dependencies') {
@@ -9,7 +9,6 @@ pipeline {
                 script {
                     try {
                         dir('backend') {
-                            // Installer les dépendances
                             sh('npm install')
                         }
                     } catch (err) {
@@ -20,22 +19,24 @@ pipeline {
             }
         }
 
+        
         stage('Unit Test') {
             steps {
                 script {
-                    // Run unit tests (customize as needed)
-                    echo 'This is a testing stage for unit tests.'
+                    dir('backend') {
+                        sh 'npm test'
+                    }
                 }
             }
         }
-
+        
         stage('Build application') {
             steps {
                 script {
-                    // Build the application (customize as needed)
-                    echo 'This is a testing stage for building the application.'
+                    sh('npm run build-dev')
                 }
             }
         }
+        
     }
 }
