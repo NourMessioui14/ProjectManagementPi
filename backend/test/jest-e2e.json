@@ -1,6 +1,6 @@
 {
   "moduleFileExtensions": ["js", "json", "ts"],
-  "rootDir": "./backend/test",
+  "rootDir": "../backend/test",
   "testEnvironment": "node",
   "testRegex": "app.e2e-spec.ts$",
   "transform": {
