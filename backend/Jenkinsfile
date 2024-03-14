@@ -4,6 +4,14 @@ pipeline{
         nodejs 'NodeJs'
     }
     stages {
+        stage('Install dependencies') {
+steps{
+script {
+sh('npm install')
+}
+}
+}
+
        
         stage('Unit Test') {
             steps {
