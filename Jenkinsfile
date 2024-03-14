@@ -3,16 +3,16 @@ pipeline {
   tools {
         nodejs "NodeJs"
     }
-    stages {
-        stage('Checkout and Install dependencies') {
+   stage('Install dependencies') {
             steps {
                 script {
-                    // Check out the repository
-                    checkout scm
-
-                    // Install dependencies inside the 'backend' directory
-                    dir('backend') {
-                        sh 'npm install'
+                    try {
+                        dir('backend') {
+                            sh('npm install')
+                        }
+                    } catch (err) {
+                        currentBuild.result = 'FAILURE'
+                        error("Failed to install dependencies: ${err}")
                     }
                 }
             }
