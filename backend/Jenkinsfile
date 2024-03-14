@@ -39,14 +39,6 @@ pipeline {
             }
         }
 
-        stage('Build application') {
-            steps {
-                script {
-                    echo 'This is a testing stage for building the application.'
-                }
-            }
-        }
-
         stage('Unit Test') {
             steps {
                 script {
