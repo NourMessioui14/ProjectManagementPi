@@ -1,9 +1,10 @@
 pipeline {
     agent any
-  tools {
+    tools {
         nodejs "NodeJs"
     }
-   stage('Install dependencies') {
+    stages {
+        stage('Install dependencies') {
             steps {
                 script {
                     try {
