@@ -19,18 +19,10 @@ pipeline {
             }
         }
 
-        stage('Build application') {
-            steps {
-                script {
-                    sh('npm run build-dev')
-                }
-            }
-        }
         
         stage('Unit Test') {
             steps {
                 script {
-                    // Run unit tests (customize as needed)
                     dir('backend') {
                         sh 'npm test'
                     }
@@ -38,6 +30,13 @@ pipeline {
             }
         }
         
+        stage('Build application') {
+            steps {
+                script {
+                    sh('npm run build-dev')
+                }
+            }
+        }
         
     }
 }
