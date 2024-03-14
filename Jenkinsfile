@@ -8,12 +8,11 @@ pipeline {
             steps {
                 script {
                     try {
-                        // Nettoyer le cache npm
-                        sh 'npm cache clean --force'
-
-                        // Installer les dépendances
                         dir('backend') {
-                            sh 'npm install'
+                            // Supprimer le dossier node_modules
+                            sh('rm -rf node_modules')
+                            // Installer les dépendances
+                            sh('npm install')
                         }
                     } catch (err) {
                         currentBuild.result = 'FAILURE'
@@ -26,8 +25,8 @@ pipeline {
         stage('Unit Test') {
             steps {
                 script {
-                    // Exécuter les tests unitaires (personnaliser si nécessaire)
-                    echo 'Ceci est une étape de test unitaire.'
+                    // Run unit tests (customize as needed)
+                    echo 'This is a testing stage for unit tests.'
                 }
             }
         }
@@ -35,8 +34,8 @@ pipeline {
         stage('Build application') {
             steps {
                 script {
-                    // Construire l'application (personnaliser si nécessaire)
-                    echo 'Ceci est une étape de construction de l\'application.'
+                    // Build the application (customize as needed)
+                    echo 'This is a testing stage for building the application.'
                 }
             }
         }
