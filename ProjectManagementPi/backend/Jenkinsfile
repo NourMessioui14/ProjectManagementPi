@@ -8,7 +8,7 @@ pipeline {
             steps {
                 script {
                     try {
-                        dir('backend') {
+                        dir('ProjectManagementPi/backend/package.json') {
                             sh('npm install')
                         }
                     } catch (err) {
