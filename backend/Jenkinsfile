@@ -1,3 +1,4 @@
+
 pipeline {
     agent any
 
@@ -6,15 +7,16 @@ pipeline {
     }
 
     stages {
-        stage('Checkout and Install dependencies') {
+        stage('Install dependencies') {
             steps {
                 script {
-                    // Check out the repository
-                    checkout scm
-
-                    // Install dependencies inside the 'backend' directory
-                    dir('backend') {
-                        sh 'npm install'
+                    try {
+                        dir('ProjectManagement_main') {
+                            sh 'npm install'
+                        }
+                    } catch (err) {
+                        currentBuild.result = 'FAILURE'
+                        error("Failed to install dependencies: ${err}")
                     }
                 }
             }
@@ -23,32 +25,12 @@ pipeline {
         stage('Unit Test') {
             steps {
                 script {
-<<<<<<< HEAD
                     echo 'Running unit tests...'
-=======
-                    // Run unit tests (customize as needed)
-                    dir('backend') {
-                        sh 'npm test'
-                    }
->>>>>>> 995997e8f9654ade682cd17c6d7d0057b6894b3f
                 }
             }
         }
 
-        stage('Build application') {
-            steps {
-                script {
-<<<<<<< HEAD
-                    echo 'Building the application...'
-=======
-                    // Build the application (customize as needed)
-                    dir('backend') {
-                        sh 'npm run build-dev'
-                    }
->>>>>>> 995997e8f9654ade682cd17c6d7d0057b6894b3f
-                }
-            }
-        }
+        
     }
 
    
