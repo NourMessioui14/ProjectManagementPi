@@ -8,9 +8,12 @@ pipeline {
             steps {
                 script {
                     try {
-                        
+                        dir('backend') {
+                            // Supprimer le dossier node_modules
+                            sh('rm -rf node_modules')
+                            // Installer les dépendances
                             sh('npm install')
-                        
+                        }
                     } catch (err) {
                         currentBuild.result = 'FAILURE'
                         error("Failed to install dependencies: ${err}")
@@ -19,7 +22,6 @@ pipeline {
             }
         }
 
-        
         stage('Unit Test') {
             steps {
                 script {
@@ -29,8 +31,6 @@ pipeline {
             }
         }
 
-
-        
         stage('Build application') {
             steps {
                 script {
@@ -39,8 +39,5 @@ pipeline {
                 }
             }
         }
-
-
-        
     }
 }
