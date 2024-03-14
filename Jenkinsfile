@@ -1,7 +1,7 @@
 pipeline {
     agent any
-    tools {
-        nodejs '20.9.0'
+    environment {
+        nodejs = '20.9.0'
     }
     stages {
         stage('Checkout and Install dependencies') {
