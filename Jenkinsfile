@@ -1,46 +1,29 @@
 pipeline {
     agent any
-
     tools {
-        nodejs 'NodeJs'
+        nodejs 'Nom_de_votre_instalation_NodeJS'
     }
-
     stages {
         stage('Install dependencies') {
             steps {
                 script {
-                    try {
-                        dir('ProjectManagement_main') {
-                            sh 'npm install'
-                        }
-                    } catch (err) {
-                        currentBuild.result = 'FAILURE'
-                        error("Failed to install dependencies: ${err}")
-                    }
+                    sh 'npm install'
                 }
             }
         }
-
         stage('Unit Test') {
             steps {
                 script {
-                    echo 'Running unit tests...'
-                    // Ajoutez votre commande de test unitaire ici
-                    // Exemple: sh 'npm test'
+                    sh 'npm test'
                 }
             }
         }
-
         stage('Build application') {
             steps {
                 script {
-                    echo 'Building the application...'
-                    // Ajoutez votre commande de construction ici
-                    // Exemple: sh 'mvn clean install'
+                    sh 'npm run build-dev'
                 }
             }
         }
     }
-
-   
 }
