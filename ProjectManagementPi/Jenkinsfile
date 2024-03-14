@@ -10,7 +10,7 @@ pipeline {
                     try {
                         dir('backend') {
                             // Supprimer le dossier node_modules
-                            sh('rm -rf node_modules')
+                            //sh('rm -rf node_modules')
                             // Installer les dépendances
                             sh('npm install')
                         }
