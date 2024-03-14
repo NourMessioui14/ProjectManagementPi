@@ -29,12 +29,14 @@ pipeline {
             }
         }
 
-     stage('SonarQube Analysis') {
-    steps{
+
+
+        stage('SonarQube Analysis') {
+    steps {
         script {
             def scannerHome = tool 'scanner'
             withSonarQubeEnv {
-                sh "${scannerHome}/bin/sonar-scanner"
+                sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=sprintmanagement"
             }
         }
     }
