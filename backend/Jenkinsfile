@@ -55,7 +55,9 @@ pipeline {
         stage('Building images (node and mongo)') {
 steps{
 script {
+    dir('backend/docker-compose.yml'){
 sh('docker-compose build')
+    }
 }
 }
 }
