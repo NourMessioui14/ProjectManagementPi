@@ -27,7 +27,7 @@ pipeline {
             steps {
                 script {
                     // Exécuter les tests unitaires (personnaliser si nécessaire)
-                    echo 'Ceci est une étape de test pour les tests unitaires.'
+                    echo 'Ceci est une étape de test unitaire.'
                 }
             }
         }
@@ -36,7 +36,7 @@ pipeline {
             steps {
                 script {
                     // Construire l'application (personnaliser si nécessaire)
-                    echo 'Ceci est une étape de test pour la construction de l'application.'
+                    echo 'Ceci est une étape de construction de l\'application.'
                 }
             }
         }
