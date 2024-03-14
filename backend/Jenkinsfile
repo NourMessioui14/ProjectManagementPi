@@ -1,13 +1,11 @@
 pipeline {
     agent any
-    tools {
-        nodejs '18.13.0'
-    }
     stages {
         stage('Install dependencies') {
             steps {
                 script {
                     try {
+                        tool name: 'nodejs', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
                         sh('npm install')
                     } catch (err) {
                         currentBuild.result = 'FAILURE'
@@ -25,6 +23,7 @@ pipeline {
 
                     // Install dependencies inside the 'backend' directory
                     dir('backend') {
+                        tool name: 'nodejs', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
                         sh 'npm install'
                     }
                 }
