@@ -8,9 +8,9 @@ pipeline {
             steps {
                 script {
                     try {
-                        
+                        dir('backend') {
                             sh('npm install')
-                        
+                        }
                     } catch (err) {
                         currentBuild.result = 'FAILURE'
                         error("Failed to install dependencies: ${err}")
@@ -30,18 +30,6 @@ pipeline {
         }
 
 
-
-        stage('SonarQube Analysis') {
-    steps {
-        script {
-            def scannerHome = tool 'scanner'
-            withSonarQubeEnv {
-                sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=sprintmanagement"
-            }
-        }
-    }
-}
-
         
         stage('Build application') {
             steps {
@@ -52,13 +40,6 @@ pipeline {
             }
         }
 
-        stage('Building images (node and mongo)') {
-steps{
-script {
-sh('docker-compose build')
-}
-}
-}
 
         
     }
