@@ -9,6 +9,8 @@ pipeline {
                 script {
                     try {
                         dir('backend') {
+                            // Augmenter la limite des écouteurs pour éviter les avertissements de fuite de mémoire
+                            process.setMaxListeners(0);
                             sh('npm install')
                         }
                     } catch (err) {
