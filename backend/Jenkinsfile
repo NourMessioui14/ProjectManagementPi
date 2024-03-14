@@ -1,8 +1,10 @@
 pipeline {
     agent any
+
     tools {
-        NodeJS '18.13.0'
+        nodejs 'NodeJs'
     }
+
     stages {
         stage('Checkout and Install dependencies') {
             steps {
@@ -40,4 +42,10 @@ pipeline {
             }
         }
     }
+
+   
 }
+
+
+
+
