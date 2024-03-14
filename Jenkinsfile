@@ -1,18 +1,21 @@
 pipeline {
     agent any
-    environment {
-        nodejs = '20.9.0'
+
+    tools {
+        nodejs 'NodeJs'
     }
+
     stages {
-        stage('Checkout and Install dependencies') {
+        stage('Install dependencies') {
             steps {
                 script {
-                    // Check out the repository
-                    checkout scm
-
-                    // Install dependencies inside the 'backend' directory
-                    dir('backend') {
-                        sh 'npm install'
+                    try {
+                        dir('ProjectManagement_main') {
+                            sh 'npm install'
+                        }
+                    } catch (err) {
+                        currentBuild.result = 'FAILURE'
+                        error("Failed to install dependencies: ${err}")
                     }
                 }
             }
@@ -21,8 +24,9 @@ pipeline {
         stage('Unit Test') {
             steps {
                 script {
-                    // Run unit tests (customize as needed)
-                    echo 'This is a testing stage for unit tests.'
+                    echo 'Running unit tests...'
+                    // Ajoutez votre commande de test unitaire ici
+                    // Exemple: sh 'npm test'
                 }
             }
         }
@@ -30,10 +34,13 @@ pipeline {
         stage('Build application') {
             steps {
                 script {
-                    // Build the application (customize as needed)
-                    echo 'This is a testing stage for building the application.'
+                    echo 'Building the application...'
+                    // Ajoutez votre commande de construction ici
+                    // Exemple: sh 'mvn clean install'
                 }
             }
         }
     }
+
+   
 }
