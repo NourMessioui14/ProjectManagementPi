@@ -1,37 +1,38 @@
-pipeline{
-agent any
+pipeline {
+    agent any
     tools {
         nodejs "NodeJS"
     }
-stages {
-stage('Install dependencies') {
-    steps {
-        script {
-            try {
-                dir('backend') {
-                    sh('npm install')
+    stages {
+        stage('Install dependencies') {
+            steps {
+                script {
+                    try {
+                        dir('backend') {
+                            sh('npm install')
+                        }
+                    } catch (err) {
+                        currentBuild.result = 'FAILURE'
+                        error("Failed to install dependencies: ${err}")
+                    }
                 }
-            } catch (err) {
-                currentBuild.result = 'FAILURE'
-                error("Failed to install dependencies: ${err}")
             }
         }
-    }
-}
-
-stage('Unit Test') {
+        
+        stage('Unit Test') {
             steps {
                 dir('backend') {
                     sh 'npm test'
                 }
             }
         }
-stage('Build application') {
-steps{
-script {
-sh('npm run build-dev')
-}
-}
-}
-}
+        
+        stage('Build application') {
+            steps {
+                script {
+                    sh('npm run build-dev')
+                }
+            }
+        }
+    }
 }
