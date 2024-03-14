@@ -21,7 +21,7 @@ pipeline {
         
         stage('Unit Test') {
             steps {
-                dir('backend/test') {
+                dir('backend') {
                     sh 'npm test'
                 }
             }
