@@ -24,7 +24,7 @@ pipeline{
         stage('Building images (node and mongo)') {
                 steps{
                  script {
-                 sh('Docker-compose build')
+                 sh('docker-compose build')
                   }
                      }
                       }
