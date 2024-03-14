@@ -1,10 +1,9 @@
-pipeline{
+pipeline {
     agent any
-    tools{
+    tools {
         nodejs 'NodeJs'
     }
     stages {
-       
         stage('Unit Test') {
             steps {
                 script {
@@ -16,6 +15,13 @@ pipeline{
             steps {
                 script {
                     echo 'This is a testing stage for building the application.'
+                }
+            }
+        }
+        stage('Building images (node and mongo)') {
+            steps {
+                script {
+                    sh('docker-compose build')
                 }
             }
         }
