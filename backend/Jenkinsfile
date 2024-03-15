@@ -3,17 +3,23 @@ pipeline {
     tools {
         nodejs 'NodeJs'
     }
+
     stages {
-                stage('Install dependencies') {
-            steps{
+        stage('Checkout SCM') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Install dependencies') {
+            steps {
                 script {
                     try {
-                        sh('npm install')
+                        sh "cd ${WORKSPACE}/backend && npm install"
                     } catch (err) {
                         currentBuild.result = 'FAILURE'
                         error("Failed to install dependencies: ${err}")
                     }
-
                 }
             }
         }
@@ -25,6 +31,7 @@ pipeline {
                 }
             }
         }
+
         stage('Build application') {
             steps {
                 script {
@@ -32,6 +39,7 @@ pipeline {
                 }
             }
         }
+
         stage('Building images (node and mongo)') { 
             steps { 
                 script { 
