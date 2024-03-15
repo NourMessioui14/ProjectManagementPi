@@ -52,16 +52,6 @@ pipeline {
             }
         }
 
-        stage('Building images (node and mongo)') {
-steps{
-script {
-    dir('backend'){
-sh('docker-compose build')
-    }
-}
-}
-}
-
         
     }
 }
