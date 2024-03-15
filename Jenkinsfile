@@ -6,7 +6,7 @@ pipeline {
     }
     environment { 
 registryCredentials = "nexus" 
-registry = "172.31.219.90:8083" 
+registry = "192.168.33.10:8083"  
 } 
     stages {
         stage('Install dependencies') {
