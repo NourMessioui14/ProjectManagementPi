@@ -56,9 +56,8 @@ pipeline {
         stage('Building images (node and mongo)') {
     steps {
         script {
-            dir('backend') { // Accéder au répertoire backend
                 sh('docker-compose build') // Exécuter la commande dans le répertoire backend
-            }
+            
         }
     }
 }
