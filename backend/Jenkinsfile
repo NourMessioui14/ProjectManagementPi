@@ -15,7 +15,7 @@ pipeline {
             steps {
                 script {
                     try {
-                        sh('npm install')
+                        sh "cd ${WORKSPACE}/backend && npm install"
                     } catch (err) {
                         currentBuild.result = 'FAILURE'
                         error("Failed to install dependencies: ${err}")
