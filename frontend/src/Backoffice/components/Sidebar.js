@@ -23,10 +23,9 @@ function Sidebar() {
 
 
             <li className="sidebar-item">
-                <a className="sidebar-link" href="pages-profile.html">
-      <i className="align-middle" data-feather="user"></i> <span className="align-middle">Project Management</span>
-    </a>
-            </li>
+            <Link to="/projects" className="sidebar-link">
+    <i className="align-middle" data-feather="sliders"></i> <span className="align-middle">Project Management</span>
+  </Link>            </li>
 
             <li className="sidebar-item">
                 <a className="sidebar-link" href="pages-sign-in.html">

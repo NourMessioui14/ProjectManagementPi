@@ -37,8 +37,8 @@ function App() {
                   <div className="container-fluid p-0">
                     <Routes>
                       <Route index element={<Dashboard />} />
-                      {/* Ajoutez la route pour /users ici */}
                       <Route path="/users" element={<UserList />} />
+                      <Route path="/projects" element={<ProjectList />} />
                     </Routes>
                   </div>
                 </main>

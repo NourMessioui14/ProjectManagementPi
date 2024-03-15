@@ -15,31 +15,38 @@ function EmailVerification() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-
+  
     try {
       if (!email) {
         toast.error('Please fill in all the fields');
         return;
       }
-
+  
       // Fetch data from your API
-      const response = await axios.get(`http://localhost:5000/auth/${email}`);
+      const response = await axios.get(`http://localhost:5001/auth/${email}`);
       const responseData = response.data;
-
+  
+      // For debugging, log the response data
+      console.log(responseData);
+  
       // Extract data from the response
       const { name, email: emailFromResponse, Verification, id } = responseData;
-
+  
       if (email === emailFromResponse) {
         // Prepare email data
         const emailData = {
           to_name: name,
           message: Verification,
           from_name: 'Team-Notify',
+          to_email: email, // Dynamically set to the email from the form
         };
-
+  
+        // For debugging, log the email data
+        console.log(emailData);
+  
         // Use EmailJS to send the email
         await emailjs.send('service_t20b3rv', 'template_ou1e3gd', emailData, 'Z14sqvbqFSCBB7Khq');
-
+  
         toast.warn('We have sent you a 4-Digit Verification Number on your given Email');
         navigate(`/NewPassword/${id}`);
       } else {
@@ -50,7 +57,7 @@ function EmailVerification() {
       toast.error('An error occurred. Please try again later.');
     }
   };
-
+  
   return (
     <>
       <section className="max-w-screen-xl mx-auto grid grid-cols-1 md:grid-cols-2">
@@ -87,6 +94,7 @@ function EmailVerification() {
           </form>
         </article>
       </section>
+      <ToastContainer />
     </>
   );
 }

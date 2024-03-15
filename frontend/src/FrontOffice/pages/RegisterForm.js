@@ -17,9 +17,21 @@ const RegisterForm = () => {
     password: '',
     role: '',
   });
+  
+  const resetForm = () => {
+    setRegisterForm({
+      name: '',
+      adresse: '',
+      age: new Date(),
+      email: '',
+      password: '',
+      role: '',
+    });
+  };
 
 
-  const navigate = useNavigate();
+
+  const navigate = useNavigate(); 
   const [showPassword, setShowPassword] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [isSignUpSuccess, setIsSignUpSuccess] = useState(false);
@@ -39,7 +51,7 @@ const RegisterForm = () => {
 
   
     try {
-      const response = await fetch('http://localhost:3000/auth/signup', {
+      const response = await fetch('http://localhost:5001/auth/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -57,7 +69,7 @@ const RegisterForm = () => {
         localStorage.setItem('token', responseData.token);
         setIsSignUpSuccess(true);
         setSuccessMessage('You signed up to our application. Now you can sign in.');
-      
+        resetForm();
       }
     } catch (error) {
       console.error('Error during signup request:', error);
@@ -68,33 +80,48 @@ const RegisterForm = () => {
 
   const handleSignIn = async (e) => {
     e.preventDefault();
-
+  
     try {
-      const response = await fetch('http://localhost:3000/auth/login', {
+      const response = await fetch('http://localhost:5001/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(loginForm),
       });
-
+  
       if (!response.ok) {
         const errorData = await response.json();
         console.error('Error during login:', errorData.message);
       } else {
         const responseData = await response.json();
         console.log('Login successful! Received token:', responseData.token);
-
-        localStorage.setItem('token', responseData.token);
-
-        navigate('/backoffice');
+        console.log('Role:', responseData.role);
+  
+        // Log pour indiquer que le code atteint ce point
+        console.log('Before redirection');
+  
+        if (responseData.role === 'admin') {
+          try {
+            navigate('/backoffice');
+            console.log('After navigating to /backoffice');
+          } catch (error) {
+            console.error('Error during navigation:', error);
+          }
+        } else {
+          try {
+            navigate('/dashboard');
+            console.log('After navigating to /dashboard');
+          } catch (error) {
+            console.error('Error during navigation:', error);
+          }
+        }
       }
     } catch (error) {
       console.error('Error during login request:', error);
     }
   };
-
-
+  
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
   };
