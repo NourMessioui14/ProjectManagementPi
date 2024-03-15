@@ -4,12 +4,15 @@ pipeline {
         nodejs 'NodeJs'
     }
 
-
-
-    
     stages {
-stage('Install dependencies') {
-            steps{
+        stage('Checkout SCM') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Install dependencies') {
+            steps {
                 script {
                     try {
                         sh('npm install')
@@ -17,12 +20,9 @@ stage('Install dependencies') {
                         currentBuild.result = 'FAILURE'
                         error("Failed to install dependencies: ${err}")
                     }
-
                 }
             }
         }
-
-
 
         stage('Unit Test') {
             steps {
@@ -31,6 +31,7 @@ stage('Install dependencies') {
                 }
             }
         }
+
         stage('Build application') {
             steps {
                 script {
@@ -38,6 +39,7 @@ stage('Install dependencies') {
                 }
             }
         }
+
         stage('Building images (node and mongo)') { 
             steps { 
                 script { 
