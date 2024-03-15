@@ -14,7 +14,7 @@ services:
 
   backend:
     build:
-      context: /var/lib/jenkins/workspace/ProjectManagment/backend
+      context: /var/lib/jenkins/workspace/ojectManagment_ProjectManagement/backend
       dockerfile: Dockerfile
     container_name: backend
     restart: always
