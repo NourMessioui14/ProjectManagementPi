@@ -18,12 +18,12 @@ pipeline {
                 }
             }
         }
-        stage('Building images (node and mongo)') {
-            steps {
-                script {
-                    sh('docker-compose -f backend/docker-compose.yml build')
-                }
-            }
+        stage('Building images (node and mongo)') { 
+            steps { 
+                script { 
+                    sh('docker-compose build') 
+                } 
+            } 
         }
     }
 }
