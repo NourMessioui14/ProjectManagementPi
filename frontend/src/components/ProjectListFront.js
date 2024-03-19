@@ -30,6 +30,10 @@ function ProjectListFront() {
     fetchProjects();
   }, []);
 
+  const truncateDescription = (description, maxLength) => {
+    return description.length > maxLength ? `${description.substring(0, maxLength)}...` : description;
+  };
+
   return (
     <div style={{ marginTop: '140px' }}>
       <TableContainer>
@@ -47,7 +51,9 @@ function ProjectListFront() {
               <Tr key={project.id}>
                 <Td>{project.projectname}</Td>
                 <Td>{project.chefdeprojet}</Td>
-                <Td>{project.description}</Td>
+                <Td>
+                  <p>{project.description}</p>
+                </Td>
                 <Td>
                   <Menu>
                     <MenuButton as={IconButton} aria-label="Options" icon={<MdMoreVert />} />

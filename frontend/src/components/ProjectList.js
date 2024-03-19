@@ -15,6 +15,11 @@ function ProjectList() {
     FetchProjects();
   }, []);
 
+
+ 
+
+
+
   // Filtrer les projets en fonction du terme de recherche
   const filteredProjects = projects.filter(project =>
     project.projectname.toLowerCase().includes(searchTerm.toLowerCase()) ||

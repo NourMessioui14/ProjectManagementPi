@@ -1,18 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Button, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, Stack, Input, FormControl, FormErrorMessage, FormLabel, Avatar } from '@chakra-ui/react';
 import { GlobalContext } from '../context/GlobalWrapper';
+// Importez la bibliothèque "avatar-initials" avec le nom approprié
+
 
 export default function DrawerForm() {
   const { isOpen, onClose, AddProject, Update, errors, setErrors, project } = useContext(GlobalContext);
   const [form, setForm] = useState({});
 
-  // Fonction de sélection automatique du logo en fonction du nom du projet
-  const selectLogoAutomatically = (projectName) => {
-    // Implémentez ici votre logique de sélection de logo basée sur le nom du projet
-    // Par exemple, vous pouvez utiliser une correspondance de modèle pour choisir un logo en fonction du nom du projet
-    // Retournez l'URL du logo sélectionné ou null s'il n'y a pas de correspondance
-    return null; // Remplacez null par l'URL du logo sélectionné
-  };
+  // Fonction de sélection aléatoire du logo
+ 
 
   // Fonction de validation du formulaire
   const validateForm = () => {
@@ -33,6 +30,7 @@ export default function DrawerForm() {
   const onSave = () => {
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length === 0) {
+     
       AddProject(form, setForm);
     } else {
       setErrors(validationErrors);

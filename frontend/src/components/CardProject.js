@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Card, CardHeader, CardBody, Box, Heading, Text, Stack, StackDivider, Button, Flex } from '@chakra-ui/react';
+import { Card, CardHeader, CardBody, Box, Heading, Text, Stack, StackDivider, Button, Flex, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter } from '@chakra-ui/react';
 import { GlobalContext } from '../context/GlobalWrapper';
 import { Link } from 'react-router-dom';
 
@@ -7,6 +7,8 @@ function CustomCard() {
   const { projects, FetchProjects } = useContext(GlobalContext);
   const [displayedProjects, setDisplayedProjects] = useState([]);
   const [showAllProjects, setShowAllProjects] = useState(false);
+  const [selectedProject, setSelectedProject] = useState(null); // State pour stocker le projet sélectionné
+  const [isModalOpen, setIsModalOpen] = useState(false); // State pour contrôler l'ouverture de la modale
 
   useEffect(() => {
     FetchProjects();
@@ -23,6 +25,16 @@ function CustomCard() {
     setShowAllProjects(true);
   };
 
+  const handleReadMore = (project) => {
+    setSelectedProject(project); // Mettre à jour le projet sélectionné
+    setIsModalOpen(true); // Ouvrir la modale
+  };
+
+  const handleCloseModal = () => {
+    setSelectedProject(null); // Réinitialiser le projet sélectionné
+    setIsModalOpen(false); // Fermer la modale
+  };
+
   return (
     <div>
       {/* Vos autres éléments HTML */}
@@ -32,9 +44,8 @@ function CustomCard() {
           <Flex justifyContent="flex-end" mt="4"> {/* Déplacer le bouton vers la droite */}
             {!showAllProjects && projects.length > 4 && (
               <Link to="/ProjectListFront">
-  <Button>See All Projects</Button>
-</Link>
-
+                <Button>See All Projects</Button>
+              </Link>
             )}
           </Flex>
           <Flex flexWrap="wrap" justifyContent="space-between">
@@ -49,9 +60,11 @@ function CustomCard() {
                     <Stack divider={<StackDivider />} spacing="4">
                       <Box>
                         <Text fontWeight="bold">Description:</Text>
-                        <Text pt="2" fontSize="sm">{project.description}</Text>
+                        <Text pt="2" fontSize="sm">{project.description.length > 80 ? `${project.description.substring(0, 80)}...` : project.description}</Text>
                       </Box>
-                      <a href="#" className="main-button">Read More</a>
+                      {project.description.length > 80 && (
+                        <Button onClick={() => handleReadMore(project)} className="main-button">Read More</Button>
+                      )}
                     </Stack>
                   </CardBody>
                 </Card>
@@ -60,6 +73,21 @@ function CustomCard() {
           </Flex>
         </div>
       </section>
+      
+      {/* Modal pour afficher les détails du projet */}
+      <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>{selectedProject && selectedProject.projectname}</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Text>{selectedProject && selectedProject.description}</Text>
+          </ModalBody>
+          <ModalFooter>
+            <Button onClick={handleCloseModal}>Close</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </div>
   );
 }
