@@ -11,9 +11,14 @@ function Row({ id, projectname, chefdeprojet, description, startdate, enddate })
   // Liste des composants Avatar disponibles
   const avatarList = [
     <Avatar src='/logos/camera.png' alt="Avatar 1" size="sm" />,
-    <Avatar src="/logos/ours.png" alt="Avatar 2" size="sm" />,
     <Avatar src="/logos/main.png" alt="Avatar 3" size="sm" />,
     <Avatar src="/logos/homme.png" alt="Avatar 4" size="sm" />,
+    <Avatar src="/logos/lancproj.png" alt="Avatar 4" size="sm" />,
+    <Avatar src="/logos/energ.png" alt="Avatar 4" size="sm" />,
+    <Avatar src="/logos/proj.png" alt="Avatar 4" size="sm" />,
+
+
+
   ];
 
   // Fonction pour générer aléatoirement un avatar parmi la liste prédéfinie

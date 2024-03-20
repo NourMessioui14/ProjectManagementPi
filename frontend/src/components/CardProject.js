@@ -1,20 +1,20 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Card, CardHeader, CardBody, Box, Heading, Text, Stack, StackDivider, Button, Flex, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter } from '@chakra-ui/react';
+import React from 'react';
+import { Card, CardHeader, CardBody, Box, Heading, Text, Stack, StackDivider, Button, Flex, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, Avatar } from '@chakra-ui/react';
 import { GlobalContext } from '../context/GlobalWrapper';
 import { Link } from 'react-router-dom';
 
 function CustomCard() {
-  const { projects, FetchProjects } = useContext(GlobalContext);
-  const [displayedProjects, setDisplayedProjects] = useState([]);
-  const [showAllProjects, setShowAllProjects] = useState(false);
-  const [selectedProject, setSelectedProject] = useState(null); // State pour stocker le projet sélectionné
-  const [isModalOpen, setIsModalOpen] = useState(false); // State pour contrôler l'ouverture de la modale
+  const { projects, FetchProjects } = React.useContext(GlobalContext);
+  const [displayedProjects, setDisplayedProjects] = React.useState([]);
+  const [showAllProjects, setShowAllProjects] = React.useState(false);
+  const [selectedProject, setSelectedProject] = React.useState(null); // State pour stocker le projet sélectionné
+  const [isModalOpen, setIsModalOpen] = React.useState(false); // State pour contrôler l'ouverture de la modale
 
-  useEffect(() => {
+  React.useEffect(() => {
     FetchProjects();
   }, []);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (projects.length > 0) {
       const displayed = showAllProjects ? projects : projects.slice(0, 3); // Afficher uniquement 4 projets
       setDisplayedProjects(displayed);
@@ -35,6 +35,23 @@ function CustomCard() {
     setIsModalOpen(false); // Fermer la modale
   };
 
+  
+  // Liste des chemins d'avatar disponibles
+  const avatarList = [
+    '/logos/camera.png',
+    '/logos/main.png',
+    '/logos/homme.png',
+    '/logos/lancproj.png',
+    '/logos/energ.png',
+    '/logos/proj.png',
+  ];
+
+  // Fonction pour générer aléatoirement un chemin d'avatar parmi la liste prédéfinie
+  const generateRandomAvatar = () => {
+    const randomIndex = Math.floor(Math.random() * avatarList.length);
+    return avatarList[randomIndex];
+  };
+
   return (
     <div>
       {/* Vos autres éléments HTML */}
@@ -53,7 +70,7 @@ function CustomCard() {
               <Box key={project._id} width={{ base: '100%', sm: '48%', md: '30%' }} mt="4">
                 <Card borderWidth="1px" borderRadius="lg" p="4">
                   <CardHeader>
-                    <Heading size="md">{project.avatar}</Heading>
+                    <Avatar src={generateRandomAvatar()} alt="Avatar" size="md" />
                     <Heading size="md">{project.projectname} : </Heading>
                   </CardHeader>
                   <CardBody>
