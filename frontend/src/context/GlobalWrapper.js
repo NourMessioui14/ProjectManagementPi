@@ -14,6 +14,8 @@ export default function Wrapper({ children }) {
     const [errors, setErrors] = useState({});
     const { isOpen, onOpen, onClose } = useDisclosure();
 
+    const [favoriteProjects, setFavoriteProjects] = useState([]); // Nouvel état pour stocker les projets favorisés
+
     const toast = useToast();
     
     const FetchProjects = async () => {
@@ -42,25 +44,25 @@ export default function Wrapper({ children }) {
           });
     };
 
-    const AddProject = (form, setForm) => {
-        axios
-          .post('/api/project', form)
-          .then((res) => {
-            setProjects([...projects, res.data])
-            toast({
-              title: 'Project Added',
-              status: 'success',
-              duration: 4000,
+    const AddProject = async (form, onSuccess, onError) => {
+      try {
+          const response = await axios.post('/api/project', form);
+          setProjects(prev => [...prev, response.data]);
+          if (onSuccess) onSuccess();
+        
+      } catch (error) {
+          console.error('Error adding project:', error.response ? error.response.data : error);
+          if (onError) onError(error);
+          toast({
+              title: 'Error',
+              description: error.response && error.response.data.message ? error.response.data.message : 'An error occurred while adding the project.',
+              status: 'error',
+              duration: 5000,
               isClosable: true,
-            });
-            setErrors({});
-            setForm({});
-            onClose();
-          })
-          .catch((err) => {
-            setErrors(err.response.data.error);
           });
-    };
+      }
+  };
+  
 
     const FindOneProject = async (id) => {
       try {
@@ -70,6 +72,11 @@ export default function Wrapper({ children }) {
           console.log(err.response.data);
       }
   };
+
+ 
+
+  
+  
   
 
 
@@ -192,7 +199,7 @@ export default function Wrapper({ children }) {
             ticket,
             setProject,
             setTicket,
-            Update
+            Update,
 
   
         }}>

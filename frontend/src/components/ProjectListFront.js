@@ -13,10 +13,11 @@ import {
   PinInput,
   PinInputField,
   Input,
-  Button, // Importer Button depuis Chakra UI
+  Button,
 } from '@chakra-ui/react';
 import { IconButton, Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
 import { MdMoreVert, MdStarBorder, MdStar } from "react-icons/md";
+import { Link } from 'react-router-dom';
 
 function ProjectListFront() {
   const [projects, setProjects] = useState([]);
@@ -28,12 +29,12 @@ function ProjectListFront() {
     const fetchProjects = async () => {
       try {
         const response = await axios.get('api/project');
-        setProjects(response.data.map(project => ({ ...project, isFavorite: false })));
+        setProjects(response.data); // Assume que `response.data` contient l'état de favori correct pour chaque projet
       } catch (error) {
         console.error('Error fetching projects:', error);
       }
     };
-
+  
     fetchProjects();
   }, []);
 
@@ -58,25 +59,34 @@ function ProjectListFront() {
     return lines.map((line, index) => <p key={index}>{line}</p>);
   };
 
-  // Fonction pour basculer l'état de favori
-  const toggleFavorite = (projectId) => {
-    const updatedProjects = projects.map(project => {
-      if (project.id === projectId) {
-        return {
-          ...project,
-          isFavorite: !project.isFavorite
-        };
-      }
-      return project;
-    });
-    setProjects(updatedProjects);
-  };
+ 
 
   // Filtrer les projets en fonction du terme de recherche
   const filteredProjects = projects.filter(project =>
     project.projectname.toLowerCase().includes(searchTerm.toLowerCase()) ||
     project.description.toLowerCase().includes(searchTerm.toLowerCase())
   );
+  const toggleFavorite = async (projectId) => {
+    try {
+        // Envoyer une requête HTTP PUT pour mettre à jour l'état de favori dans la base de données
+        await axios.put(`/api/project/${projectId}/favorite`);
+        // Mettre à jour l'état de favori dans le state local du composant de manière immuable
+        const updatedProjects = projects.map(project => {
+            if (project._id === projectId) {
+                // Créer une nouvelle copie du projet avec le statut de favori inversé
+                return { ...project, isFavorite: !project.isFavorite };
+            }
+            return project;
+        });
+        setProjects(updatedProjects); // Mettre à jour l'état avec les nouveaux projets
+    } catch (error) {
+        console.error('Error toggling favorite:', error);
+        // Afficher un message d'erreur ou gérer l'erreur d'une autre manière
+    }
+};
+
+
+
 
   // Index du dernier projet de la page
   const indexOfLastProject = currentPage * projectsPerPage;
@@ -87,7 +97,7 @@ function ProjectListFront() {
 
   return (
     <div style={{ marginTop: '140px' }}>
-      <HStack marginBottom="10px">
+      <HStack justifyContent="space-between" marginBottom="10px">
         <Input
           placeholder="Search project"
           value={searchTerm}
@@ -95,8 +105,10 @@ function ProjectListFront() {
           size="sm"
           width="200px"
         />
-        <Button  className="main-button">Add project</Button>
-        </HStack>
+        <Link to="/CreateProjectForm">
+        <Button className="main-button">Create Project</Button>
+      </Link>
+      </HStack>
       <TableContainer>
         <Table variant='striped' style={{ backgroundColor: '#fff', fontSize: '14px' }}>
           <Thead>
@@ -109,14 +121,16 @@ function ProjectListFront() {
             </Tr>
           </Thead>
           <Tbody>
-            {currentProjects.map((project) => (
-              <Tr key={project.id}>
-                <Td>
-                  <IconButton
-                    aria-label="Toggle favorite"
-                    icon={project.isFavorite ? <MdStar color="yellow" /> : <MdStarBorder />}
-                    onClick={() => toggleFavorite(project.id)}
-                  />
+           {currentProjects.map((project) => (
+  <Tr key={project._id}>
+    <Td>
+    <IconButton
+    aria-label="Toggle favorite"
+    icon={project.isFavorite ? <MdStar color="yellow" /> : <MdStarBorder />}
+    onClick={() => toggleFavorite(project._id)}
+  />
+  
+    
                 </Td>
                 <Td>{project.projectname}</Td>
                 <Td>{project.chefdeprojet}</Td>

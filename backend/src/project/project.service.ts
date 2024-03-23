@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ProjectDto } from 'src/dto/project.dto';
@@ -27,5 +27,14 @@ export class ProjectService {
      Deleteproject(id){
         return this.projectModel.deleteMany({_id:id});
      }
+
+     async toggleFavorite(id: string): Promise<Project> {
+        const project = await this.projectModel.findById(id);
+        if (!project) {
+            throw new NotFoundException('Project not found');
+        }
+        project.isFavorite = !project.isFavorite;
+        return project.save();
+    }
 
 }

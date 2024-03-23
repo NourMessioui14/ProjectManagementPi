@@ -1,97 +1,97 @@
-import React from 'react';
-import { Card, CardHeader, CardBody, Box, Heading, Text, Stack, StackDivider, Button, Flex, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, Avatar } from '@chakra-ui/react';
+import React, { useContext, useEffect, useState } from 'react';
+import {
+  Card, CardHeader, CardBody, Box, Heading, Text, Stack, StackDivider, Button,
+  Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, Avatar, Flex
+} from '@chakra-ui/react';
 import { GlobalContext } from '../context/GlobalWrapper';
 import { Link } from 'react-router-dom';
 
 function CustomCard() {
-  const { projects, FetchProjects } = React.useContext(GlobalContext);
-  const [displayedProjects, setDisplayedProjects] = React.useState([]);
-  const [showAllProjects, setShowAllProjects] = React.useState(false);
-  const [selectedProject, setSelectedProject] = React.useState(null); // State pour stocker le projet sélectionné
-  const [isModalOpen, setIsModalOpen] = React.useState(false); // State pour contrôler l'ouverture de la modale
+  const { projects, FetchProjects } = useContext(GlobalContext);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedProject, setSelectedProject] = useState(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     FetchProjects();
-  }, []);
-
-  React.useEffect(() => {
-    if (projects.length > 0) {
-      const displayed = showAllProjects ? projects : projects.slice(0, 3); // Afficher uniquement 4 projets
-      setDisplayedProjects(displayed);
-    }
-  }, [projects, showAllProjects]);
-
-  const handleShowAllProjects = () => {
-    setShowAllProjects(true);
-  };
+  }, [FetchProjects]);
 
   const handleReadMore = (project) => {
-    setSelectedProject(project); // Mettre à jour le projet sélectionné
-    setIsModalOpen(true); // Ouvrir la modale
+    setSelectedProject(project);
+    setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
-    setSelectedProject(null); // Réinitialiser le projet sélectionné
-    setIsModalOpen(false); // Fermer la modale
+    setSelectedProject(null);
+    setIsModalOpen(false);
   };
 
-  
-  // Liste des chemins d'avatar disponibles
   const avatarList = [
-    '/logos/camera.png',
-    '/logos/main.png',
-    '/logos/homme.png',
-    '/logos/lancproj.png',
-    '/logos/energ.png',
-    '/logos/proj.png',
+    '/logos/camera.png', '/logos/main.png', '/logos/homme.png',
+    '/logos/lancproj.png', '/logos/energ.png', '/logos/proj.png',
   ];
 
-  // Fonction pour générer aléatoirement un chemin d'avatar parmi la liste prédéfinie
-  const generateRandomAvatar = () => {
-    const randomIndex = Math.floor(Math.random() * avatarList.length);
-    return avatarList[randomIndex];
+  const getAvatar = (id) => {
+    let hash = 0;
+    for (let i = 0; i < id.length; i++) {
+      hash = id.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    const index = Math.abs(hash % avatarList.length);
+    return avatarList[index];
   };
+
+  const favoriteProjects = projects.filter(project => project.isFavorite);
 
   return (
     <div>
-      {/* Vos autres éléments HTML */}
       <section className="section" id="blog">
         <div className="container" mt="4">
           <Heading as="h5" size="lg" textAlign="left" mt="8">Recent Projects</Heading>
-          <Flex justifyContent="flex-end" mt="4"> {/* Déplacer le bouton vers la droite */}
-            {!showAllProjects && projects.length > 4 && (
-              <Link to="/ProjectListFront">
-                <Button>See All Projects</Button>
-              </Link>
-            )}
+          <Flex justifyContent="flex-end" mt="4">
+            <Link to="/ProjectListFront">
+              <Button>See All Projects</Button>
+            </Link>
           </Flex>
           <Flex flexWrap="wrap" justifyContent="space-between">
-            {displayedProjects.map(project => (
+            {projects.slice(0, 3).map(project => (
               <Box key={project._id} width={{ base: '100%', sm: '48%', md: '30%' }} mt="4">
                 <Card borderWidth="1px" borderRadius="lg" p="4">
                   <CardHeader>
-                    <Avatar src={generateRandomAvatar()} alt="Avatar" size="md" />
-                    <Heading size="md">{project.projectname} : </Heading>
+                    <Avatar src={getAvatar(project._id)} alt="Avatar" size="md" />
+                    <Heading size="md" ml="4">{project.projectname}</Heading>
                   </CardHeader>
                   <CardBody>
                     <Stack divider={<StackDivider />} spacing="4">
                       <Box>
                         <Text fontWeight="bold">Description:</Text>
-                        <Text pt="2" fontSize="sm">{project.description.length > 80 ? `${project.description.substring(0, 80)}...` : project.description}</Text>
+                        <Text fontSize="sm">{project.description.length > 80 ? `${project.description.substring(0, 80)}...` : project.description}</Text>
+                        {project.description.length > 80 && (
+                          <Button onClick={() => handleReadMore(project)} mt="2">Read More</Button>
+                        )}
                       </Box>
-                      {project.description.length > 80 && (
-                        <Button onClick={() => handleReadMore(project)} className="main-button">Read More</Button>
-                      )}
                     </Stack>
                   </CardBody>
                 </Card>
               </Box>
             ))}
           </Flex>
+          {favoriteProjects.length > 0 && (
+            <>
+              <Heading as="h5" size="lg" textAlign="left" mt="8">Favorite Projects</Heading>
+              <Stack mt="4">
+                {favoriteProjects.map(project => (
+                  <Box key={project._id} p="2">
+                    <Flex align="center">
+                      <Avatar src={getAvatar(project._id)} alt="Avatar" size="sm" />
+                      <Text ml="4" fontSize="sm">{project.projectname}</Text>
+                    </Flex>
+                  </Box>
+                ))}
+              </Stack>
+            </>
+          )}
         </div>
       </section>
       
-      {/* Modal pour afficher les détails du projet */}
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
         <ModalOverlay />
         <ModalContent>
@@ -108,5 +108,4 @@ function CustomCard() {
     </div>
   );
 }
-
 export default CustomCard;

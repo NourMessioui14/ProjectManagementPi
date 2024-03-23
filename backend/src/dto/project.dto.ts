@@ -18,6 +18,8 @@ export class ProjectDto{
 
     @IsNotEmpty()
     description: string;
+
+    isFavorite: boolean;
 /* 
     startDay: number;
     startMonth: number;
