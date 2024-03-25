@@ -150,6 +150,7 @@ form.sign-in-form {
 .btn:hover {
   background-color: #e83e8c;
 }
+
 .panels-container {
   position: absolute;
   height: 100%;
@@ -385,7 +386,6 @@ form.sign-in-form {
     padding: 0.5rem 1rem;
   }
   .container {
-    
     padding: 1.5rem;
   }
 
@@ -399,3 +399,6 @@ form.sign-in-form {
     left: 50%;
   }
 }
+
+/* Styles pour les contrôles de saisie */
+

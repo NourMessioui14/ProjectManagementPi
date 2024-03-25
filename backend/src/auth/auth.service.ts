@@ -116,6 +116,37 @@ async getAdminData(userId: string): Promise<any> {
 
 
 
+async updateProfile(id: string, body: SignUpDto): Promise<User> {
+  try {
+    const user = await this.userModel.findById(id);
+
+    if (!user) {
+      throw new NotFoundException(`Utilisateur avec l'ID ${id} non trouvé`);
+    }
+
+    if (body.name) {
+      user.name = body.name;
+    }
+    if (body.email) {
+      user.email = body.email;
+    }
+    if (body.adresse) {
+      user.adresse = body.adresse;
+    }
+    if (body.age) {
+      user.age = body.age;
+    }
+    if (body.role) {
+      user.role = body.role;
+    }
+
+    await user.save();
+
+    return user;
+  } catch (error) {
+    throw new Error(`Erreur lors de la mise à jour de l'utilisateur : ${error.message}`);
+  }
+}
 
 
 

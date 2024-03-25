@@ -29,7 +29,6 @@ export class AuthController {
       return user;
   }
     
-//@UseGuards(AuthenticatedGuard)
   @Get("/users")
   findAll(){
      return this.authService.findAll();
@@ -61,7 +60,6 @@ export class AuthController {
       async getProtectedResource(@Session() session: Record<string, any>) {
         const adminData = await this.authService.getAdminData(session.userId);
         
-        // Vous pouvez renvoyer ces données à votre application frontend
         return adminData;
       }
       
@@ -105,6 +103,14 @@ export class AuthController {
     }
   }
 
+  @Put('/users/update/:id')
+  async updateUser(@Param('id') id: string, @Body() body: SignUpDto): Promise<User> {
+    try {
+      return await this.authService.update(id, body);
+    } catch (error) {
+      throw new Error(`Erreur lors de la mise à jour de l'utilisateur : ${error.message}`);
+    }
+  }
 
 
 
