@@ -1,8 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Dashboard from './Backoffice/pages/Dashboard';
-import Login from './FrontOffice/pages/Login';
-import Register from './FrontOffice/pages/Register';
+
 import Navbar from './Backoffice/components/Navbar';
 import Sidebar from './Backoffice/components/Sidebar';
 import Footer from './Backoffice/components/Footer';
@@ -22,6 +21,9 @@ import Chatrooms from './Backoffice/components/Chat/Chatrooms';
 import VideoCalls from './Backoffice/components/Chat/videocalls';
 import ChatPage from './FrontOffice/components/Chat/ChatPage';
 import HomePage from './FrontOffice/components/Project/HomePage';
+import Profile from './FrontOffice/pages/Profile';
+import UserConnected from './FrontOffice/pages/UserConnected';
+
 function App() {
   return (
     <Router>
@@ -48,10 +50,12 @@ function App() {
           }
         />
         <Route path="/" element={<RegisterForm />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
         <Route path="/forgetPassword" element={<EmailVerification />} />
         <Route path='/NewPassword/:id' element={<NewPassword />} />
+          <Route path='/profile' element = {<Profile/>} />
+
+
+
         <Route path='/Digitverify' element={<FourDigitVerification/>}/>
         <Route path="/projects" element={<ProjectList />} />
         <Route path="/tickets" element={<TicketList />} />
@@ -70,7 +74,7 @@ function App() {
 
 
 
-        
+        <Route path="/userconnected/:id" element={<UserConnected />} />
 
 
 

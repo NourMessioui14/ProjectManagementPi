@@ -86,32 +86,33 @@ const RegisterForm = () => {
   
   const handleSignIn = async (values) => {
     try {
-      const response = await fetch('http://localhost:5001/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(values),
-      });
-  
-      if (!response.ok) {
-        const errorData = await response.json();
-        console.error('Error during login:', errorData.message);
-      } else {
-        const responseData = await response.json();
-        console.log('Login successful! Received token:', responseData.token);
-        console.log('Role:', responseData.role);
-  
-        if (responseData.role === 'admin') {
-          navigate('/backoffice');
+        const response = await fetch('http://localhost:5001/auth/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(values),
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            console.error('Error during login:', errorData.message || 'Failed to sign in. Please try again later.');
         } else {
-          navigate('/dashboard');
+            const responseData = await response.json();
+            console.log('Login successful! Received token:', responseData.token);
+            console.log('Role:', responseData.role);
+
+            if (responseData.role === 'admin') {
+                localStorage.setItem('role', responseData.role); 
+                navigate('/backoffice');
+            } else {
+                navigate('/projects'); 
+            }
         }
-      }
     } catch (error) {
-      console.error('Error during login request:', error);
+        console.error('Error during login request:', error);
     }
-  };
+};
 
   return (
     <div className="container">
@@ -225,8 +226,7 @@ const RegisterForm = () => {
                     type="email"
                     placeholder="Email"
                     name="email"
-                    className={`${errors.email && touched.email ? 'input-error' : ''}`}
-                  />
+                    className={`${errors.email && touched.email ? 'input-error' : ''}`} />
                   <ErrorMessage name="email">
                     {(msg) => <div className="error-message">{msg}</div>}
                   </ErrorMessage>
