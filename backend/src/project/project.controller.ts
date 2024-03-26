@@ -32,6 +32,11 @@ export class ProjectController {
         return this.service.Deleteproject(id);
     }
 
+    @Put(':id/favorite')
+async toggleFavorite(@Param('id') id: string) {
+    return this.service.toggleFavorite(id);
+}
+
 
 
 

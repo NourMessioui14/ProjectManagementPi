@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 function NavbarFront() {
+  const [showCreateTaskModal, setShowCreateTaskModal] = useState(false);
 
   const handleTaskClick = () => {
     setShowCreateTaskModal(true); // Afficher le modal lorsque le bouton est cliqué
@@ -42,6 +43,8 @@ function NavbarFront() {
         </div>
       </header>
       {/* Ajoutez le composant ModalCrrerTicket ici */}
+
+      
     </header>
   );
 }

@@ -24,6 +24,9 @@ import VideoCalls from './Backoffice/components/Chat/videocalls';
 import ChatPage from './FrontOffice/components/Chat/ChatPage';
 import HomePage from './FrontOffice/components/Project/HomePage';
 import NavbarFront from './FrontOffice/NavbarFront';
+import CustomCard from './FrontOffice/components/Project/CardProject';
+import ProjectListFront from './FrontOffice/components/Project/ProjectListFront';
+import CreateProjectForm from './FrontOffice/components/Project/createprojectfront';
 
   
 function App() {
@@ -70,6 +73,16 @@ function App() {
         <Route path="/navbarfront" element={<NavbarFront />} />
         <Route path="/Sidebar" element={<Sidebar />} />
         <Route path="/navbar" element={<Navbar />} />
+
+        <Route path="/cardproject" element={<CustomCard />} />
+        <Route path="/ProjectListFront" element={<ProjectListFront />} />
+
+        <Route path="/CreateProjectForm" element={<CreateProjectForm />} />
+
+
+
+        
+
 
 
 
