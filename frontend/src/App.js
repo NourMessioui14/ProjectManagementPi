@@ -1,5 +1,6 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom'; // Garder cette importation unique
+
 import Dashboard from './Backoffice/pages/Dashboard';
 import Login from './FrontOffice/pages/Login';
 import Register from './FrontOffice/pages/Register';
@@ -23,9 +24,9 @@ import VideoCalls from './Backoffice/components/Chat/videocalls';
 import ChatPage from './FrontOffice/components/Chat/ChatPage';
 import HomePage from './FrontOffice/components/Project/HomePage';
 import NavbarFront from './FrontOffice/NavbarFront';
-function App() {
 
   
+function App() {
   return (
     <Router>
       <Routes>
@@ -40,8 +41,8 @@ function App() {
                   <div className="container-fluid p-0">
                     <Routes>
                       <Route index element={<Dashboard />} />
-                      <Route path="/users" element={<UserList />} />
 
+                      <Route path="/projects" element={<ProjectList />} />
                     </Routes>
                   </div>
                 </main>
@@ -69,7 +70,6 @@ function App() {
         <Route path="/navbarfront" element={<NavbarFront />} />
         <Route path="/Sidebar" element={<Sidebar />} />
         <Route path="/navbar" element={<Navbar />} />
-
 
 
 

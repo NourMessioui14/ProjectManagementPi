@@ -4,8 +4,6 @@ import { AiOutlinePlus, AiOutlineArrowLeft, AiOutlineArrowRight } from "react-ic
 import RowTicket from './RowTicket';
 import DrawerFormTicket from './DrawerFormTicket';
 import { GlobalContext } from '../../../context/GlobalWrapper';
-import Sidebar from '../Sidebar';
-import Navbar from '../Navbar';
 
 function TicketList() {
   const { FetchTickets, tickets, isOpen, onOpen, onClose } = useContext(GlobalContext);
@@ -35,78 +33,72 @@ function TicketList() {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <Box mt="5" rounded={'lg'} boxShadow="base">
-      <Box display="flex"> {/* Utilisez Box avec display flex pour aligner les composants horizontalement */}
-        <Sidebar/>
-        <Box flexGrow={1}> {/* Utilisez Box avec flexGrow pour que le tableau prenne l'espace restant */}
-          <Navbar/>
-          <Box p="4" display={'flex'} justifyContent="space-between" alignItems="center">
-          <Text fontSize="xl" fontWeight="bold">
-            List of ticket
-          </Text>
-          <Button
-            colorScheme="teal"
-            variant="outline"
-            maxW="300px"
-            minW="150px"
-            leftIcon={<AiOutlinePlus fontSize="20px" />}
-            onClick={onOpen}
-          >
-            Add New Ticket
-          </Button>
-        </Box>
+    <Box mt="5" rounded="lg" boxShadow="base" p="4">
+      <Flex justifyContent="space-between" alignItems="center">
+        <Text fontSize="xl" fontWeight="bold">
+          List of Tickets
+        </Text>
+        <Button
+          colorScheme="teal"
+          variant="outline"
+          maxW="300px"
+          minW="150px"
+          leftIcon={<AiOutlinePlus fontSize="20px" />}
+          onClick={onOpen}
+        >
+          Add New Ticket
+        </Button>
+      </Flex>
 
-        {/* Champ de recherche */}
-        <Box p="4">
-          <Input
-            placeholder="Search ticket"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </Box>
-
-        <TableContainer>
-          <Table variant="simple">
-            <Thead>
-              <Tr>
-                <Th>Project</Th>
-                <Th>Sprint</Th>
-                <Th>State</Th>
-                <Th>Owner</Th>
-                <Th>Actions</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {currentTickets.map(({ _id, project, sprint, typeOfticket, etat, description, responsable }) => (
-                <RowTicket
-                  key={_id}
-                  id={_id}
-                  project={project.projectname}
-                  sprint={sprint}
-                  typeOfticket={typeOfticket}
-                  etat={etat}
-                  description={description}
-                  responsable={responsable}
-                />
-              ))}
-            </Tbody>
-          </Table>
-        </TableContainer>
-        <Flex justifyContent="center" alignItems="center" mt="4">
-          <Button onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1} leftIcon={<AiOutlineArrowLeft />} mr="2">
-            
-          </Button>
-          <Center bg="teal" color="white" borderRadius="md" w="30px" h="30px">
-            {currentPage}
-          </Center>
-          <Button onClick={() => paginate(currentPage + 1)} disabled={indexOfLastTicket >= filteredTickets.length} rightIcon={<AiOutlineArrowRight />} ml="2">
-            
-          </Button>
-          </Flex>
-          </Box>
-        </Box>
-        <DrawerFormTicket />
+      {/* Champ de recherche */}
+      <Box p="4">
+        <Input
+          placeholder="Search ticket"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
       </Box>
+
+      <TableContainer>
+        <Table variant="simple">
+          <Thead>
+            <Tr>
+              <Th>Project</Th>
+              <Th>Sprint</Th>
+              <Th>State</Th>
+              <Th>Owner</Th>
+              <Th>Actions</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {currentTickets.map(({ _id, project, sprint, typeOfticket, etat, description, responsable }) => (
+              <RowTicket
+                key={_id}
+                id={_id}
+                project={project.projectname}
+                sprint={sprint}
+                typeOfticket={typeOfticket}
+                etat={etat}
+                description={description}
+                responsable={responsable}
+              />
+            ))}
+          </Tbody>
+        </Table>
+      </TableContainer>
+      <Flex justifyContent="center" alignItems="center" mt="4">
+        <Button onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1} leftIcon={<AiOutlineArrowLeft />} mr="2">
+          
+        </Button>
+        <Center bg="teal" color="white" borderRadius="md" w="30px" h="30px">
+          {currentPage}
+        </Center>
+        <Button onClick={() => paginate(currentPage + 1)} disabled={indexOfLastTicket >= filteredTickets.length} rightIcon={<AiOutlineArrowRight />} ml="2">
+          
+        </Button>
+      </Flex>
+      <DrawerFormTicket />
+    </Box>
   );
 }
 
