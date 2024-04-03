@@ -6,14 +6,26 @@ import DrawerFormSprint from '../../../Backoffice/components/Sprint/DrawerFormSp
 import './SprintFront.css';
 import { GlobalContext } from '../../../context/GlobalWrapperSprint';
 
+<<<<<<< HEAD
 function SprintCard({ id, sprintname,project, description, startdate, enddate }) {
   const { DeleteSprint, onOpen, FindOneSprint } = useContext(GlobalContext);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
+=======
+function SprintCard({ id, sprintname, description, startdate, enddate }) {
+  const { DeleteSprint, onOpen, FindOneSprint } = useContext(GlobalContext);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+    // Fonction pour ouvrir la boîte de dialogue
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
   const openDialog = () => {
     setIsDialogOpen(true);
   };
 
+<<<<<<< HEAD
+=======
+  // Fonction pour fermer la boîte de dialogue
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
   const closeDialog = () => {
     setIsDialogOpen(false);
   };
@@ -23,6 +35,7 @@ function SprintCard({ id, sprintname,project, description, startdate, enddate })
     closeDialog();
   };
 
+<<<<<<< HEAD
   const handleShowTable = () => {
     // Save the project attribute to localStorage
     localStorage.setItem('selectedProjectID', project._id);
@@ -32,10 +45,16 @@ function SprintCard({ id, sprintname,project, description, startdate, enddate })
     
     // Proceed with other actions...
     // For example, redirecting or opening the table
+=======
+  // Fonction pour gérer la suppression du sprint
+  const handleDelete = () => {
+    DeleteSprint(id);
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
   };
 
   return (
     <Box className="card">
+<<<<<<< HEAD
       <div className="text">
         <span>{sprintname}</span>
         <p className="subtitle">{description}</p>
@@ -99,12 +118,61 @@ function SprintCard({ id, sprintname,project, description, startdate, enddate })
           </AlertDialogContent>
         </AlertDialogOverlay>
       </AlertDialog>
+=======
+      <Text className="title">{sprintname}</Text>
+      <Text className="description">{description}</Text>
+      <Text className="date">Start Date: {new Date(startdate).toLocaleDateString()}</Text>
+      <Text className="date">End Date: {new Date(enddate).toLocaleDateString()}</Text>
+      <div>
+        <Button className="show"><a href='/scrum'>show table</a></Button>
+      </div> 
+      <div className="actions">
+        <Button className="valid" onClick={() => {
+          console.log("Update button clicked");
+          onOpen();
+          console.log("RowSprint ID:", id);
+          FindOneSprint(id);
+        }}>update</Button>
+        <Button className="decline" onClick={openDialog}>Delete</Button>
+
+
+        
+
+          {/* Boîte de dialogue de confirmation */}
+          <AlertDialog isOpen={isDialogOpen} onClose={closeDialog}>
+            <AlertDialogOverlay>
+              <AlertDialogContent>
+                <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                  Confirm Delete
+                </AlertDialogHeader>
+
+                <AlertDialogBody>
+                  Are you sure you want to delete this sprint? This action cannot be undone.
+                </AlertDialogBody>
+
+                <AlertDialogFooter>
+                  <Button onClick={closeDialog}>
+                    Cancel
+                  </Button>
+                  <Button colorScheme="red" onClick={confirmDelete} ml={3}>
+                    Delete
+                  </Button>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialogOverlay>
+          </AlertDialog>
+      </div>
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
     </Box>
   );
 }
 
 function SprintFront() {
+<<<<<<< HEAD
   const { FetchSprints, sprints, onOpen } = useContext(GlobalContext);
+=======
+  const { FetchSprints, sprints, isOpen, onOpen } = useContext(GlobalContext);
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
@@ -116,6 +184,7 @@ function SprintFront() {
       <Box p="4" display={'flex'} justifyContent="space-between">
         <Text fontSize="xl" fontWeight="bold">List of Sprints</Text>
       </Box>
+<<<<<<< HEAD
       <Box p="4"
 display={'flex'} justifyContent="space-between">
 <Button
@@ -157,6 +226,51 @@ display={'flex'} justifyContent="space-between">
 <DrawerFormSprint />
 </Box>
 );
+=======
+      <Box p="4" display={'flex'} justifyContent="space-between">
+        <InputGroup>
+          <Input
+            placeholder="Search Sprint"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <InputRightElement>
+            <AiOutlineSearch color="gray.500" />
+          </InputRightElement>
+        </InputGroup>
+      </Box>
+      <Box p="4" display={'flex'} justifyContent="space-between">
+        <Button
+          colorScheme="teal"
+          variant="outline"
+          maxW={'300px'}
+          minW="150px"
+          leftIcon={<AiOutlinePlus fontSize={'20px'} />}
+          onClick={onOpen}
+        >
+          Add New Sprint
+        </Button>
+      </Box>
+      <Box display="flex" justifyContent="space-around" flexWrap="wrap">
+        {sprints
+          .filter((sprint) =>
+            sprint.sprintname.toLowerCase().includes(searchTerm.toLowerCase())
+          )
+          .map(({ _id, sprintname, description, startdate, enddate }) => (
+            <SprintCard
+              key={_id}
+              id={_id}
+              sprintname={sprintname}
+              description={description}
+              startdate={startdate}
+              enddate={enddate}
+            />
+          ))}
+      </Box>
+      <DrawerFormSprint />
+    </Box>
+  );
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
 }
 
 export default SprintFront;

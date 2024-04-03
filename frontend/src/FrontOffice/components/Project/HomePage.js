@@ -40,4 +40,8 @@ function HomePage() {
   );
 }
 
+<<<<<<< HEAD
 export default HomePage;
+=======
+export default HomePage;
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920

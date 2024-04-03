@@ -2,8 +2,13 @@
 import React, { useContext, useState } from 'react';
 import { AiFillDelete, AiFillEdit, AiOutlineInfoCircle } from "react-icons/ai";
 import { Box, Button, Td, Tr } from '@chakra-ui/react';
+<<<<<<< HEAD
 import TicketDetailsModal from './TicketDetailsModal'; // Importez le composant du modal
 import { GlobalContext } from '../../../context/GlobalWrapper';
+=======
+import { GlobalContext } from '../../../context/GlobalWrapper';
+import TicketDetailsModal from './TicketDetailsModal.js';
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
 
 function RowTicket({ id, project, sprint, etat, description, typeOfticket, responsable }) {
   const { DeleteTicket, onOpen, FindOneProject } = useContext(GlobalContext);
@@ -14,9 +19,13 @@ function RowTicket({ id, project, sprint, etat, description, typeOfticket, respo
     onOpen();
   };
 
+<<<<<<< HEAD
   const handleInfoClick = () => {
     setShowDetailsModal(true);
   };
+=======
+ 
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
 
   return (
     <Tr>
@@ -32,12 +41,20 @@ function RowTicket({ id, project, sprint, etat, description, typeOfticket, respo
           <Button colorScheme="red" onClick={() => DeleteTicket(id)}>
             <AiFillDelete />
           </Button>
+<<<<<<< HEAD
           <Button colorScheme="teal" onClick={handleInfoClick}>
+=======
+          <Button colorScheme="teal" onClick={() => setShowDetailsModal(true)}>
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
             <AiOutlineInfoCircle />
           </Button>
         </Box>
       </Td>
       <TicketDetailsModal isOpen={showDetailsModal} onClose={() => setShowDetailsModal(false)} ticket={{ id, project, sprint, etat, description, typeOfticket, responsable }} />
+<<<<<<< HEAD
+=======
+
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
     </Tr>
   );
 }

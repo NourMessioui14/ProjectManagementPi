@@ -18,15 +18,21 @@ import RowSprint from './RowSprint';
 import DrawerFormSprint from './DrawerFormSprint';
 import { GlobalContext } from '../../../context/GlobalWrapperSprint';
 
+<<<<<<< HEAD
 
 function SprintList({}) {
   const { FetchSprints, sprints, onOpen, FetchTickets, setShowTickets, showTickets, findTicketsByProjectId } = useContext(GlobalContext);
+=======
+function SprintList({}) {
+  const { FetchSprints, sprints, isOpen, onOpen } = useContext(GlobalContext);
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     FetchSprints();
   }, []);
 
+<<<<<<< HEAD
   const toggleTickets = (sprintId) => {
     FetchTickets(sprintId);
     setShowTickets(!showTickets);
@@ -41,6 +47,8 @@ function SprintList({}) {
     }
   };
 
+=======
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
   return (
     <Box mt="5" rounded={'lg'} boxShadow="base">
       <Box p="4" display={'flex'} justifyContent="space-between">
@@ -74,7 +82,10 @@ function SprintList({}) {
           <Thead>
             <Tr>
               <Th>sprint Name</Th>
+<<<<<<< HEAD
               <Th>Project</Th>
+=======
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
               <Th>Description</Th>
               <Th>start date</Th>
               <Th>end date</Th>
@@ -87,16 +98,26 @@ function SprintList({}) {
               .filter((sprint) =>
                 sprint.sprintname.toLowerCase().includes(searchTerm.toLowerCase())
               )
+<<<<<<< HEAD
               .map(({ _id, sprintname, project, description, startdate, enddate }) => (
+=======
+              .map(({ _id, sprintname, description, startdate, enddate }) => (
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
                 <RowSprint
                   key={_id}
                   id={_id}
                   sprintname={sprintname}
+<<<<<<< HEAD
                   project={project?.projectname}
                   description={description}
                   startdate={startdate}
                   enddate={enddate}
                   onShowTickets={handleShowTickets} 
+=======
+                  description={description}
+                  startdate={startdate}
+                  enddate={enddate}
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
                 />
               ))}
           </Tbody>

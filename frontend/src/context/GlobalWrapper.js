@@ -11,9 +11,12 @@ export default function Wrapper({ children }) {
     const [tickets, setTickets] = useState([]);
     const [ticket, setTicket] = useState({});
 
+<<<<<<< HEAD
     const [users, setUsers] = useState([]);
     const [user, setUser] = useState({});
 
+=======
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
     const [errors, setErrors] = useState({});
     const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -79,12 +82,26 @@ export default function Wrapper({ children }) {
 
   const FetchTickets = async () => {
     try {
+<<<<<<< HEAD
         const res = await axios.get('/ticket');
         setTickets(res.data); // Correction de l'utilisation de setTickets
     } catch (err) {
         console.log(err.response.data);
     }
 };
+=======
+      const response = await axios.get('/ticket');
+      if (response.data) {
+        setTickets(response.data);
+      } else {
+        throw new Error('No data received');
+      }
+    } catch (error) {
+      console.error('Error fetching tickets:', error);
+    }
+  };
+  
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
 
     
     const AddTicket = (formT, setFormT) => {

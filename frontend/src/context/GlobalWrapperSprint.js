@@ -4,24 +4,33 @@ import { useDisclosure, useToast } from '@chakra-ui/react';
 
 export const GlobalContext = createContext();
 
+<<<<<<< HEAD
 export default function Wrapper({ children }) {
     const [projects, setProjects] = useState([]);
     const [project, setProject] = useState({}); // pour la fonction update 
+=======
+export default function WrapperS({ children }) {
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
 
     const [tickets, setTickets] = useState([]);
     const [ticket, setTicket] = useState({});
 
     const [sprints, setSprints] = useState([]);
+<<<<<<< HEAD
     const [sprint, setSprint] = useState({}); // pour la fonction update
     
     const [scrums, setScrums] = useState([]);
     const [scrum, setScrum] = useState({}); // pour la fonction update
+=======
+    const [sprint, setSprint] = useState({}); // pour la fonction update 
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
 
     const [errors, setErrors] = useState({});
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     const toast = useToast();
     
+<<<<<<< HEAD
 
     const GetTicketsByProjectId = async (projectId) => {
       try {
@@ -89,21 +98,49 @@ export default function Wrapper({ children }) {
           console.log(err.response.data);
       }
   };
+=======
+    
+
+
+
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
   
 
   const FetchTickets = async () => {
     try {
+<<<<<<< HEAD
       const res = await axios.get('/ticket');
+=======
+      const res = await axios.get('/api/ticket');
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
       console.log('Tickets API Response:', res.data);
       setTickets(res.data);
     } catch (err) {
       console.error('Error fetching tickets:', err);
     }
   };
+<<<<<<< HEAD
     
     const AddTicket = (formT, setFormT) => {
         axios
           .post('/ticket', formT) 
+=======
+  
+
+//   const FetchTickets = async () => {
+//     try {
+//         const res = await axios.get('/api/ticket');
+//         setTickets(res.data); // Correction de l'utilisation de setTickets
+//     } catch (err) {
+//         console.log(err.response.data);
+//     }
+// };
+
+    
+    const AddTicket = (formT, setFormT) => {
+        axios
+          .post('/api/ticket', formT) 
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
           .then((res) => {
             setTickets([...tickets, res.data])
             toast({
@@ -167,6 +204,7 @@ export default function Wrapper({ children }) {
           });
     };
 
+<<<<<<< HEAD
     const Update = (form, setForm, id) => {
       axios
         .put(`/project/${id}`, form)
@@ -187,6 +225,8 @@ export default function Wrapper({ children }) {
         });
     };
 
+=======
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
     
     
     const FetchSprints = async () => {
@@ -234,6 +274,7 @@ export default function Wrapper({ children }) {
             setErrors(err.response.data.error);
           });
     };
+<<<<<<< HEAD
     
     const findTicketsByProjectId = async (projectId) => {
       try {
@@ -248,6 +289,12 @@ export default function Wrapper({ children }) {
     const FindOneSprint = async (id) => {
       try {
           const res = await axios.get(`/sprint/${id}`);
+=======
+
+    const FindOneSprint = async (id) => {
+      try {
+          const res = await axios.get(`sprint/${id}`);
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
           setSprint(res.data);
       } catch (err) {
           console.log(err.response.data);
@@ -256,7 +303,11 @@ export default function Wrapper({ children }) {
 
   const UpdateSprint = (form, setForm, id) => {
       axios
+<<<<<<< HEAD
         .put(`/sprint/${id}`, form)
+=======
+        .put(`sprint/${id}`, form)
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
         .then((res) => {
           toast({
             title: 'Sprint Updated',
@@ -273,6 +324,7 @@ export default function Wrapper({ children }) {
           setErrors(err.response.data.error);
         });
     };
+<<<<<<< HEAD
 
     const FetchScrums = async () => {
       try {
@@ -372,6 +424,14 @@ export default function Wrapper({ children }) {
             projects, 
             DeleteProject, 
             AddProject, 
+=======
+    
+    
+
+    return (
+        <GlobalContext.Provider value={{ 
+           
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
             FetchTickets,
             tickets,
             AddTicket,
@@ -383,12 +443,17 @@ export default function Wrapper({ children }) {
             onClose,
             errors,
             setErrors,
+<<<<<<< HEAD
             FindOneProject,
             project,
             ticket,
             setProject,
             setTicket,
             Update,
+=======
+            ticket,
+            setTicket,
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
             FetchSprints, 
             sprints, 
             DeleteSprint, 
@@ -397,6 +462,7 @@ export default function Wrapper({ children }) {
             sprint,
             setSprint,
             UpdateSprint,
+<<<<<<< HEAD
             findTicketsByProjectId,
             FetchScrums,
             AddScrum,
@@ -407,6 +473,8 @@ export default function Wrapper({ children }) {
             scrums,
             AssignTicketsToSprint,
             GetTicketsByProjectId
+=======
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
 
   
         }}>

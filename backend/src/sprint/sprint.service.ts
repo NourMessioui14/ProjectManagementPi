@@ -3,14 +3,34 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { SprintDto } from 'src/dto/sprint.dto';
 import { Sprint, SprintDocument } from 'src/models/sprint.models';
+<<<<<<< HEAD
 import { TicketService } from 'src/ticket/ticket.service';
+=======
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
 
 @Injectable()
 export class SprintService {
 
     constructor(
+<<<<<<< HEAD
         @InjectModel(Sprint.name) private readonly sprintModel: Model<SprintDocument>,
         private readonly ticketService: TicketService) {}
+=======
+        @InjectModel(Sprint.name) private sprintModel: Model<SprintDocument>) {}
+
+
+    //  async Add(body: SprintDto) {
+    //     // Récupérez les tickets à partir des identifiants fournis
+    //      const tickets = await this.ticketModel.find({ _id: { $in: body.tickets } });
+
+    //      // Ajoutez les tickets associés au sprint
+    //      const sprint = await this.sprintModel.create({ ...body, tickets });
+        
+    //      // Retournez le sprint créé
+    //      return sprint;
+    //  }
+
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
     
      Add(body: SprintDto){
          return this.sprintModel.create(body);
@@ -31,6 +51,7 @@ export class SprintService {
         return this.sprintModel.deleteMany({_id:id});
      }
 
+<<<<<<< HEAD
     //  async assignTicketsToSprint(sprintId: string, ticketIds: string[]): Promise<Sprint> {
     //     const sprint = await this.FindOnesprint(sprintId);
     //     if (!sprint) {
@@ -47,4 +68,6 @@ export class SprintService {
     //     return sprint.save();
     // }
 
+=======
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
 }

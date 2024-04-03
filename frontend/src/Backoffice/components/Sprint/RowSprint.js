@@ -1,20 +1,73 @@
+<<<<<<< HEAD
+=======
+/*import { Td, Tr, Box, Button, Avatar } from '@chakra-ui/react'
+import React, { useContext } from 'react';
+import { AiFillDelete, AiFillEdit } from "react-icons/ai";
+import { GlobalContext } from '../context/GlobalWrapper';
+
+function RowSprint({ id, sprintname, description, startdate, enddate}) {
+  const { DeleteSprint,isOpen, onOpen, onClose,FindOneSprint  } = useContext(GlobalContext);
+
+
+  const onChangeHandler = () => {
+    onOpen(); // Ouvre le formulaire lorsqu'on clique sur l'icône d'édition
+  };
+
+ 
+  return (
+    <Tr>
+      <Td>{sprintname}</Td>
+      <Td>{description}</Td>
+      <Td>{startdate}</Td>
+      <Td>{enddate}</Td>
+
+      <Td> 
+        <Box display="flex" gap="1">
+          <Button colorScheme="blue">
+            <AiFillEdit
+            onClick={() => {
+              onChangeHandler();
+              FindOneSprint(id);
+            }}/>
+          </Button>
+
+          <Button colorScheme="red"  onClick={() => DeleteSprint(id)}>
+            <AiFillDelete  />
+          </Button>
+        </Box>
+      </Td>
+    </Tr>
+  )
+}
+
+export default RowSprint;
+*/
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
 import React, { useContext, useState, useEffect } from 'react';
 import { AiFillDelete, AiFillEdit } from 'react-icons/ai';
 import { Box, Button, Td, Tr, Table, Thead, Tbody, Th,AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter } from '@chakra-ui/react';
 import { GlobalContext } from '../../../context/GlobalWrapperSprint';
 
+<<<<<<< HEAD
 
 function RowSprint({ id, sprintname,project, description, startdate, enddate, tickets }) {
   const { DeleteSprint, onOpen, FindOneSprint,FindOneProject } = useContext(GlobalContext);
+=======
+function RowSprint({ id, sprintname, description, startdate, enddate, tickets }) {
+  const { DeleteSprint, onOpen, FindOneSprint } = useContext(GlobalContext);
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
   const [showTickets, setShowTickets] = useState(false);
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
+<<<<<<< HEAD
   const handleEditClick = () => {
     FindOneProject(id); // Appeler FindOneProject avec l'ID lors du clic sur le bouton "Edit"
     onOpen();
   };
 
+=======
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
     // Fonction pour ouvrir la boîte de dialogue
   const openDialog = () => {
     setIsDialogOpen(true);
@@ -50,17 +103,26 @@ function RowSprint({ id, sprintname,project, description, startdate, enddate, ti
     <>
       <Tr>
         <Td>{sprintname}</Td>
+<<<<<<< HEAD
         <Td>{project}</Td>
+=======
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
         <Td>{description}</Td>
         <Td>{startdate}</Td>
         <Td>{enddate}</Td>
 
         <Td>
           <Box display="flex" gap="1">
+<<<<<<< HEAD
           <Button colorScheme="blue" onClick={() => toggleTickets(id)}>
   {showTickets ? 'Hide Tickets' : 'Show Tickets'}
 </Button>
 
+=======
+            <Button colorScheme="blue" onClick={toggleTickets}>
+              {showTickets ? 'Hide Tickets' : 'Show Tickets'}
+            </Button>
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
 
             <Button colorScheme="blue">
               <AiFillEdit
@@ -104,6 +166,7 @@ function RowSprint({ id, sprintname,project, description, startdate, enddate, ti
       </Tr>
 
       {showTickets && (
+<<<<<<< HEAD
   <Tr>
     <Td colSpan={5}>
       <Table variant="simple">
@@ -128,8 +191,37 @@ function RowSprint({ id, sprintname,project, description, startdate, enddate, ti
   </Tr>
 )}
 
+=======
+        <Tr>
+          <Td colSpan={5}>
+            <Table variant="simple">
+              <Thead>
+                <Tr>
+                  <Th>Tickets</Th>
+                  {/* Add more columns as needed */}
+                </Tr>
+              </Thead>
+              <Tbody>
+                {tickets &&
+                  tickets.map((ticket) => (
+                    <Tr key={ticket._id}>
+                      <Td>{ticket._id}</Td>
+                      <Td>{ticket.description}</Td>
+                      {/* Add more cells as needed */}
+                    </Tr>
+                  ))}
+              </Tbody>
+            </Table>
+          </Td>
+        </Tr>
+      )}
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
     </>
   );
 }
 
 export default RowSprint;
+<<<<<<< HEAD
+=======
+
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920

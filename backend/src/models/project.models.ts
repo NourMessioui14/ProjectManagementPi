@@ -1,13 +1,19 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+<<<<<<< HEAD
 import mongoose from "mongoose";
+=======
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
 export type ProjectDocument = Project & Document;
 
 @Schema()
 export class Project {
+<<<<<<< HEAD
     
     @Prop({ type: mongoose.Schema.Types.ObjectId })
     _id: mongoose.Types.ObjectId;
     
+=======
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
     @Prop({ required: true }) // kima controle de saisie 
     projectname: string;
 

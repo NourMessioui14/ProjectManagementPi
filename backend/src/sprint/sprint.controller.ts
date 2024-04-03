@@ -1,14 +1,25 @@
+<<<<<<< HEAD
 import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, Query } from '@nestjs/common';
 import { SprintService } from './sprint.service';
 import { SprintDto } from 'src/dto/sprint.dto';
 import { TicketService } from 'src/ticket/ticket.service';
+=======
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { SprintService } from './sprint.service';
+import { SprintDto } from 'src/dto/sprint.dto';
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
 
 @Controller('sprint')
 export class SprintController {
 
+<<<<<<< HEAD
     
     constructor(private readonly service: SprintService, private readonly ticketService: TicketService) {}
 
+=======
+    constructor(private readonly service: SprintService) {}
+    
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
     @Post()
     Addsprint(@Body() body:SprintDto) {
         return this.service.Add(body);
@@ -34,6 +45,7 @@ export class SprintController {
         return this.service.Deletesprint(id);
     }
 
+<<<<<<< HEAD
     // @Get('/:id/tickets')
     // async findTicketsBySprintId(@Param('id') id: string) {
     //     const sprint = await this.service.FindOnesprint(id);
@@ -73,5 +85,9 @@ export class SprintController {
     //     }
     // }
 
+=======
+
+
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
 
 }
