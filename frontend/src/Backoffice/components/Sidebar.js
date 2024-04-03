@@ -35,7 +35,6 @@ function Sidebar() {
             </a>
           </li>
 
-<<<<<<< HEAD
             <li className="sidebar-item">
             <Link to="/userconnected">
       <i className="align-middle" data-feather="user-plus"></i> 
@@ -44,7 +43,6 @@ function Sidebar() {
             </li>
 =======
           <li className="sidebar-header">Plugins & Addons</li>
->>>>>>> b9962e1cb35e7f72a740a4d752f5b67c5d2d2484
 
           <li className="sidebar-item">
             <a className="sidebar-link" href="charts-chartjs.html">

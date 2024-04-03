@@ -24,10 +24,8 @@ function NavbarFront() {
                   <li><a href="#work-process">Table board </a></li>
                   <li><a href="#testimonials">  Team</a></li>
                   <li><a href="#pricing-plans">Claim</a></li>
-<<<<<<< HEAD
                   <li><a href="#blog">Blog Entries</a></li>
                   <li><Link to="/" className="active">SignUp</Link></li>
-=======
                   <li className="dropdown">
                     <button className="dropbtn">Task
                       <i className="fa fa-caret-down"></i>
@@ -37,7 +35,6 @@ function NavbarFront() {
                     </div>
                   </li>
                   <li><a href="#contact-us">Sign up </a></li>
->>>>>>> b9962e1cb35e7f72a740a4d752f5b67c5d2d2484
                 </ul>
                 <a className='menu-trigger'>
                   <span>Menu</span>

@@ -176,7 +176,7 @@ export default function Wrapper({ children }) {
           throw new Error('Error fetching users');
         }
         const data = await response.json();
-        setUsers(data);
+      //  setUsers(data);
       } catch (error) {
         console.error('Error:', error.message);
       }

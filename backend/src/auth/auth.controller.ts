@@ -69,7 +69,7 @@ export class AuthController {
 
       @Get('/backoffice')
       @Roles('Admin') 
-      @UseGuards(AuthenticatedGuard, RolesGuard) 
+      @UseGuards(JwtAuthGuard) 
       async getProtectedResource(@Session() session: Record<string, any>) {
         const adminData = await this.authService.getAdminData(session.userId);
         

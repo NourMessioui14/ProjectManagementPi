@@ -7,7 +7,6 @@ import Navbar from './Backoffice/components/Navbar';
 import Sidebar from './Backoffice/components/Sidebar';
 import Footer from './Backoffice/components/Footer';
 import RegisterForm from './FrontOffice/pages/User/RegisterForm';
-import UserList from './Backoffice/pages/UserList';
 import EmailVerification from './FrontOffice/pages/User/EmailVerification';
 import NewPassword from './FrontOffice/pages/User/NewPassword';
 import FourDigitVerification from './FrontOffice/pages/User/FourDigitVerification';
@@ -22,27 +21,28 @@ import Chatrooms from './Backoffice/components/Chat/Chatrooms';
 import VideoCalls from './Backoffice/components/Chat/videocalls';
 import ChatPage from './FrontOffice/components/Chat/ChatPage';
 import HomePage from './FrontOffice/components/Project/HomePage';
-<<<<<<< HEAD
 import Profile from './FrontOffice/pages/User/Profile';
 import UserConnected from './FrontOffice/pages/User/UserConnected';
 import ChangePass from './FrontOffice/pages/User/ChangePass';
 import NavbarFront from './FrontOffice/NavbarFront';
 import UserRolesChart from './Backoffice/components/User/UserRolesChart';
-=======
-<<<<<<< HEAD
-import NavbarFront from './FrontOffice/NavbarFront';
 import CustomCard from './FrontOffice/components/Project/CardProject';
 import ProjectListFront from './FrontOffice/components/Project/ProjectListFront';
 import CreateProjectForm from './FrontOffice/components/Project/createprojectfront';
 
   
-=======
-import Profile from './FrontOffice/pages/Profile';
-import UserConnected from './FrontOffice/pages/UserConnected';
->>>>>>> b9962e1cb35e7f72a740a4d752f5b67c5d2d2484
 
->>>>>>> e14eaa061649a5c3ecee85fdd8fa985a5fe9717f
 function App() {
+
+const isAuthenticated=() => {
+  const token = localStorage.getItem('token');
+  return !!token;
+
+};
+
+
+
+
   return (
     <Router>
       <Routes>
@@ -87,10 +87,7 @@ function App() {
         <Route path="/chat" element={<Chatrooms />} />
         <Route path="/videocall" element={<VideoCalls />} />
         <Route path="/messenger" element={<ChatPage />} />
-<<<<<<< HEAD
         <Route path='/changePass' element={<ChangePass/>} />
-=======
-        <Route path="/navbarfront" element={<NavbarFront />} />
         <Route path="/Sidebar" element={<Sidebar />} />
         <Route path="/navbar" element={<Navbar />} />
 
@@ -106,7 +103,6 @@ function App() {
 
 
 
->>>>>>> b9962e1cb35e7f72a740a4d752f5b67c5d2d2484
 
         <Route path="/home" element={<HomePage />} />
 
