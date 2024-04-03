@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Table, TableCaption, Thead, Tbody, Tr, Th, Td, Box, Button, Alert, AlertIcon, TableContainer, Tfoot, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter } from '@chakra-ui/react';
-
+import { Link } from 'react-router-dom';
 const UserList = () => {
   const [users, setUsers] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
@@ -94,6 +94,9 @@ const UserList = () => {
                   <Button colorScheme="teal" onClick={() => handleShowDetails(user)}>
                     Details
                   </Button>
+
+                
+
                 </Td>
               </Tr>
             ))}

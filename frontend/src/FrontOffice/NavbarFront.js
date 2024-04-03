@@ -20,7 +20,7 @@ function NavbarFront() {
                   <li><a href="#testimonials">  Team</a></li>
                   <li><a href="#pricing-plans">Claim</a></li>
                   <li><a href="#blog">Blog Entries</a></li>
-                  <li><a href="#contact-us">Sign up </a></li>
+                  <li><Link to="/" className="active">SignUp</Link></li>
                 </ul>
                 <a className='menu-trigger'>
                   <span>Menu</span>

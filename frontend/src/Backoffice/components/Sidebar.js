@@ -34,9 +34,10 @@ function Sidebar() {
             </li>
 
             <li className="sidebar-item">
-                <a className="sidebar-link" href="pages-sign-up.html">
-      <i className="align-middle" data-feather="user-plus"></i> <span className="align-middle">Claim Management</span>
-    </a>
+            <Link to="/userconnected">
+      <i className="align-middle" data-feather="user-plus"></i> 
+      <span className="align-middle">User Connected</span>
+      </Link>
             </li>
 
            

@@ -38,14 +38,14 @@ const RegisterForm = () => {
   useEffect(() => {
     const sign_in_btn = document.querySelector("#sign-in-btn");
     const sign_up_btn = document.querySelector("#sign-up-btn");
-    const container = document.querySelector(".container");
+    const container_sig = document.querySelector(".container_sig");
 
     const handleSignUpClick = () => {
-      container.classList.add("sign-up-mode");
+      container_sig.classList.add("sign-up-mode");
     };
 
     const handleSignInClick = () => {
-      container.classList.remove("sign-up-mode");
+      container_sig.classList.remove("sign-up-mode");
     };
 
     sign_up_btn.addEventListener("click", handleSignUpClick);
@@ -102,6 +102,8 @@ const RegisterForm = () => {
             console.log('Login successful! Received token:', responseData.token);
             console.log('Role:', responseData.role);
 
+            localStorage.setItem('token', responseData.token);
+
             if (responseData.role === 'admin') {
                 localStorage.setItem('role', responseData.role); 
                 navigate('/backoffice');
@@ -115,8 +117,8 @@ const RegisterForm = () => {
 };
 
   return (
-    <div className="container">
-      <div className="forms-container">
+    <div className="container_sig">
+      <div className="forms-container_sig">
         <div className="signin-signup">
           {/* Sign in Form */}
           <Formik
@@ -308,7 +310,7 @@ const RegisterForm = () => {
           )}
         </div>
       </div>
-      <div className="panels-container">
+      <div className="panels-container_sig">
         <div className="panel left-panel">
           <div className="content">
             <h3>You don't have an account?</h3>

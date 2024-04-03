@@ -1,50 +1,56 @@
-import { React, useState, props } from 'react'
-import { BrowserRouter as Router, Route, Routes, Link, useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
 
 function NewPassword() {
     const [newPass, setNewPass] = useState("");
     const [cNewPass, setCNewPass] = useState("");
     const navigate = useNavigate();
     const { id } = useParams();
-
-    console.log(id)
+    console.log(id);
 
     const onNewPassChange = (e) => {
-        setNewPass(e.target.value)
-    }
-    const onCNewPassChange = (e) => {
-        setCNewPass(e.target.value)
-    }
+        setNewPass(e.target.value);
+    };
 
+    const onCNewPassChange = (e) => {
+        setCNewPass(e.target.value);
+    };
 
     const onSubmit = (e) => {
-        e.preventDefault()
-
+        e.preventDefault();
+    
         if (newPass === cNewPass) {
             const updatedData = {
                 password: newPass,
             };
-            axios
-                .patch('http://localhost:5000/auth/' + id, updatedData)
-                .then((response) => {
-                    const userArray = response.data;
-                    toast.success("Password Changed Successfully!")
-                    navigate('/Login')
-                })
-                .catch((err) => {
-                    toast.error("Some Error Occurred Try Again Later")
-                    console.log(err);
-                });
+    
+            axios.patch(`http://localhost:5001/auth/forgetpass/${id}`, updatedData)
+            .then((response) => {
+                // Handle successful response
+                toast.success("Password Changed Successfully!");
+                navigate('/Login');
+            })
+            .catch((error) => {
+                if (error.response) {
+                    // The request was made and the server responded with a status code
+                    // Display the error message from the response data
+                    const errorMessage = error.response.data.message || "Server Error";
+                    toast.error(`Error: ${errorMessage}`);
+                } else if (error.request) {
+                    // The request was made but no response was received
+                    toast.error("Network Error: No response received from server");
+                } else {
+                    // Something happened in setting up the request that triggered an Error
+                    toast.error(`Request Error: ${error.message}`);
+                }
+            });
+        } else {
+            toast.error('Passwords Do Not Match');
         }
-        else{
-            toast.error('Password Does not Match')
-        }
-
-    }
-
+    };
+    
     return (
         <>
             <section className='max-w-screen-xl mx-auto grid grid-cols-1 md:grid-cols-2'>
@@ -72,7 +78,7 @@ function NewPassword() {
                         </div>
                         <div className="mb-4">
                             <label htmlFor="cpassword" className="block font-medium mb-1">
-                                Confrim New Password
+                                Confirm New Password
                             </label>
                             <input
                                 type="password"
@@ -85,15 +91,14 @@ function NewPassword() {
                             />
                         </div>
                         <button className='w-full bg-blue-500 p-2 text-white'>Submit</button>
-                        <p className='text-center mt-8  italic'>Don't have any Account?</p>
+                        <p className='text-center mt-8 italic'>Don't have any Account?</p>
                         <p className='text-center font-semibold mb-6 text-blue-500 italic'><Link to={'/Signup'}>SignUp</Link></p><br />
-                        <p className=' font-semibold mt-8 text-blue-500 italic'><Link to={'/Digitverify'}>Previous</Link></p>
+                        <p className='font-semibold mt-8 text-blue-500 italic'><Link to={'/Digitverify'}>Previous</Link></p>
                     </form>
                 </article>
             </section>
         </>
-    )
+    );
 }
 
-
-export default NewPassword
+export default NewPassword;
