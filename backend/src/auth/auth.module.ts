@@ -6,7 +6,7 @@ import { PassportModule } from '@nestjs/passport';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtStrategy } from './jwt.strategy';
-import { UserSchema } from './schemas/user.schema';
+import { User, UserSchema } from './schemas/user.schema';
 import { RolesGuard } from 'src/roles/roles.guard';
 import { Type } from 'class-transformer';
 import { SessionSerializer } from './utils/SessionSerializer';
@@ -28,11 +28,13 @@ import { LocalStrategy } from './utils/LocalStrategy';
         };
       },
     }),
-    MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),
+    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]), // Utilisez User.name pour la cohérence
   ],
   controllers: [AuthController],
   providers: [  AuthService,
    JwtStrategy,LocalStrategy,SessionSerializer,RolesGuard],
-  exports: [JwtStrategy, PassportModule,AuthService],
-})
+
+
+   exports: [AuthService, JwtStrategy, PassportModule, MongooseModule.forFeature([{ name: 'User', schema: UserSchema }])], // Ajustez ici
+  })
 export class AuthModule {}

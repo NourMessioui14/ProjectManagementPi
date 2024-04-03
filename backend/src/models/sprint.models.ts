@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { TicketDocument, TicketSchema } from "./ticket.models";
 export type SprintDocument = Sprint & Document ;
+
  @Schema()
  export class Sprint{
     @Prop({required : true}) // kima controle de saisie 

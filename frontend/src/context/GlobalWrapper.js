@@ -76,12 +76,17 @@ export default function Wrapper({ children }) {
 
   const FetchTickets = async () => {
     try {
-        const res = await axios.get('/ticket');
-        setTickets(res.data); // Correction de l'utilisation de setTickets
-    } catch (err) {
-        console.log(err.response.data);
+      const response = await axios.get('/ticket');
+      if (response.data) {
+        setTickets(response.data);
+      } else {
+        throw new Error('No data received');
+      }
+    } catch (error) {
+      console.error('Error fetching tickets:', error);
     }
-};
+  };
+  
 
     
     const AddTicket = (formT, setFormT) => {

@@ -22,18 +22,17 @@ import Chatrooms from './Backoffice/components/Chat/Chatrooms';
 import VideoCalls from './Backoffice/components/Chat/videocalls';
 import ChatPage from './FrontOffice/components/Chat/ChatPage';
 import HomePage from './FrontOffice/components/Project/HomePage';
-<<<<<<< HEAD
 import NavbarFront from './FrontOffice/NavbarFront';
 import CustomCard from './FrontOffice/components/Project/CardProject';
 import ProjectListFront from './FrontOffice/components/Project/ProjectListFront';
 import CreateProjectForm from './FrontOffice/components/Project/createprojectfront';
 
   
-=======
 import Profile from './FrontOffice/pages/Profile';
 import UserConnected from './FrontOffice/pages/UserConnected';
+import TaskModal from './Backoffice/components/Ticket/TaskModal';
+import DetailsProject from './FrontOffice/components/Project/DetailsProject';
 
->>>>>>> e14eaa061649a5c3ecee85fdd8fa985a5fe9717f
 function App() {
   return (
     <Router>
@@ -63,9 +62,6 @@ function App() {
         <Route path="/forgetPassword" element={<EmailVerification />} />
         <Route path='/NewPassword/:id' element={<NewPassword />} />
           <Route path='/profile' element = {<Profile/>} />
-
-
-
         <Route path='/Digitverify' element={<FourDigitVerification/>}/>
         <Route path="/projects" element={<ProjectList />} />
         <Route path="/tickets" element={<TicketList />} />
@@ -80,26 +76,16 @@ function App() {
         <Route path="/navbarfront" element={<NavbarFront />} />
         <Route path="/Sidebar" element={<Sidebar />} />
         <Route path="/navbar" element={<Navbar />} />
-
         <Route path="/cardproject" element={<CustomCard />} />
         <Route path="/ProjectListFront" element={<ProjectListFront />} />
-
         <Route path="/CreateProjectForm" element={<CreateProjectForm />} />
-
-
+        <Route path="/home" element={<HomePage />} />
+        <Route path="/userconnected/:id" element={<UserConnected />} />
+        <Route path="/TaskModal" element={<TaskModal />} />
+        <Route path="/detailsproject/:projectId" element={<DetailsProject />} />
 
         
 
-
-
-
-
-        <Route path="/home" element={<HomePage />} />
-
-
-
-
-        <Route path="/userconnected/:id" element={<UserConnected />} />
 
 
 

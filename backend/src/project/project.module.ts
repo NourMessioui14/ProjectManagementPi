@@ -7,6 +7,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 @Module({
   imports: [MongooseModule.forFeature([{ name: Project.name, schema: ProjectSchema }])],
   controllers: [ProjectController],
+  exports: [MongooseModule], // Important pour rendre ProjectModel accessible ailleurs
+
   providers: [ProjectService]
 })
 export class ProjectModule {}
