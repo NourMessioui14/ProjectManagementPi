@@ -1,63 +1,113 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Card, CardHeader, CardBody, Box, Heading, Text, Stack, StackDivider, Button, Flex } from '@chakra-ui/react';
-import { GlobalContext } from '../context/GlobalWrapper';
+import {
+  Card, CardHeader, CardBody, Box, Heading, Text, Stack, StackDivider, Button,
+  Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, Avatar, Flex
+} from '@chakra-ui/react';
+import { Link } from 'react-router-dom';
+import { GlobalContext } from '../../../context/GlobalWrapper';
+import NavbarFront from '../../NavbarFront';
 
 function CustomCard() {
   const { projects, FetchProjects } = useContext(GlobalContext);
-  const [displayedProjects, setDisplayedProjects] = useState([]);
-  const [showAllProjects, setShowAllProjects] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedProject, setSelectedProject] = useState(null);
 
   useEffect(() => {
     FetchProjects();
-  }, []);
+  }, [FetchProjects]);
 
-  useEffect(() => {
-    if (projects.length > 0) {
-      const displayed = showAllProjects ? projects : projects.slice(0, 3); // Afficher uniquement 4 projets
-      setDisplayedProjects(displayed);
-    }
-  }, [projects, showAllProjects]);
-
-  const handleShowAllProjects = () => {
-    setShowAllProjects(true);
+  const handleReadMore = (project) => {
+    setSelectedProject(project);
+    setIsModalOpen(true);
   };
+
+  const handleCloseModal = () => {
+    setSelectedProject(null);
+    setIsModalOpen(false);
+  };
+
+  const avatarList = [
+    '/logos/camera.png', '/logos/main.png', '/logos/homme.png',
+    '/logos/lancproj.png', '/logos/energ.png', '/logos/proj.png',
+  ];
+
+  const getAvatar = (id) => {
+    let hash = 0;
+    for (let i = 0; i < id.length; i++) {
+      hash = id.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    const index = Math.abs(hash % avatarList.length);
+    return avatarList[index];
+  };
+
+  const favoriteProjects = projects.filter(project => project.isFavorite);
 
   return (
     <div>
-      {/* Vos autres éléments HTML */}
+    <NavbarFront/>
       <section className="section" id="blog">
         <div className="container" mt="4">
           <Heading as="h5" size="lg" textAlign="left" mt="8">Recent Projects</Heading>
-          <Flex justifyContent="flex-end" mt="4"> {/* Déplacer le bouton vers la droite */}
-            {!showAllProjects && projects.length > 4 && (
-              <Button onClick={handleShowAllProjects}>See All Projects</Button>
-            )}
+          <Flex justifyContent="flex-end" mt="4">
+            <Link to="/ProjectListFront">
+              <Button>See All Projects</Button>
+            </Link>
           </Flex>
           <Flex flexWrap="wrap" justifyContent="space-between">
-            {displayedProjects.map(project => (
+            {projects.slice(0, 3).map(project => (
               <Box key={project._id} width={{ base: '100%', sm: '48%', md: '30%' }} mt="4">
                 <Card borderWidth="1px" borderRadius="lg" p="4">
                   <CardHeader>
-                    <Heading size="md">{project.avatar}</Heading>
-                    <Heading size="md">{project.projectname} : </Heading>
+                    <Avatar src={getAvatar(project._id)} alt="Avatar" size="md" />
+                    <Heading size="md" ml="4">{project.projectname}</Heading>
                   </CardHeader>
                   <CardBody>
                     <Stack divider={<StackDivider />} spacing="4">
                       <Box>
                         <Text fontWeight="bold">Description:</Text>
-                        <Text pt="2" fontSize="sm">{project.description}</Text>
+                        <Text fontSize="sm">{project.description.length > 80 ? `${project.description.substring(0, 80)}...` : project.description}</Text>
+                        {project.description.length > 80 && (
+                          <Button onClick={() => handleReadMore(project)} mt="2">Read More</Button>
+                        )}
                       </Box>
-                      <a href="#" className="main-button">Read More</a>
                     </Stack>
                   </CardBody>
                 </Card>
               </Box>
             ))}
           </Flex>
+          {favoriteProjects.length > 0 && (
+            <>
+              <Heading as="h5" size="lg" textAlign="left" mt="8">Favorite Projects</Heading>
+              <Stack mt="4">
+                {favoriteProjects.map(project => (
+                  <Box key={project._id} p="2">
+                    <Flex align="center">
+                      <Avatar src={getAvatar(project._id)} alt="Avatar" size="sm" />
+                      <Text ml="4" fontSize="sm">{project.projectname}</Text>
+                    </Flex>
+                  </Box>
+                ))}
+              </Stack>
+            </>
+          )}
         </div>
       </section>
+      
+      <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>{selectedProject && selectedProject.projectname}</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Text>{selectedProject && selectedProject.description}</Text>
+          </ModalBody>
+          <ModalFooter>
+            <Button onClick={handleCloseModal}>Close</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </div>
   );
 }
-
 export default CustomCard;

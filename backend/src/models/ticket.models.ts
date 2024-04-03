@@ -1,6 +1,8 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Project, ProjectDocument, ProjectSchema } from "./project.models";
+import { UserDocument, UserSchema } from "src/auth/schemas/user.schema";
 export type TicketDocument = Ticket & Document ;
+
  @Schema()
  export class Ticket{
    
@@ -22,8 +24,9 @@ export type TicketDocument = Ticket & Document ;
     description : string ; 
   
    
-    @Prop({required:true})
-    responsable : string ;
+    @Prop({ type: UserSchema }) // Utilisez la référence au schéma du modèle de projet
+    responsable:UserDocument ; // Utilisez le type du document du modèle de projet ici
+
 
 
     

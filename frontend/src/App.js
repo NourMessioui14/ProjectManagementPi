@@ -1,5 +1,6 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom'; // Garder cette importation unique
+
 import Dashboard from './Backoffice/pages/Dashboard';
 
 import Navbar from './Backoffice/components/Navbar';
@@ -21,12 +22,26 @@ import Chatrooms from './Backoffice/components/Chat/Chatrooms';
 import VideoCalls from './Backoffice/components/Chat/videocalls';
 import ChatPage from './FrontOffice/components/Chat/ChatPage';
 import HomePage from './FrontOffice/components/Project/HomePage';
+<<<<<<< HEAD
 import Profile from './FrontOffice/pages/User/Profile';
 import UserConnected from './FrontOffice/pages/User/UserConnected';
 import ChangePass from './FrontOffice/pages/User/ChangePass';
 import NavbarFront from './FrontOffice/NavbarFront';
 import UserRolesChart from './Backoffice/components/User/UserRolesChart';
+=======
+<<<<<<< HEAD
+import NavbarFront from './FrontOffice/NavbarFront';
+import CustomCard from './FrontOffice/components/Project/CardProject';
+import ProjectListFront from './FrontOffice/components/Project/ProjectListFront';
+import CreateProjectForm from './FrontOffice/components/Project/createprojectfront';
 
+  
+=======
+import Profile from './FrontOffice/pages/Profile';
+import UserConnected from './FrontOffice/pages/UserConnected';
+>>>>>>> b9962e1cb35e7f72a740a4d752f5b67c5d2d2484
+
+>>>>>>> e14eaa061649a5c3ecee85fdd8fa985a5fe9717f
 function App() {
   return (
     <Router>
@@ -42,7 +57,7 @@ function App() {
                   <div className="container-fluid p-0">
                     <Routes>
                       <Route index element={<Dashboard />} />
-                      <Route path="/users" element={<UserList />} />
+
                       <Route path="/projects" element={<ProjectList />} />
                     </Routes>
                   </div>
@@ -72,7 +87,26 @@ function App() {
         <Route path="/chat" element={<Chatrooms />} />
         <Route path="/videocall" element={<VideoCalls />} />
         <Route path="/messenger" element={<ChatPage />} />
+<<<<<<< HEAD
         <Route path='/changePass' element={<ChangePass/>} />
+=======
+        <Route path="/navbarfront" element={<NavbarFront />} />
+        <Route path="/Sidebar" element={<Sidebar />} />
+        <Route path="/navbar" element={<Navbar />} />
+
+        <Route path="/cardproject" element={<CustomCard />} />
+        <Route path="/ProjectListFront" element={<ProjectListFront />} />
+
+        <Route path="/CreateProjectForm" element={<CreateProjectForm />} />
+
+
+
+        
+
+
+
+
+>>>>>>> b9962e1cb35e7f72a740a4d752f5b67c5d2d2484
 
         <Route path="/home" element={<HomePage />} />
 
@@ -90,5 +124,9 @@ function App() {
     </Router>
   );
 }
+
+
+
+
 
 export default App;

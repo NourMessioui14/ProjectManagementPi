@@ -169,7 +169,19 @@ export default function Wrapper({ children }) {
           setErrors(err.response.data.error);
         });
     };
-
+    const fetchUsers = async () => {
+      try {
+        const response = await fetch('http://localhost:5001/auth/users');
+        if (!response.ok) {
+          throw new Error('Error fetching users');
+        }
+        const data = await response.json();
+        setUsers(data);
+      } catch (error) {
+        console.error('Error:', error.message);
+      }
+    };
+  
     return (
         <GlobalContext.Provider value={{ 
             FetchProjects, 
@@ -192,7 +204,8 @@ export default function Wrapper({ children }) {
             ticket,
             setProject,
             setTicket,
-            Update
+            Update,
+            fetchUsers
 
   
         }}>

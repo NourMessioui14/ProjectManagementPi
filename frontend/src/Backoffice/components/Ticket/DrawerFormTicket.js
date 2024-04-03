@@ -4,7 +4,7 @@ import { FcHighPriority } from "react-icons/fc";
 import { GlobalContext } from '../../../context/GlobalWrapper';
 
 export default function DrawerFormTicket() {
-  const { isOpen, onClose, AddTicket, errors, setErrors, UpdateTicket, tickets, ticket, projects, FetchProjects } = useContext(GlobalContext);
+  const { isOpen, onClose, AddTicket, errors, setErrors, UpdateTicket, tickets, ticket, projects, responsables, FetchProjects, fetchUsers } = useContext(GlobalContext); // Ajoutez FetchResponsables
   const [formT, setFormT] = useState({});
   const [validationErrors, setValidationErrors] = useState({});
 
@@ -38,9 +38,17 @@ export default function DrawerFormTicket() {
   const onChangeHandler = (e) => {
     if (e.target.name === 'project') {
       const selectedProject = projects.find(project => project._id === e.target.value);
+  
       setFormT({
         ...formT,
         project: selectedProject || null,
+      });
+    } else if (e.target.name === 'responsable') {
+      const selectedResponsable = responsables.find(responsable => responsable._id === e.target.value); // Utiliser responsables au lieu de projects pour trouver le responsable
+  
+      setFormT({
+        ...formT,
+        responsable: selectedResponsable || null,
       });
     } else {
       setFormT({
@@ -77,6 +85,7 @@ export default function DrawerFormTicket() {
       setFormT({});
     }
     FetchProjects();
+    fetchUsers(); // Appeler FetchResponsables ici pour charger la liste des responsables
   }, [isOpen, ticket]);
 
   return (
@@ -140,15 +149,18 @@ export default function DrawerFormTicket() {
                 <option value="Story">Story</option>
                 <option value="Tache">Tache</option>
                 <option value="Bug">   <FcHighPriority />Bug </option>
-                <option value="Epic">Epic</option>
-              </Select>
-              <FormErrorMessage>{validationErrors.typeOfticket}</FormErrorMessage>
+                <option value="Epic">Epic   </option>             </Select>
+                <FormErrorMessage>{validationErrors.typeOfticket}</FormErrorMessage>
             </FormControl>
             
             <FormControl isInvalid={!!validationErrors.responsable}>
-              <FormLabel>Responsible</FormLabel>
-              <Input type="text" name="responsable" onChange={onChangeHandler} value={formT?.responsable || ''} />
-              <FormErrorMessage>{validationErrors.responsable}</FormErrorMessage>
+                <FormLabel>Responsable</FormLabel>
+                <Select name="responsable" onChange={onChangeHandler} value={formT?.responsable?._id || ''}>
+                  {responsables && responsables.map(responsable => (
+                    <option key={responsable._id} value={responsable._id}>{typeof responsable.name === 'string' ? responsable.name : ''}</option>
+                  ))}
+                </Select>
+                <FormErrorMessage>{validationErrors.project}</FormErrorMessage>
             </FormControl>
             
             </Stack>
@@ -171,3 +183,4 @@ export default function DrawerFormTicket() {
     </>
   );
 }
+
