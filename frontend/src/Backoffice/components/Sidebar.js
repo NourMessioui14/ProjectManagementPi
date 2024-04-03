@@ -24,9 +24,15 @@ function Sidebar() {
           </li>
 
           <li className="sidebar-item">
+<<<<<<< HEAD
             <Link to="/reclamations" className="sidebar-link" >
               <i className="align-middle" data-feather="log-in"></i> <span className="align-middle">Claim Managment</span>
             </Link>
+=======
+            <a className="sidebar-link" href="pages-sign-in.html">
+              <i className="align-middle" data-feather="log-in"></i> <span className="align-middle">Claim Managment</span>
+            </a>
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7
           </li>
 
           <li className="sidebar-item">
@@ -35,7 +41,24 @@ function Sidebar() {
             </a>
           </li>
 
+<<<<<<< HEAD
           <li className="sidebar-header">Plugins & Addons</li>
+=======
+<<<<<<< HEAD
+          <li className="sidebar-header">Plugins & Addons</li>
+=======
+<<<<<<< HEAD
+            <li className="sidebar-item">
+            <Link to="/userconnected">
+      <i className="align-middle" data-feather="user-plus"></i> 
+      <span className="align-middle">User Connected</span>
+      </Link>
+            </li>
+=======
+          <li className="sidebar-header">Plugins & Addons</li>
+>>>>>>> b9962e1cb35e7f72a740a4d752f5b67c5d2d2484
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7
 
           <li className="sidebar-item">
             <a className="sidebar-link" href="charts-chartjs.html">

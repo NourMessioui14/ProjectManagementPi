@@ -15,6 +15,10 @@ function TicketList() {
 
   useEffect(() => {
     FetchTickets();
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7
   }, []);
 
   // Filtrer les tickets en fonction du terme de recherche
@@ -23,6 +27,24 @@ function TicketList() {
     ticket.typeOfticket.toLowerCase().includes(searchTerm.toLowerCase()) ||
     ticket.description.toLowerCase().includes(searchTerm.toLowerCase())
   );
+<<<<<<< HEAD
+=======
+=======
+    console.log(tickets); // Log the tickets to see their structure
+  }, []);
+  
+
+  // Filtrer les tickets en fonction du terme de recherche
+  const filteredTickets = tickets.filter(ticket =>
+    ticket.project?.projectname?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    ticket.typeOfticket?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    ticket.description?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+  
+
+  
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7
 
   // Index du dernier ticket de la page
   const indexOfLastTicket = currentPage * ticketsPerPage;
@@ -77,6 +99,10 @@ function TicketList() {
                 </Tr>
               </Thead>
               <Tbody>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7
                 {currentTickets.map(({ _id, project, sprint, typeOfticket, etat, description, responsable }) => (
                   <RowTicket
                     key={_id}
@@ -89,6 +115,24 @@ function TicketList() {
                     responsable={responsable}
                   />
                 ))}
+<<<<<<< HEAD
+=======
+=======
+              {currentTickets.map(({ _id, project, sprint, typeOfticket, etat, description, responsable }) => (
+                <RowTicket
+                  key={_id}
+                  id={_id}
+                  project={project ? project.projectname : 'Unknown'}
+                  sprint={sprint?.sprintname  || 'Unknown' }
+                  typeOfticket={typeOfticket}
+                  etat={etat}
+                  description={description}
+                  responsable={responsable?.name || 'Unknown'}
+                />
+              ))}
+              
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7
               </Tbody>
             </Table>
           </TableContainer>
@@ -111,3 +155,10 @@ function TicketList() {
 }
 
 export default TicketList;
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7

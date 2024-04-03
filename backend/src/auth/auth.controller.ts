@@ -1,4 +1,13 @@
+<<<<<<< HEAD
 import { Body, Controller, Delete, Get, Param, Post, Put, Query, Req, Session, UseGuards } from '@nestjs/common';
+=======
+<<<<<<< HEAD
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, Req, Session, UseGuards } from '@nestjs/common';
+=======
+import { EditProfileDto } from './dto/EditProfile.dto';
+import { BadRequestException, Body, Controller, Delete, ForbiddenException, Get, HttpException, HttpStatus, NotFoundException, Param, Patch, Post, Put, Query, Req, Session, UnauthorizedException, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { SignUpDto, UserRole } from './dto/signup.dto'; // Import UserRole correctly
@@ -6,6 +15,10 @@ import { Roles } from 'src/roles/roles.decorator';
 import { RolesGuard } from 'src/roles/roles.guard';
 import session from 'express-session';
 import { AuthGuard } from '@nestjs/passport';
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7
 import { AuthenticatedGuard, LocalAuthGuard } from './utils/LocalGuard';
 import { Request } from 'express';
 import { User } from './schemas/user.schema';
@@ -13,6 +26,26 @@ import { User } from './schemas/user.schema';
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
+<<<<<<< HEAD
+=======
+=======
+import { AuthenticatedGuard, LocalAuthGuard } from './guard/LocalGuard';
+import { Request } from 'express';
+import { User } from './schemas/user.schema';
+import { JwtService } from '@nestjs/jwt';
+import { AllowAllGuard } from './utils/AllowAllGuard';
+import { JwtAuthGuard } from './guard/JwtAuthGuard';
+import { CurrentUser } from './utils/CurrentUser';
+import { getUser } from './decorator/get-user.decorator';
+import { changePassDto } from './dto/changePass.dto';
+
+
+@Controller('auth')
+export class AuthController {
+  constructor(private authService: AuthService  ,  private jwtService: JwtService, // Injecter JwtService
+  ) {}
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7
 
   @Post('/signup')
   signUp(@Body() signUpDto: SignUpDto): Promise<{ token: string }> {
@@ -33,11 +66,29 @@ export class AuthController {
   findAll(){
      return this.authService.findAll();
   }
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7
    @Get("users/:id")
   findOne(@Param('id') id: string){
          return this.authService.findOne(id);
       } 
+<<<<<<< HEAD
     @Put("users/:id")
+=======
+<<<<<<< HEAD
+    @Put("users/:id")
+=======
+
+
+
+    @Put("put/:id")
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7
       update(@Param('id') id: string, @Body() body: SignUpDto){
          return this.authService.update(id, body);
       }
@@ -47,10 +98,23 @@ export class AuthController {
          return this.authService.delete(id);
       }
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7
       @Get(":email")
       findEmail(@Param('email') email: string) {
         return this.authService.findOneByEmail(email);
       }
+<<<<<<< HEAD
+=======
+=======
+       @Get("/usermail/:email")
+      findEmail(@Param('email') email: string) {
+        return this.authService.findByEmail(email);
+      } 
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7
       
       
 
@@ -62,6 +126,23 @@ export class AuthController {
         
         return adminData;
       }
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+
+
+
+      @Get('user/:id') // Mettez à jour le chemin de la route avec l'ID
+      async getUserById(@Param('id') id: string) {
+        if (!id) {
+          throw new BadRequestException('ID is required');
+        }
+        return this.authService.findOneById(id);
+      }
+        
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7
       
       
 
@@ -104,9 +185,21 @@ export class AuthController {
   }
 
   @Put('/users/update/:id')
+<<<<<<< HEAD
   async updateUser(@Param('id') id: string, @Body() body: SignUpDto): Promise<User> {
     try {
       return await this.authService.update(id, body);
+=======
+<<<<<<< HEAD
+  async updateUser(@Param('id') id: string, @Body() body: SignUpDto): Promise<User> {
+    try {
+      return await this.authService.update(id, body);
+=======
+  async updateUser(@Param('id') id: string, @Body() body: EditProfileDto): Promise<User> {
+    try {
+      return await this.authService.updateProfile(id, body);
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7
     } catch (error) {
       throw new Error(`Erreur lors de la mise à jour de l'utilisateur : ${error.message}`);
     }
@@ -115,6 +208,56 @@ export class AuthController {
 
 
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+  @UseGuards(JwtAuthGuard)
+  @Get('/profile')
+  getProfile(@getUser() user: User) {
+    console.log('Détails de l\'utilisateur :', user);
+    return { user };
+  }
+
+
+
+  @UseGuards(AllowAllGuard)
+  @Get('/userId')
+  getUserId(@getUser() user: User) {
+    return user._id;
+  }
+  
+  
+
+
+  
+
+  @UseGuards(JwtAuthGuard)
+  @Patch('/changePass')
+  async changePass(@Body() changePassDto: changePassDto, @getUser() user: User) {
+    try {
+      const updatedUser = await this.authService.changePass(changePassDto, user);
+      return { message: 'Password changed successfully', user: updatedUser };
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
+  }
+    
+
+
+  @Patch(':id')
+  async updateUserValue(@Param('id') id: string, @Body() updatedFields: Record<string, any>): Promise<User> {
+    return this.authService.updateUserValue(id, updatedFields);
+  }
+  
+  
+  }
+
+
+
+
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7
 
 
 
@@ -122,8 +265,18 @@ export class AuthController {
 
 
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7
 
 
 
 
     }
+<<<<<<< HEAD
+=======
+=======
+    
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7

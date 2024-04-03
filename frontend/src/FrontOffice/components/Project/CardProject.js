@@ -1,7 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
   Card, CardHeader, CardBody, Box, Heading, Text, Stack, StackDivider, Button,
+<<<<<<< HEAD
   Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, Avatar, Flex
+=======
+<<<<<<< HEAD
+  Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, Avatar, Flex
+=======
+  Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, Avatar, Flex, SimpleGrid
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7
 } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import { GlobalContext } from '../../../context/GlobalWrapper';
@@ -11,10 +19,28 @@ function CustomCard() {
   const { projects, FetchProjects } = useContext(GlobalContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7
 
   useEffect(() => {
     FetchProjects();
   }, [FetchProjects]);
+<<<<<<< HEAD
+=======
+=======
+  const [recentProjects, setRecentProjects] = useState([]); // State to store recent projects
+
+
+  useEffect(() => {
+    FetchProjects();
+    const recentProjectIds = JSON.parse(localStorage.getItem('recentProjects')) || [];
+    const recentProjectsToShow = projects.filter(project => recentProjectIds.includes(project._id));
+    setRecentProjects(recentProjectsToShow);
+  }, [FetchProjects, projects]);
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7
 
   const handleReadMore = (project) => {
     setSelectedProject(project);
@@ -42,6 +68,16 @@ function CustomCard() {
 
   const favoriteProjects = projects.filter(project => project.isFavorite);
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+  // Récupérer les projets récemment consultés à partir du local storage
+  const recentProjectIds = JSON.parse(localStorage.getItem('recentProjects')) || [];
+  const recentProjectsToShow = projects.filter(project => recentProjectIds.includes(project._id));
+
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7
   return (
     <div>
     <NavbarFront/>
@@ -76,6 +112,10 @@ function CustomCard() {
               </Box>
             ))}
           </Flex>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7
           {favoriteProjects.length > 0 && (
             <>
               <Heading as="h5" size="lg" textAlign="left" mt="8">Favorite Projects</Heading>
@@ -91,6 +131,39 @@ function CustomCard() {
               </Stack>
             </>
           )}
+<<<<<<< HEAD
+=======
+=======
+          <SimpleGrid columns={{ base: 1, md: 2 }} spacing={5}>
+          <Box>
+            <Heading as="h6" size="md" textAlign="left" mt="4">Favorite Projects</Heading>
+            <Stack mt="4">
+              {favoriteProjects.map(project => (
+                <Box key={project._id} p="2">
+                  <Flex align="center">
+                    <Avatar src={getAvatar(project._id)} alt="Avatar" size="sm" />
+                    <Text ml="4" fontSize="sm">{project.projectname}</Text>
+                  </Flex>
+                </Box>
+              ))}
+            </Stack>
+          </Box>
+          <Box>
+            <Heading as="h6" size="md" textAlign="left" mt="4">Recently Viewed</Heading>
+            <Stack mt="4">
+              {recentProjectsToShow.map(project => (
+                <Box key={project._id} p="2">
+                  <Flex align="center">
+                    <Avatar src={getAvatar(project._id)} alt="Avatar" size="sm" />
+                    <Text ml="4" fontSize="sm">{project.projectname}</Text>
+                  </Flex>
+                </Box>
+              ))}
+            </Stack>
+          </Box>
+        </SimpleGrid>
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7
         </div>
       </section>
       

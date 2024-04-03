@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Table, TableCaption, Thead, Tbody, Tr, Th, Td, Box, Button, Alert, AlertIcon, TableContainer, Tfoot, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter } from '@chakra-ui/react';
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+
+=======
+import { Link } from 'react-router-dom';
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7
 const UserList = () => {
   const [users, setUsers] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
@@ -94,6 +102,15 @@ const UserList = () => {
                   <Button colorScheme="teal" onClick={() => handleShowDetails(user)}>
                     Details
                   </Button>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+
+                
+
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7
                 </Td>
               </Tr>
             ))}

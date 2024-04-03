@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7
 import {
   Table,
   Thead,
@@ -14,13 +21,29 @@ import {
 } from '@chakra-ui/react';
 import { IconButton, Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
 import { MdMoreVert, MdStarBorder, MdStar } from "react-icons/md";
+<<<<<<< HEAD
 import { Link } from 'react-router-dom';
+=======
+<<<<<<< HEAD
+import { Link } from 'react-router-dom';
+=======
+import { Link, useNavigate } from 'react-router-dom';
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7
 import NavbarFront from '../../NavbarFront';
 
 function ProjectListFront() {
   const [projects, setProjects] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+  const navigate = useNavigate();
+
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7
   const projectsPerPage = 4;
 
   useEffect(() => {
@@ -35,6 +58,23 @@ function ProjectListFront() {
     fetchProjects();
   }, []);
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+  const saveRecentProject = (projectId) => {
+    const recentProjects = JSON.parse(localStorage.getItem('recentProjects')) || [];
+    if (!recentProjects.includes(projectId)) {
+      recentProjects.push(projectId);
+      localStorage.setItem('recentProjects', JSON.stringify(recentProjects));
+    }
+  };
+
+  const recentProjectIds = JSON.parse(localStorage.getItem('recentProjects')) || [];
+  const recentProjectsToShow = projects.filter(project => recentProjectIds.includes(project._id));
+
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7
   const paginate = pageNumber => setCurrentPage(pageNumber);
 
   const toggleFavorite = async (projectId) => {
@@ -127,7 +167,15 @@ function ProjectListFront() {
                     <MenuList>
                       <MenuItem>Archive project</MenuItem>
                       <MenuItem>Move to Trash</MenuItem>
+<<<<<<< HEAD
                       <MenuItem>Project Settings</MenuItem>
+=======
+<<<<<<< HEAD
+                      <MenuItem>Project Settings</MenuItem>
+=======
+                      <MenuItem onClick={() => {navigate(`/detailsproject/${project._id}`); saveRecentProject(project._id);}}>Project Settings</MenuItem>
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7
                     </MenuList>
                   </Menu>
                 </Td>

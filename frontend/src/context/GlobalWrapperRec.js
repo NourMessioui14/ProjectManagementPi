@@ -132,6 +132,7 @@ const UpdateRecalamation = (form, setForm, id) =>{
   
 
 };
+<<<<<<< HEAD
 //////////////////////////////////:
 
 const [loading, setLoading] = useState(true);
@@ -183,6 +184,11 @@ const FetchReclamationsUser = () => {
       console.log(err.response.data);
     });
 };*/
+=======
+
+
+
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7
 
 
 const Add = (form , setForm) => {  
@@ -221,6 +227,7 @@ const FindOne = async (id) => {
         setErrors(err.response.data.error);
     });
 };
+<<<<<<< HEAD
 
 
 
@@ -286,6 +293,52 @@ const FetchReclamationsUser = async () => {
 };
   
 
+=======
+const Update = (form, setForm, id) =>{
+    axios.
+    put(`/reclamations/${id}` , form )
+    .then(( res ) => {
+       
+        toast({
+            title: 'Claim updated',
+            status: 'success',
+            duration: 4000,
+            isClosable: true,
+          });
+          setErrors({});
+          setForm({});
+          onClose();
+          FetchReclamations();
+
+        console.log(res.data);
+    })
+    .catch((err) => {
+      setErrors(err.response.data.error);
+    });
+    
+
+};
+  
+const Delete = (id) => {
+    axios.
+    delete(` /reclamations/${id}`)
+    .then((res) =>{
+        setClaims(Reclamations.filter((r) => r._id != id));
+        
+    toast({
+        title: 'Claim Deleted',
+        status: 'success',
+        duration: 4000,
+        isClosable: true,
+      });
+
+    })
+   
+    .catch((err) => {
+     console.log(err.response.data);
+     });
+};
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7
 
 
 
@@ -293,7 +346,11 @@ const FetchReclamationsUser = async () => {
 
   
     return (
+<<<<<<< HEAD
         <GlobalContext.Provider value={{ reponses, getReponseById , FetchReclamationsUser,  Delete , Update,FindOne ,Add,UpdateRecalamation, FindOneRecalamation,AddRecalamation,DeleteRecalamation, FetchReclamations,Reclamations , setClaims ,Reclamation, SetReclamation,  isOpen, onOpen, onClose, errors, setErrors
+=======
+        <GlobalContext.Provider value={{Delete, Update,FindOne ,Add,UpdateRecalamation, FindOneRecalamation,AddRecalamation,DeleteRecalamation, FetchReclamations,Reclamations , setClaims ,Reclamation, SetReclamation,  isOpen, onOpen, onClose, errors, setErrors
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7
           }}>
             {children}
         </GlobalContext.Provider>

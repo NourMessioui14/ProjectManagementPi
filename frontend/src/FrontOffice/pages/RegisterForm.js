@@ -101,8 +101,11 @@ const RegisterForm = () => {
             const responseData = await response.json();
             console.log('Login successful! Received token:', responseData.token);
             console.log('Role:', responseData.role);
+<<<<<<< HEAD
             localStorage.setItem('token', responseData.token);
 
+=======
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7
 
             if (responseData.role === 'admin') {
                 localStorage.setItem('role', responseData.role); 

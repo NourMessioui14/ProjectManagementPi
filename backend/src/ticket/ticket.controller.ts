@@ -31,8 +31,38 @@ export class TicketController{
     Delete(@Param('id') id:String){
         return this.service.Deleteticket(id);
     }
+<<<<<<< HEAD
 
 
 
+=======
+<<<<<<< HEAD
+
+
+    
+
+    // @Get('/project/:projectName')
+    // findTicketsByProjectName(@Param('projectName') projectName: string) {
+    //     return this.service.findTicketsByProjectName(projectName);
+    // }
+
+    @Get('/project/:projectId')
+  GetTicketsByProjectId(@Param('projectId') projectId: string) {
+    return this.service.GetTicketsByProjectId(projectId);
+  }
+    
+=======
+// Dans ticket.controller.ts
+
+
+@Get('/byproject/:projectId')
+async getTicketsByProjectId(@Param('projectId') projectId: string) {
+    return await this.service.findAllTicketsByProjectId(projectId);
+}
+
+
+
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7
 
 }

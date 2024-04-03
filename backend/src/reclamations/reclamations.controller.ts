@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ReclamationDto } from 'src/dto/reclamations.dto';
 import { ReclamationsService } from './reclamations.service';
@@ -7,6 +8,11 @@ import { Reclamation, ReclamationDocument } from 'src/models/reclamations.model'
 import { User } from 'src/auth/schemas/user.schema';
 import { ReqUser } from 'src/auth/req-user.decorator';
 
+=======
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { ReclamationDto } from 'src/dto/reclamations.dto';
+import { ReclamationsService } from './reclamations.service';
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7
 
 @Controller('reclamations')
 export class ReclamationsController {
@@ -15,6 +21,7 @@ export class ReclamationsController {
 
     constructor(private readonly service : ReclamationsService) {};
      
+<<<<<<< HEAD
 
     @UseGuards(AuthGuard('jwt'))
     @Post('/addReclamation')
@@ -37,6 +44,25 @@ export class ReclamationsController {
         return this.service.getUserById(userId);
     }
 
+=======
+    @Post()
+    Add( @Body() Body: ReclamationDto) {
+        return this.service.Add(Body);
+    }
+
+
+    @Get()
+    FinAll() {
+        return this.service.FinAll();
+    }
+
+    @Get("/:id")
+    FindById( @Param('id') id: string) {
+        return this.service.FindById(id);
+    }
+
+    
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7
     @Put("/:id")
     Update( @Param('id') id: string , @Body() body: ReclamationDto) {
         return this.service.Update(id , body);
@@ -47,6 +73,7 @@ export class ReclamationsController {
         return this.service.Delete(id);
     }
 
+<<<<<<< HEAD
 
 /*
     @Put("/:id")
@@ -94,6 +121,8 @@ export class ReclamationsController {
 //     await this.service.delete(id);
 //   }
 
+=======
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7
     @Post('/search')
     Search(@Query('key')  key)
     {
@@ -102,6 +131,9 @@ export class ReclamationsController {
 
 
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7
 }

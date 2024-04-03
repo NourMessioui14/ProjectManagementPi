@@ -4,7 +4,11 @@ import axios from 'axios';
 import { IoSearchSharp, IoAdd } from "react-icons/io5";
 import { GlobalContext } from "../../../context/GlobalWrapperRec";
 
+<<<<<<< HEAD
 const Row = ({ id, user,  Category, Subject, Description, reponses, Response }) => {
+=======
+const Row = ({ id, UserId, UserName, Category, Subject, Description, reponses, Response }) => {
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7
   const { FetchReclamations } = useContext(GlobalContext);
   const [responseText, setResponseText] = useState('');
   const [reponsesDetails, setReponsesDetails] = useState([]);
@@ -50,6 +54,7 @@ const Row = ({ id, user,  Category, Subject, Description, reponses, Response }) 
 
   return (
     <Box borderWidth="1px" borderRadius="lg" p="4" mb="4">
+<<<<<<< HEAD
      
      <Flex align="center">
       <Avatar name={user?.name} />
@@ -64,6 +69,17 @@ const Row = ({ id, user,  Category, Subject, Description, reponses, Response }) 
       <Text fontWeight="bold" color="black">{Subject}</Text>
       <Text color="black">Category: {Category}</Text>
      
+=======
+      <Flex align="center">
+        <Avatar name={UserName} />
+        <Box ml="3">
+          <Text fontWeight="bold" color="black">{UserName}</Text>
+          <Text color="black">{UserId}</Text>
+        </Box>
+      </Flex>
+      <Text fontWeight="bold" color="black">{Subject}</Text>
+      <Text color="black">Category: {Category}</Text>
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7
       {/* Afficher les 30 premiers caractères de la description */}
       <Text color="black">Description: {expanded ? Description : `${Description.slice(0, 80)}${Description.length > 50 ? "..." : ""}`}</Text>
       {Description.length > 50 && (

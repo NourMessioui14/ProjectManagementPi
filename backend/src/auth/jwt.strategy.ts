@@ -17,7 +17,15 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
+<<<<<<< HEAD
   async validate(payload) {
+=======
+<<<<<<< HEAD
+  async validate(payload) {
+=======
+  async validate(payload:any) {
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7
     const { id } = payload;
 
     const user = await this.userModel.findById(id);
@@ -26,6 +34,14 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       throw new UnauthorizedException('Login first to access this endpoint.');
     }
 
+<<<<<<< HEAD
     return user; // inclure le rôle dans la validation
+=======
+<<<<<<< HEAD
+    return { id: user.id, role: user.role }; // inclure le rôle dans la validation
+=======
+    return user; 
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7
   }
 }

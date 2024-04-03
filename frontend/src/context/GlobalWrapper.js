@@ -10,8 +10,18 @@ export default function Wrapper({ children }) {
 
     const [tickets, setTickets] = useState([]);
     const [ticket, setTicket] = useState({});
+<<<<<<< HEAD
   
 
+=======
+
+<<<<<<< HEAD
+    const [users, setUsers] = useState([]);
+    const [user, setUser] = useState({});
+
+=======
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7
     const [errors, setErrors] = useState({});
     const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -77,12 +87,32 @@ export default function Wrapper({ children }) {
 
   const FetchTickets = async () => {
     try {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7
         const res = await axios.get('/ticket');
         setTickets(res.data); // Correction de l'utilisation de setTickets
     } catch (err) {
         console.log(err.response.data);
     }
 };
+<<<<<<< HEAD
+=======
+=======
+      const response = await axios.get('/ticket');
+      if (response.data) {
+        setTickets(response.data);
+      } else {
+        throw new Error('No data received');
+      }
+    } catch (error) {
+      console.error('Error fetching tickets:', error);
+    }
+  };
+  
+>>>>>>> a0d2c943764f0954ae192d7b0270f75320249920
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7
 
     
     const AddTicket = (formT, setFormT) => {
@@ -170,7 +200,10 @@ export default function Wrapper({ children }) {
           setErrors(err.response.data.error);
         });
     };
+<<<<<<< HEAD
     /*
+=======
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7
     const fetchUsers = async () => {
       try {
         const response = await fetch('http://localhost:5001/auth/users');
@@ -182,7 +215,11 @@ export default function Wrapper({ children }) {
       } catch (error) {
         console.error('Error:', error.message);
       }
+<<<<<<< HEAD
     };*/
+=======
+    };
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7
   
     return (
         <GlobalContext.Provider value={{ 
@@ -207,7 +244,11 @@ export default function Wrapper({ children }) {
             setProject,
             setTicket,
             Update,
+<<<<<<< HEAD
             //fetchUsers
+=======
+            fetchUsers
+>>>>>>> 36b4c5644c97fd2ae1e25ff21e013e74f27af7d7
 
   
         }}>
