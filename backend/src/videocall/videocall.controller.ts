@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
-import { VideocallService } from './videocall.service'; // Assurez-vous d'importer votre VideoCallService
-import { VideoCallDto } from 'src/dto/videocall.dto'; // Assurez-vous d'importer votre VideoCallDto
+import { VideocallService } from './videocall.service';
+import { VideoCallDto } from 'src/dto/videocall.dto';
+//import { SignUpDto } from 'src/auth/dto/signup.dto'; // Import SignUpDto
 
 @Controller('videocalls')
 export class VideocallController {
@@ -18,7 +19,7 @@ export class VideocallController {
     }
 
     @Get('/:id')
-    findOneVideocall(@Param() { id }) {
+    findOneVideocall(@Param('id') id: string) {
         return this.service.findOne(id);
     }
 
@@ -31,5 +32,17 @@ export class VideocallController {
     deleteVideocall(@Param('id') id: string) {
         return this.service.delete(id);
     }
-}
 
+    /*
+    @Put('/:videocallId/join')
+    joinVideocall(@Param('videocallId') videocallId: string, @Body() user: SignUpDto) {
+        return this.service.joinVideocall(videocallId, user);
+    }
+
+    @Put('/:videocallId/quit')
+    quitVideocall(@Param('videocallId') videocallId: string, @Body() user: SignUpDto) {
+        return this.service.quitVideocall(videocallId, user);
+    }
+
+    */
+}

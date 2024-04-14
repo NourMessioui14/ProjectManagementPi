@@ -1,31 +1,60 @@
-// ChatPage.js
-import React from 'react';
+import React, { useEffect, useState, useContext } from 'react';
+import { GlobalContext } from '../../../context/GlobalWrapperChat';
 import ChatSideBarLeft from './ChatSideBarLeft';
 import ChatSideBarRight from './ChatSideBarRight';
 import InputBar from './InputBar';
 import ChatroomHeader from './ChatroomHeader';
 import ChatroomBody from './ChatroomBody';
-import { chatRooms, sampleMessages } from './constants';
 
 const ChatPage = () => {
-  const currentRoom = chatRooms[0]; // Assuming the first room is the active one
-  const currentMessages = sampleMessages; // Replace with actual messages for the active room
+  const { getMessagesByChatroomId, getChatroomsByUserId } = useContext(GlobalContext);
+  const [currentRoomId, setCurrentRoomId] = useState(null);
+  const [currentMessages, setCurrentMessages] = useState([]);
+  const [currentRoomName, setCurrentRoomName] = useState("");
+  const [currentUserId, setCurrentUserId] = useState(""); 
+
+  const handleSelectUserId = (userId) => {
+    setCurrentUserId(userId);
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const chatrooms = await getChatroomsByUserId(currentUserId);
+        const currentChatroom = chatrooms.find(room => room.chatroomId === currentRoomId);
+         if (currentChatroom) {
+          console.log("currentChatroom",currentChatroom)
+          setCurrentRoomName(currentChatroom.chatroomName);
+        }
+        const messages = await getMessagesByChatroomId(currentRoomId);
+        setCurrentMessages(messages);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+
+    const interval = setInterval(fetchData, 1000); // Rafraîchit les données toutes les 5 secondes
+    return () => clearInterval(interval); // Nettoie l'intervalle lors du démontage du composant
+  }, [currentRoomId, currentUserId, getChatroomsByUserId, getMessagesByChatroomId]);
+
+  const handleSelectChatroom = (chatroomId) => {
+    setCurrentRoomId(chatroomId);
+  };
+  const handleSelectChatroomName = (chatroomname) => {
+    setCurrentRoomName(chatroomname);
+  };
 
   return (
     <div className="chat-page" style={{ display: 'flex', flexDirection: 'row', height: '100vh', overflow: 'hidden' }}>
-      <div className="chat-page-left" style={{ width: '250px', backgroundColor: '#f0f0f0', position: 'fixed', top: 0, bottom: 0 }}>
-        <ChatSideBarLeft />
-      </div>
-      <div className="chat-page-center" style={{ marginLeft: '250px', flex: '1', display: 'flex', flexDirection: 'column', width: '100%', overflowY: 'auto' }}>
-        <div className="chatroom-header" style={{ backgroundColor: '#f0f0f0', position: 'fixed', top: 0, width: '100%' }}>
-          <ChatroomHeader roomName={currentRoom.name} />
-        </div>
+      <ChatSideBarLeft onSelectChatroom={handleSelectChatroom} onchatroomname={handleSelectChatroomName} onSelectUserId={handleSelectUserId} />
+      <div className="chat-page-center w-full p-2" style={{ flex: '1', display: 'flex', flexDirection: 'column', width: '100%', overflowY: 'auto' }}>
+      <ChatroomHeader roomName={`Chatroom ${currentRoomName}`} />
         <ChatroomBody messages={currentMessages} />
-        <InputBar style={{ position: 'fixed', bottom: 0, width: '100%' }} />
+        <InputBar style={{ position: 'fixed', bottom: 0, width: '100%' }} currentRoomId={currentRoomId} />
       </div>
-      <div className="chat-page-right" style={{ width: '250px', backgroundColor: '#f0f0f0', position: 'fixed', top: 0, bottom: 0, right: 0 }}>
-        <ChatSideBarRight />
-      </div>
+      <ChatSideBarRight onSelectChatroom={handleSelectChatroom} />
     </div>
   );
 };

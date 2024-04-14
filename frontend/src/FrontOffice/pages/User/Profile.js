@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, Link } from 'react-router-dom'; // Importer Link depuis react-router-dom
 import { ChakraProvider, Container, FormControl, FormLabel, Input, Button, VStack ,Link as ChakraLink} from '@chakra-ui/react';
-import Navbar from '../../../Backoffice/components/Navbar';
 import NavbarFront from '../../NavbarFront';
 
 function Profile() {
@@ -37,8 +36,7 @@ function Profile() {
     e.preventDefault();
 
     try {
-      const { password, ...userDataWithoutPassword } = userData;
-      await axios.put(`http://localhost:5001/auth/users/update/${id}`, userDataWithoutPassword);
+      await axios.put(`http://localhost:5001/auth/users/update/${id}`, userData);
       alert('User updated successfully!');
     } catch (error) {
       console.error('Server error:', error.response.data);
@@ -48,8 +46,10 @@ function Profile() {
 
   return (
     
+    <div className='profile'>
     <ChakraProvider>
-      <Container maxW="xl" centerContent>
+      
+      <Container maxW="xl" centerContent marginTop="160px"> {/* Augmentez la valeur de marginTop pour déplacer le formulaire plus bas */}
         <VStack spacing={6}>
           <form onSubmit={handleSubmit}>
             <FormControl id="name" isRequired>
@@ -88,7 +88,7 @@ function Profile() {
       </Container>
       
     </ChakraProvider>
-    
+    </div>
   );
 }
 

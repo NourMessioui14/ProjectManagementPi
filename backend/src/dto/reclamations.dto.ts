@@ -1,27 +1,22 @@
-import { IsNotEmpty } from "class-validator";
+import { IsNotEmpty, IsOptional, IsEnum } from "class-validator";
+import { User } from "src/auth/schemas/user.schema";
+import { ReclamationCategory } from "src/models/reclamations.model";
 
 export class ReclamationDto {
-   
-   
   @IsNotEmpty()
-
-  UserId: number;
-
-  
-  @IsNotEmpty()
-
-  UserName:string;
+  @IsEnum(ReclamationCategory)
+  Category: ReclamationCategory;
 
   @IsNotEmpty()
- 
-  Category: string;
-
-  @IsNotEmpty()
- 
   Subject: string;
 
   @IsNotEmpty()
+  Description: string;
 
-  Description : string; 
-    
+  @IsOptional()
+  user: User;
+
+  @IsOptional()
+  reponses: any[];
 }
+

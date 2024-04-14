@@ -7,6 +7,7 @@ import { Box, Button, Table, TableContainer, Tbody, Text, Th, Thead, Tr, Input, 
 import { AiOutlinePlus, AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
 import DrawerForm from './DrawerForm';
 import Row from './Row';
+import Footer from '../Footer';
 
 
 function ProjectList() {
@@ -70,7 +71,6 @@ function ProjectList() {
             <Table variant="simple">
               <Thead>
                 <Tr>
-                  <Th>Avatar</Th>
                   <Th>Project Name</Th>
                   <Th>Chef de projet</Th>
                   <Th>Start Date</Th>
@@ -110,7 +110,13 @@ function ProjectList() {
     
     
       <DrawerForm />
+
+      <Footer/>
+
     </Box>
+
+    
+
   );
 }
 

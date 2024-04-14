@@ -30,13 +30,7 @@ function Row({ id, projectname, chefdeprojet, description, startdate, enddate })
 
   return (
     <Tr>
-      <Td>
-        <Wrap>
-          <WrapItem>
-          <Avatar name='Kent Dodds' src='https://bit.ly/kent-c-dodds' />
-          </WrapItem>
-        </Wrap>
-      </Td>
+     
       <Td>{projectname}</Td>
       <Td>{chefdeprojet}</Td>
       <Td>{startdate}</Td>

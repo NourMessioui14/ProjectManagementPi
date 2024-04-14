@@ -1,5 +1,8 @@
+
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+
 import {
   Table,
   Thead,
@@ -11,16 +14,26 @@ import {
   HStack,
   Input,
   Button,
+  AlertDialog,
+  AlertDialogOverlay,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogBody,
+  AlertDialogFooter,
 } from '@chakra-ui/react';
 import { IconButton, Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
 import { MdMoreVert, MdStarBorder, MdStar } from "react-icons/md";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import NavbarFront from '../../NavbarFront';
 
 function ProjectListFront() {
   const [projects, setProjects] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const navigate = useNavigate();
+
   const projectsPerPage = 4;
 
   useEffect(() => {
@@ -34,6 +47,39 @@ function ProjectListFront() {
     };
     fetchProjects();
   }, []);
+
+  const handleDelete = async () => {
+    if (selectedProject) {
+      try {
+        await axios.delete(`/project/${selectedProject._id}`);
+        setProjects(prevProjects => prevProjects.filter(project => project._id !== selectedProject._id));
+        setIsDeleteDialogOpen(false);
+      } catch (error) {
+        console.error('Error deleting project:', error);
+      }
+    }
+  };
+
+  const handleOpenDeleteDialog = (project) => {
+    setSelectedProject(project);
+    setIsDeleteDialogOpen(true);
+  };
+
+  const handleCloseDeleteDialog = () => {
+    setSelectedProject(null);
+    setIsDeleteDialogOpen(false);
+  };
+
+  const saveRecentProject = (projectId) => {
+    const recentProjects = JSON.parse(localStorage.getItem('recentProjects')) || [];
+    if (!recentProjects.includes(projectId)) {
+      recentProjects.push(projectId);
+      localStorage.setItem('recentProjects', JSON.stringify(recentProjects));
+    }
+  };
+
+  const recentProjectIds = JSON.parse(localStorage.getItem('recentProjects')) || [];
+  const recentProjectsToShow = projects.filter(project => recentProjectIds.includes(project._id));
 
   const paginate = pageNumber => setCurrentPage(pageNumber);
 
@@ -126,8 +172,8 @@ function ProjectListFront() {
                     <MenuButton as={IconButton} aria-label="Options" icon={<MdMoreVert />} />
                     <MenuList>
                       <MenuItem>Archive project</MenuItem>
-                      <MenuItem>Move to Trash</MenuItem>
-                      <MenuItem>Project Settings</MenuItem>
+                      <MenuItem onClick={() => handleOpenDeleteDialog(project)}>Move to Trash</MenuItem>
+                      <MenuItem onClick={() => {navigate(`/detailsproject/${project._id}`); saveRecentProject(project._id);}}>Project Settings</MenuItem>
                     </MenuList>
                   </Menu>
                 </Td>
@@ -142,6 +188,22 @@ function ProjectListFront() {
           <Button key={index} onClick={() => paginate(index + 1)} disabled={currentPage === index + 1}>{index + 1}</Button>
         ))}
       </HStack>
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog isOpen={isDeleteDialogOpen} onClose={handleCloseDeleteDialog}>
+        <AlertDialogOverlay />
+        <AlertDialogContent>
+          <AlertDialogHeader>Delete Project</AlertDialogHeader>
+          <AlertDialogBody>
+            Are you sure you want to delete this project?
+          </AlertDialogBody>
+          <AlertDialogFooter>
+            <Button onClick={handleCloseDeleteDialog}>Cancel</Button>
+            <Button colorScheme="red" onClick={handleDelete} ml={3}>
+              Delete
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {
   Card, CardHeader, CardBody, Box, Heading, Text, Stack, StackDivider, Button,
-  Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, Avatar, Flex
+  Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, Avatar, Flex, SimpleGrid
 } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import { GlobalContext } from '../../../context/GlobalWrapper';
@@ -15,6 +15,15 @@ function CustomCard() {
   useEffect(() => {
     FetchProjects();
   }, [FetchProjects]);
+  const [recentProjects, setRecentProjects] = useState([]); // State to store recent projects
+
+
+  useEffect(() => {
+    FetchProjects();
+    const recentProjectIds = JSON.parse(localStorage.getItem('recentProjects')) || [];
+    const recentProjectsToShow = projects.filter(project => recentProjectIds.includes(project._id));
+    setRecentProjects(recentProjectsToShow);
+  }, [FetchProjects, projects]);
 
   const handleReadMore = (project) => {
     setSelectedProject(project);
@@ -41,6 +50,10 @@ function CustomCard() {
   };
 
   const favoriteProjects = projects.filter(project => project.isFavorite);
+
+  // Récupérer les projets récemment consultés à partir du local storage
+  const recentProjectIds = JSON.parse(localStorage.getItem('recentProjects')) || [];
+  const recentProjectsToShow = projects.filter(project => recentProjectIds.includes(project._id));
 
   return (
     <div>
@@ -91,6 +104,34 @@ function CustomCard() {
               </Stack>
             </>
           )}
+          <SimpleGrid columns={{ base: 1, md: 2 }} spacing={5}>
+          <Box>
+            <Heading as="h6" size="md" textAlign="left" mt="4">Favorite Projects</Heading>
+            <Stack mt="4">
+              {favoriteProjects.map(project => (
+                <Box key={project._id} p="2">
+                  <Flex align="center">
+                    <Avatar src={getAvatar(project._id)} alt="Avatar" size="sm" />
+                    <Text ml="4" fontSize="sm">{project.projectname}</Text>
+                  </Flex>
+                </Box>
+              ))}
+            </Stack>
+          </Box>
+          <Box>
+            <Heading as="h6" size="md" textAlign="left" mt="4">Recently Viewed</Heading>
+            <Stack mt="4">
+              {recentProjectsToShow.map(project => (
+                <Box key={project._id} p="2">
+                  <Flex align="center">
+                    <Avatar src={getAvatar(project._id)} alt="Avatar" size="sm" />
+                    <Text ml="4" fontSize="sm">{project.projectname}</Text>
+                  </Flex>
+                </Box>
+              ))}
+            </Stack>
+          </Box>
+        </SimpleGrid>
         </div>
       </section>
       

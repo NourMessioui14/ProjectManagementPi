@@ -1,12 +1,44 @@
-// DrawerForm.js
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, Stack } from '@chakra-ui/react';
+import { Button, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, Stack, Select } from '@chakra-ui/react';
 import InputForm from '../InputForm';
 import { GlobalContext } from '../../../context/GlobalWrapperChat';
 
-export default function DrawerFormVideocalls() {
-  const { isOpen, onOpen, onClose, addVideoCall, updateVideoCall, errors, setErrors, videoCall } = useContext(GlobalContext);
-  const [form, setForm] = useState({});
+export default function DrawerFormChatroom() {
+  const { setSelectChatroomHandler,selectedChatroom, chatroom, isOpen, onOpen, onClose, AddChatroom, UpdateChatroom, errors, setErrors, FetchProjects, projects, users, findUsers } = useContext(GlobalContext);
+  const [form, setForm] = useState({
+    chatroomId: '',
+    projectId: '',
+    chatroomName: '',
+  });
+
+  const [projectNames, setProjectNames] = useState([]);
+  const [projectsList, setProjectsList] = useState([]);
+
+
+  const [selectedUser, setSelectedUser] = useState([])
+  useEffect(() => {
+    const fetchProjectData = async () => {
+      const data = await FetchProjects();
+      setProjectsList(data)
+      //  const names = data.map(project => project.projectname);
+      //setProjectNames(names);
+    };
+
+    fetchProjectData();
+  }, [FetchProjects, projects]);
+
+  useEffect(() => {
+    if (selectedChatroom) {
+      setForm(selectedChatroom);
+      setSelectedUser(selectedChatroom.members)
+    } else {
+      setForm({
+        chatroomId: '',
+        projectId: '',
+        chatroomName: '',
+      });
+    }
+  }, [isOpen, chatroom]);
 
   const onChangeHandler = (e) => {
     setForm({
@@ -15,22 +47,43 @@ export default function DrawerFormVideocalls() {
     });
   };
 
-  useEffect(() => {
-    // Check if video call has a _id and it's not an empty object
-    if (videoCall && videoCall._id !== undefined && Object.keys(videoCall).length > 0) {
-      setForm(videoCall);
-    } else {
-      setForm({});
-    }
-  }, [isOpen, videoCall]);
-
   const onSave = () => {
-    if (form._id) {
-      updateVideoCall(form, setForm);
+    const updatedForm = {
+      ...form,
+      chatroomCreator: 'admin',
+      members:  selectedUser,
+    };
+
+    if (selectedChatroom) {
+      UpdateChatroom(updatedForm, setForm, selectedChatroom.id);
     } else {
-      addVideoCall(form, setForm);
+      AddChatroom(updatedForm, setForm);
     }
   };
+
+  useEffect(() => {
+    findUsers()
+  }, [])
+
+  useEffect(() => {
+    if (isOpen == false) {
+      setSelectedUser([])
+      setSelectChatroomHandler(null)
+    }
+  }, [isOpen])
+
+  const selectUsersHandler = (userId) => {
+
+    if (!selectedUser.includes(userId)) {
+      setSelectedUser(prev => [...prev, userId])
+    }
+
+
+  }
+  const removeUserHandler = (userId) => {
+
+    setSelectedUser(prev => prev.filter((user) => user !== userId))
+  }
 
   return (
     <>
@@ -40,46 +93,50 @@ export default function DrawerFormVideocalls() {
           <DrawerCloseButton onClick={() => {
             onClose();
             setErrors({});
-            setForm({});
+            setForm({
+              chatroomId: '',
+              projectId: '',
+              chatroomName: '',
+            });
           }} />
-          <DrawerHeader>{form._id ? 'Update Video Call' : 'Create Video Call'}</DrawerHeader>
+          <DrawerHeader>{selectedChatroom ? 'Update Chatroom' : 'Create Chatroom'}</DrawerHeader>
 
           <DrawerBody>
             <Stack spacing={'24px'}>
               <InputForm
-                name="videocallId"
+                name="chatroomId"
                 onChangeHandler={onChangeHandler}
-                value={form?.videocallId || ''}
-                errors={errors?.videocallId}
-                label="Video Call ID"
+                value={form?.chatroomId || ''}
+                errors={errors?.chatroomId}
+                label="Chatroom ID"
               />
-              <InputForm
+              <Select
                 name="projectId"
-                onChangeHandler={onChangeHandler}
+                onChange={onChangeHandler}
                 value={form?.projectId || ''}
-                errors={errors?.projectId}
-                label="Project ID"
-              />
-            {/*   <InputForm
-                name="videocallCreatorId"
-                onChangeHandler={onChangeHandler}
-                value={form?.videocallCreatorId || ''}
-                errors={errors?.videocallCreatorId}
-                label="Video Call Creator ID"
-              /> */}
+                placeholder="Select a Project"
+              >
+                {projectsList.map((project) => (
+                  <option key={project?.['_id']} value={project?.['_id']}>{project?.projectname}</option>
+                ))}
+              </Select>
+
+              {selectedUser.map((selected) => { return <span>{users.filter((user) => user?.['_id'] == selected)[0].name} <span onClick={() => removeUserHandler(selected)}>X</span></span> })}
+              <Select
+                name="user"
+                onChange={(e) => { selectUsersHandler(e.target.value) }}
+                placeholder="Select a user"
+              >
+                {users.map((user) => (
+                  <option key={user?.['_id']} value={user?.['_id']}>{user?.name}  </option>
+                ))}
+              </Select>
               <InputForm
-                name="subject"
+                name="chatroomName"
                 onChangeHandler={onChangeHandler}
-                value={form?.subject || ''}
-                errors={errors?.subject}
-                label="Subject"
-              />
-              <InputForm
-                name="estimatedDurationMinutes"
-                onChangeHandler={onChangeHandler}
-                value={form?.estimatedDurationMinutes || ''}
-                errors={errors?.estimatedDurationMinutes}
-                label="Estimated Duration (minutes)"
+                value={form?.chatroomName || ''}
+                errors={errors?.chatroomName}
+                label="Chatroom Name"
               />
             </Stack>
           </DrawerBody>
@@ -88,7 +145,11 @@ export default function DrawerFormVideocalls() {
             <Button variant="outline" mr={3} onClick={() => {
               onClose();
               setErrors({});
-              setForm({});
+              setForm({
+                chatroomId: '',
+                projectId: '',
+                chatroomName: '',
+              });
             }}>
               Cancel
             </Button>

@@ -15,14 +15,19 @@ function TicketList() {
 
   useEffect(() => {
     FetchTickets();
+    console.log(tickets); // Log the tickets to see their structure
   }, []);
+  
 
   // Filtrer les tickets en fonction du terme de recherche
   const filteredTickets = tickets.filter(ticket =>
-    ticket.project.projectname.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    ticket.typeOfticket.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    ticket.description.toLowerCase().includes(searchTerm.toLowerCase())
+    ticket.project?.projectname?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    ticket.typeOfticket?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    ticket.description?.toLowerCase().includes(searchTerm.toLowerCase())
   );
+  
+
+  
 
   // Index du dernier ticket de la page
   const indexOfLastTicket = currentPage * ticketsPerPage;
@@ -77,18 +82,19 @@ function TicketList() {
                 </Tr>
               </Thead>
               <Tbody>
-                {currentTickets.map(({ _id, project, sprint, typeOfticket, etat, description, responsable }) => (
-                  <RowTicket
-                    key={_id}
-                    id={_id}
-                    project={project.projectname}
-                    sprint={sprint}
-                    typeOfticket={typeOfticket}
-                    etat={etat}
-                    description={description}
-                    responsable={responsable}
-                  />
-                ))}
+              {currentTickets.map(({ _id, project, sprint, typeOfticket, etat, description, responsable }) => (
+                <RowTicket
+                  key={_id}
+                  id={_id}
+                  project={project ? project.projectname : 'Unknown'}
+                  sprint={sprint?.sprintname  || 'Unknown' }
+                  typeOfticket={typeOfticket}
+                  etat={etat}
+                  description={description}
+                  responsable={responsable?.name || 'Unknown'}
+                />
+              ))}
+              
               </Tbody>
             </Table>
           </TableContainer>
@@ -111,3 +117,4 @@ function TicketList() {
 }
 
 export default TicketList;
+

@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsArray, IsMongoId } from "class-validator";
+import { IsNotEmpty, IsArray } from "class-validator";
 
 export class ChatroomDto {
     @IsNotEmpty()
@@ -8,12 +8,11 @@ export class ChatroomDto {
     projectId: string;
 
     @IsNotEmpty()
-    chatroomCreatorId: string;
+    chatroomCreator: string; // Change the type to string
 
     @IsNotEmpty()
     chatroomName: string;
 
-  //  @IsArray()
- //   @IsMongoId({ each: true }) // Validate that each element in the array is a valid MongoDB ObjectId
-   // users: string[]; // Array of user IDs who are part of the chatroom
+    @IsArray()
+    members: string[]; // Change the type to string[]
 }

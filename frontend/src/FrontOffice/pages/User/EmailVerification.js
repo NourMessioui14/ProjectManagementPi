@@ -89,7 +89,7 @@ function EmailVerification() {
               <Link to={'/Signup'}>SignUp</Link>
             </p>
             <p className="font-semibold mt-8 text-blue-500 italic">
-              <Link to={'/Login'}>Back to Login</Link>
+              <Link to={'/login'}>Back to Login</Link>
             </p>
           </form>
         </article>

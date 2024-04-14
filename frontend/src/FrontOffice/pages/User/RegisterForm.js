@@ -166,7 +166,8 @@ const RegisterForm = () => {
                   </ErrorMessage>
                 </div>
                 <button type="submit" className="btn solid">Login</button>
-                <p className="social-text">Or Sign in with social platforms</p>
+              
+                              <p className="social-text">Or Sign in with social platforms</p>
                 <div className="social-media">
                   <a href="#" className="social-icon">
                     <i className="fab fa-facebook-f"></i>

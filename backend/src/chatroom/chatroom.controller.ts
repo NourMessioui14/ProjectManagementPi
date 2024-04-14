@@ -1,6 +1,7 @@
-import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
-import { ChatroomService } from './chatroom.service'; // Import your ChatroomService
-import { ChatroomDto } from 'src/dto/chaatroom.dto'; // Import your ChatroomDto
+import { Controller, Get, Post, Put, Delete, Param, Body, Query } from '@nestjs/common';
+import { ChatroomService } from './chatroom.service'; 
+import { ChatroomDto } from 'src/dto/chaatroom.dto';
+import { SignUpDto } from 'src/auth/dto/signup.dto'; // Import SignUpDto
 
 @Controller('chatrooms')
 export class ChatroomController {
@@ -18,7 +19,7 @@ export class ChatroomController {
     }
 
     @Get('/:id')
-    findOneChatroom(@Param() { id }) {
+    findOneChatroom(@Param('id') id: string) {
         return this.service.findOne(id);
     }
 
@@ -30,5 +31,26 @@ export class ChatroomController {
     @Delete('/:id')
     deleteChatroom(@Param('id') id: string) {
         return this.service.delete(id);
+    }
+
+    @Get('user/:userId')
+    getChatroomsByUserId(@Param('userId') userId: string) {
+        return this.service.getChatroomsByUserId(userId);
+    }
+
+    @Put('/:chatroomId/addMember/:userId')
+    async addMember(@Param('chatroomId') chatroomId: string, @Param('userId') userId: string) {
+        return this.service.addMember(chatroomId, userId);
+}
+
+
+    @Put('/:chatroomId/removeMember/:userId')
+    async removeMember(@Param('chatroomId') chatroomId: string, @Param('userId') userId: string) {
+        return this.service.removeMember(chatroomId, userId);
+    }
+
+    @Get('user-id-from-token/:token') // Nouvelle route pour obtenir l'ID de l'utilisateur à partir du token JWT dans le path
+    getUserIdFromToken(@Param('token') token: string) {
+        return this.service.getUserIdFromToken(token);
     }
 }

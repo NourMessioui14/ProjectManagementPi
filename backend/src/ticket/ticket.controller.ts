@@ -31,6 +31,13 @@ export class TicketController{
     Delete(@Param('id') id:String){
         return this.service.Deleteticket(id);
     }
+// Dans ticket.controller.ts
+
+
+@Get('/byproject/:projectId')
+async getTicketsByProjectId(@Param('projectId') projectId: string) {
+    return await this.service.findAllTicketsByProjectId(projectId);
+}
 
 
 

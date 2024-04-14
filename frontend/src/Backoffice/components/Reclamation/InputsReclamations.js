@@ -21,3 +21,4 @@ const InputsReclamations= ({name , onChangeHandler ,value, errors}) => {
 
 
 export default InputsReclamations
+

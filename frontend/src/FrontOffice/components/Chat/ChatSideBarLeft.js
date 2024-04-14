@@ -1,40 +1,103 @@
-// ChatSideBarLeft.js
-import React from 'react';
+import React, { useEffect, useState, useContext } from 'react';
+import { GlobalContext } from '../../../context/GlobalWrapperChat';
+import avatarImage from './avatar.jpg'; // Importez l'image avatar depuis votre bureau
 
-const ChatSideBarLeft = () => {
-  const randomMessages = Array.from({ length: 10 }, (_, index) => ({
-    id: index + 1,
-    content: `Random Message ${index + 1}`,
-    sender: `Sender ${index + 1}`,
-  }));
+const ChatSideBarLeft = ({ onSelectChatroom , onchatroomname}) => {
+  const { getChatroomsByUserId, getLastMessageByChatroomId,getUserIdFromToken } = useContext(GlobalContext);
+  const [chatrooms, setChatrooms] = useState([]);
+  const [lastMessages, setLastMessages] = useState([]);
+  const [token, setToken] = useState("");
+  const [userId ,setUserId] = useState("")
+
+  useEffect(() => {
+ 
+    const storedToken = localStorage.getItem('token');
+      console.log("Token from localStorage:", storedToken);
+      setToken(storedToken); // Stocke le token dans l'état
+    const getUserId = async () => {
+      try {
+        const userIdFromToken = await getUserIdFromToken(storedToken);
+        setUserId(userIdFromToken.userId)       
+    
+      } catch (error) {
+        console.error('Error getting user ID from token:', error);
+      }
+    };
+
+    getUserId(); 
+
+    const fetchData = async () => {
+      try {
+        const chatroomsData = await getChatroomsByUserId(userId);
+        setChatrooms(chatroomsData);
+        const ids = chatroomsData.map(chatroom => chatroom.chatroomId);
+        const messages = await Promise.all(ids.map(id => getLastMessageByChatroomId(id)));
+        setLastMessages(messages);
+        console.log("Data refreshed");
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+
+    const interval = setInterval(fetchData, 1000);
+    return () => clearInterval(interval);
+  }, [getChatroomsByUserId, getLastMessageByChatroomId,getUserIdFromToken, userId]);
+
+  
+ 
+  
+  const handleChatroomClick = (chatroomId, chatroomName) => {
+    onSelectChatroom(chatroomId);
+    onchatroomname(chatroomName)
+  };
+
+  const compareLastMessageDates = (roomA, roomB) => {
+    const lastMessageA = lastMessages.find(msg => msg.chatroomId === roomA.chatroomId);
+    const lastMessageB = lastMessages.find(msg => msg.chatroomId === roomB.chatroomId);
+    if (!lastMessageA || !lastMessageB) return 0;
+    return new Date(lastMessageB.dateId) - new Date(lastMessageA.dateId);
+  };
+
+  const sortedChatrooms = [...chatrooms].sort(compareLastMessageDates);
 
   return (
-    <div style={{  height: '100vh', width: '250px', padding: '15px', backgroundColor: '#e74c3c', borderRadius: '5px', overflowY: 'auto', color: '#fff' }}>
+    <div className='py-2' style={{ height: '100vh', width: '250px', padding: '15px', overflowY: 'auto', color: '#333', backgroundColor: '#f9f9f9' }}>
       <h3 style={{ textAlign: 'center', marginBottom: '15px', fontSize: '18px' }}>
-        My Messages
+        My last messages
       </h3>
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
-        {randomMessages.map(message => (
-          <div
-            key={message.id}
-            style={{
-              marginBottom: '10px',
-              padding: '10px',
-              border: '1px solid #ccc',
-              borderRadius: '5px',
-              cursor: 'pointer',
-              transition: 'background-color 0.3s',
-              backgroundColor: '#3498db', // Blue color for messages
-            }}
-            title={`Sent by: ${message.sender}`}
-          >
-            <div style={{ fontSize: '14px', marginBottom: '5px' }}>
-              {message.content}
+      <div className='mb-2' style={{ display: 'flex', flexDirection: 'column' }}>
+        {sortedChatrooms.map((chatroom, index) => (
+          <React.Fragment key={chatroom.chatroomId}>
+            {index !== 0 && <hr style={{ margin: '5px 0', borderColor: '#ccc' }} />}
+            <div
+              onClick={() => handleChatroomClick(chatroom.chatroomId,chatroom.chatroomName)}
+              style={{
+                padding: '10px',
+                cursor: 'pointer',
+                transition: 'background-color 0.3s',
+                backgroundColor: '#fff',
+                display: 'flex', // Add flex display
+                alignItems: 'center', // Align items vertically
+              }}
+              title={`Chatroom: ${chatroom.chatroomName}`}
+            >
+              {/* Avatar placeholder */}
+              <div style={{ width: '40px', height: '40px', borderRadius: '50%', backgroundColor: '#ccc', marginRight: '10px' }}>
+                <img src={avatarImage} alt="Avatar" style={{ width: '100%', height: '100%', borderRadius: '50%' }} />
+              </div>
+              <div style={{ flex: 1 }}> {/* Adjusting to take remaining space */}
+                <div style={{ fontWeight: 'bold', color: '#000' }}>{chatroom.chatroomName}</div>
+                <div style={{ fontSize: '12px', color: '#666', marginBottom: '5px' }}>
+                  {lastMessages.find(msg => msg.chatroomId === chatroom.chatroomId)?.messageText}
+                </div>
+                <div style={{ fontSize: '10px', color: '#888', textAlign: 'right' }}>
+                  {new Date(lastMessages.find(msg => msg.chatroomId === chatroom.chatroomId)?.dateId).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                </div>
+              </div>
             </div>
-            <div style={{ fontSize: '12px' }}>
-              {message.sender}
-            </div>
-          </div>
+          </React.Fragment>
         ))}
       </div>
     </div>

@@ -6,8 +6,8 @@ import { Sprint, SprintSchema } from 'src/models/sprint.models';
 import { TicketModule } from 'src/ticket/ticket.module';
 
 @Module({
-  imports: [MongooseModule.forFeature([{ name: Sprint.name, schema: SprintSchema }])
-, TicketModule
+  imports: [MongooseModule.forFeature([{ name: Sprint.name, schema: SprintSchema }]),
+  TicketModule
 ],
   controllers: [SprintController],
   providers: [SprintService]

@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
-import { MessageService } from './message.service'; // Assurez-vous d'importer votre MessageService
-import { MessageDto } from 'src/dto/message.dto'; // Assurez-vous d'importer votre MessageDto
+import { MessageService } from './message.service';
+import { MessageDto } from 'src/dto/message.dto';
 
 @Controller('messages')
 export class MessageController {
@@ -18,7 +18,7 @@ export class MessageController {
     }
 
     @Get('/:id')
-    findOneMessage(@Param() { id }) {
+    findOneMessage(@Param('id') id: string) {
         return this.service.findOne(id);
     }
 
@@ -31,5 +31,19 @@ export class MessageController {
     deleteMessage(@Param('id') id: string) {
         return this.service.delete(id);
     }
-}
 
+    @Delete('/byDate/:dateId')
+    deleteMessageByDate(@Param('dateId') dateId: string) {
+        return this.service.deleteByDate(dateId);
+    }
+
+    @Get('byChatroom/:chatroomId')
+    getMessagesByChatroomId(@Param('chatroomId') chatroomId: string) {
+        return this.service.getMessagesByChatroomId(chatroomId);
+    }
+
+    @Get('lastMessage/:chatroomId')
+    getLastMessageByChatroomId(@Param('chatroomId') chatroomId: string) {
+        return this.service.getLastMessageByChatroomId(chatroomId);
+    }
+}

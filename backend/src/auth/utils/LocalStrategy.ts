@@ -22,6 +22,8 @@ export class LocalStrategy extends PassportStrategy(Strategy){
             return done(new UnauthorizedException('Invalid email or password'), null);
           }
       
+          // Make sure user object has 'id' and 'role' properties
+          // Make sure user object has 'id' and 'role' properties
           if (!user.id || !user.role) {
             return done(new UnauthorizedException('User object is missing ID or role'), null);
           }

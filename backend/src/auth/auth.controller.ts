@@ -28,7 +28,6 @@ export class AuthController {
     return this.authService.signUp(signUpDto);
   }
 
-  @UseGuards(LocalAuthGuard)
   @Post('/login')
   async login(@Body() loginDto: LoginDto, @Session() session: Record<string, any>): Promise<{ token: string }> {
       const user = await this.authService.login(loginDto);
@@ -37,7 +36,8 @@ export class AuthController {
   
       return user;
   }
-    
+
+
   @Get("/users")
   findAll(){
      return this.authService.findAll();
@@ -69,7 +69,7 @@ export class AuthController {
 
       @Get('/backoffice')
       @Roles('Admin') 
-      @UseGuards(JwtAuthGuard) 
+      @UseGuards(AuthenticatedGuard, RolesGuard) 
       async getProtectedResource(@Session() session: Record<string, any>) {
         const adminData = await this.authService.getAdminData(session.userId);
         

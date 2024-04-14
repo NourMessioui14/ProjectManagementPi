@@ -1,3 +1,4 @@
+
 import { BadRequestException, HttpException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
@@ -42,17 +43,25 @@ export class AuthService {
 async login(loginDto: LoginDto): Promise<{ id: string; token: string; role: string }> {
   const { email, password } = loginDto;
 
+  console.log('Tentative de connexion avec email:', email);
+
   const user = await this.userModel.findOne({ email });
 
   if (!user) {
+    console.log('Utilisateur non trouvé pour email:', email);
     throw new UnauthorizedException('Invalid email or password');
   }
+
+  console.log('Utilisateur trouvé:', user);
 
   const isPasswordMatched = await bcrypt.compare(password, user.password);
 
   if (!isPasswordMatched) {
+    console.log('Mot de passe incorrect pour l\'utilisateur:', email);
     throw new UnauthorizedException('Invalid email or password');
   }
+
+  console.log('Mot de passe correct pour l\'utilisateur:', email);
 
   const token = this.jwtService.sign({ id: user._id, role: user.role });
 

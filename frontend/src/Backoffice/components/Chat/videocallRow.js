@@ -1,13 +1,15 @@
+// VideoCallRow.js
 import React, { useContext } from 'react';
 import { Td, Tr, Box, Button, Avatar } from '@chakra-ui/react';
 import { AiFillDelete, AiFillEdit } from 'react-icons/ai';
 import { GlobalContext } from '../../../context/GlobalWrapperChat';
 
-const VideoCallRow = ({ id, videocallId, projectId, videocallCreatorId, subject, estimatedDurationMinutes }) => {
-  const { deleteVideoCall, onOpen } = useContext(GlobalContext);
+const VideoCallRow = ({ id, videocallId, projectId, videocallCreator, subject, estimatedDurationMinutes, date, time }) => {
+  const { deleteVideoCall, onOpen,setSelectvideocallHandler } = useContext(GlobalContext);
 
   const onChangeHandler = () => {
-    onOpen(); // Open the form when the edit icon is clicked
+    onOpen(); 
+    setSelectvideocallHandler({ });
   };
 
   return (
@@ -17,6 +19,8 @@ const VideoCallRow = ({ id, videocallId, projectId, videocallCreatorId, subject,
       
       <Td>{subject}</Td>
       <Td>{estimatedDurationMinutes}</Td>
+      <Td>{date}</Td> 
+      <Td>{time}</Td> 
 
       <Td>
         <Box display="flex" gap="1">

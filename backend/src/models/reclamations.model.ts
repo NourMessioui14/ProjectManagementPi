@@ -1,33 +1,36 @@
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import mongoose, { Document, Schema as MongooseSchema } from 'mongoose';
+import { User } from 'src/auth/schemas/user.schema';
+import { Reponse } from './response.models';
 
-import { Document , Schema as MongooseSchema} from "mongoose";
-import { Reponse } from "./response.models";
+export enum ReclamationCategory {
+  BUG = 'Bug',
+  ENHANCEMENT = 'Enhancement',
+  Missing_Documentation = 'Missing Documentation',
+  Other = 'Other',
+
+  
+  // Ajoutez d'autres catégories au besoin
+}
 
 export type ReclamationDocument = Reclamation & Document;
 
 @Schema()
 export class Reclamation {
- 
-  @Prop({ required: true})
-  UserId: number;
+  @Prop({ required: true, enum: ReclamationCategory })
+  Category: ReclamationCategory;
 
-  @Prop({ required: true})
-  UserName: string;
-
-
-  @Prop( { required: true})
-  Category: string;
-
- 
-  @Prop( { required: true})
+  @Prop({ required: true })
   Subject: string;
 
- 
-  @Prop( { required: true})
-  Description : string;
+  @Prop({ required: true })
+  Description: string;
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
+  user: User;
 
   @Prop({ type: [{ type: MongooseSchema.Types.ObjectId, ref: 'Reponse' }] })
- reponses: Reponse[];
+  reponses: Reponse[];
 }
 
 export const ReclamationSchema = SchemaFactory.createForClass(Reclamation);

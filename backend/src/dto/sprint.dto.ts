@@ -1,4 +1,5 @@
-import { IsArray, IsDate, IsDateString, IsNotEmpty } from "class-validator";
+import { IsArray, IsDate, IsDateString, IsNotEmpty,ValidateNested } from "class-validator";
+import { TicketDto } from "./ticket.dto";
 
 
 export class SprintDto{
@@ -6,6 +7,11 @@ export class SprintDto{
     @IsNotEmpty()
     sprintname: string;
 
+    @IsNotEmpty()
+    project: string;
+
+    @IsNotEmpty()
+    description: string;
     
     @IsDateString()
     startdate: string; // Format "YYYY-MM-DD"
@@ -13,12 +19,11 @@ export class SprintDto{
     @IsDateString()
     enddate: string; // Format "YYYY-MM-DD"
 
-    @IsNotEmpty()
-    description: string;
+    
 
-    @IsArray()
-    @IsNotEmpty()
-    tickets: string[]; // Tableau d'identifiants de tickets
+    // @IsArray()
+    // @ValidateNested({ each: true })
+    // tickets: TicketDto[];
 
 
 }

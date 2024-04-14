@@ -1,4 +1,7 @@
-import { IsNotEmpty, IsNumber, IsString, ArrayNotEmpty, IsArray, IsMongoId } from "class-validator";
+import { IsNotEmpty, IsNumber, IsString, ArrayNotEmpty, IsArray, ValidateNested } from "class-validator";
+import { SignUpDto } from "src/auth/dto/signup.dto"; // Assuming SignUpDto represents the user entity
+import { Type } from "class-transformer";
+import { MessageDto } from "./message.dto"; // Assuming MessageDto represents the message entity
 
 export class VideoCallDto {
     @IsNotEmpty()
@@ -8,25 +11,28 @@ export class VideoCallDto {
     projectId: string;
 
     @IsNotEmpty()
-    videocallCreatorId: string;
+    videocallCreator: string;
 
     @IsNotEmpty()
     subject: string;
 
-    // You can uncomment these lines if you want to validate date and time strings
-    // @IsDateString()
-    // date: string;
-
-    // @IsDateString()
-    // time: string;
-
-     @IsNotEmpty()
-     @IsNumber()
+    @IsNotEmpty()
+    @IsNumber()
     estimatedDurationMinutes: number;
 
-    // @IsNotEmpty()
-    // @IsArray()
-    // @ArrayNotEmpty()
-    // @IsMongoId({ each: true }) // Validate that each element in the array is a valid MongoDB ObjectId
-    // invitedUsers: string[]; // Array of user IDs invited to the video call
+    @IsNotEmpty()
+    @IsArray()
+    invitedUsers: string[];
+
+    
+    @IsNotEmpty()
+    @IsString()
+    date: string;
+
+    
+    @IsNotEmpty()
+    @IsString()
+    time: string;
+
+  
 }

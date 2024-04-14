@@ -1,23 +1,32 @@
-import React, { useContext } from 'react';
-import { Td, Tr, Box, Button, Avatar } from '@chakra-ui/react';
+import React, { useContext } from "react";
+import { Td, Tr, Box, Button } from "@chakra-ui/react";
 import { AiFillDelete, AiFillEdit } from "react-icons/ai";
-import { GlobalContext } from '../../../context/GlobalWrapperChat';
+import { GlobalContext } from "../../../context/GlobalWrapperChat";
+import Sidebar from "../Sidebar";
 
-const ChatroomRow = ({ id,chatroomId, projectId, chatroomCreatorId, chatroomName }) => {
-  const { DeleteChatroom, onOpen } = useContext(GlobalContext);
+const ChatroomRow = ({ id, chatroomId, projectId, chatroomName, members }) => {
+  const { DeleteChatroom, onOpen, setSelectChatroomHandler, users , projects } =
+    useContext(GlobalContext);
 
   const onChangeHandler = () => {
-    onOpen(); // Open the form when the edit icon is clicked
+    onOpen(); // Ouvre le formulaire lorsque l'icône d'édition est cliquée
+    setSelectChatroomHandler({
+      id,
+      chatroomId,
+      projectId,
+      chatroomName,
+      members,
+    });
   };
+
+  console.log(projects)
 
   return (
     <Tr>
       <Td>{chatroomId}</Td>
       <Td>{chatroomName}</Td>
-      <Td>{projectId}</Td>
-      <Td>{chatroomCreatorId}</Td>
-      
-
+      <Td>{projects?.filter((project) => project?.['_id'] == projectId)?.[0]?.projectname }</Td>
+      <Td>{members.map((member) => <div>{users?.filter((user) => user?.['_id'] == member)?.[0]?.name }</div>)}</Td>
       <Td>
         <Box display="flex" gap="1">
           <Button colorScheme="blue" onClick={onChangeHandler}>

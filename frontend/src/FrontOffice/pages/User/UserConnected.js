@@ -67,7 +67,7 @@ const UserConnected = () => {
     
     <section className="vh-100" style={{ backgroundColor: '#f4f5f7' }}>
       <NavbarFront/>
-      <MDBContainer className="py-5 h-100">
+      <MDBContainer className="py-5 h-100 bg-white rounded-xl shadow">
         <MDBRow className="justify-content-center align-items-center h-100">
           <MDBCol lg="6" className="mb-4 mb-lg-0">
             <MDBCard className="mb-3" style={{ borderRadius: '.5rem' }}>
@@ -78,18 +78,14 @@ const UserConnected = () => {
                       <MDBCardImage src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp" alt="Avatar" className="my-5" style={{ width: '80px' }} fluid />
                       <MDBTypography tag="h5">{user.name}</MDBTypography>
                       <MDBCardText>{user.role}</MDBCardText>
-                      <div className="mb-5">
-  <Link to={`/profile/${user._id}`} className="align-middle">
-    <i className="align-middle" data-feather="user-plus"></i> 
-    <span className="align-middle">Edit Profile</span>
-  </Link>
-</div>
-<div>
-<Link to={`/changePass`} className="align-middle">
-    <i className="align-middle" data-feather="user-plus"></i> 
-    <span className="align-middle">Edit Password</span>
-  </Link>
-</div>
+
+                  
+
+
+
+
+
+
 
                     </MDBCol>
                     <MDBCol md="8">
@@ -105,6 +101,20 @@ const UserConnected = () => {
                           <a href="#!"><MDBIcon fab icon="twitter me-3" size="lg" /></a>
                           <a href="#!"><MDBIcon fab icon="instagram me-3" size="lg" /></a>
                         </div>
+                        <div className="d-flex justify-content-center align-items-center">
+  <div className="ms-0 me-5">
+    <Link to={`/profile/${user._id}`} className="btn btn-primary">
+      <MDBIcon icon="user-plus" />
+      <span>Edit Profile</span>
+    </Link>
+  </div>
+  <div>
+    <Link to={`/changePass`} className="btn btn-primary">
+      <MDBIcon icon="user-plus" />
+      <span>Edit Password</span>
+    </Link>
+  </div>
+</div>
                       </MDBCardBody>
                     </MDBCol>
                   </>

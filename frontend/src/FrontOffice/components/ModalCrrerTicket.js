@@ -15,6 +15,8 @@ function ModalCreateTicket(props) {
   });
   const [validationErrors, setValidationErrors] = useState({});
 
+  const emailService = new EmailService(); // Créez une instance d
+
   const validateForm = () => {
     const errors = {};
 
@@ -56,15 +58,32 @@ function ModalCreateTicket(props) {
   };
 
   // Fonction pour enregistrer le ticket
-  const onSave = () => {
+  const onSave = async () => {
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length === 0) {
-      AddTicket(formT, setFormT);
+      // Ajoutez le ticket
+      await AddTicket(formT, setFormT);
+  
+      // Récupérez les détails pertinents pour personnaliser l'e-mail
+      const projectName = formT.project.projectname;
+      const ticketType = formT.typeOfticket;
+      const description = formT.description;
+      const responsableEmail = formT.responsable; // Assurez-vous que cette valeur est correcte
+      const responsableName = 'John Doe'; // Remplacez 'John Doe' par le nom réel du responsable
+  
+      // Envoyez un e-mail personnalisé au responsable
+      await emailService.sendCustomizedEmail(
+        responsableEmail,
+        'New Ticket Assigned',
+        projectName,
+        ticketType,
+        description,
+        responsableName
+      );
     } else {
       setValidationErrors(validationErrors);
     }
   };
-
   
   
   

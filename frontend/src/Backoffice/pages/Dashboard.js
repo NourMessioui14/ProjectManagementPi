@@ -2,6 +2,7 @@
 import UserList from "./UserList"
 import { Route, Routes } from 'react-router-dom';
 import LogoutButton from "../components/LogoutButton";
+
 import UserConnected from "../../FrontOffice/pages/User/UserConnected";
 
 
@@ -16,7 +17,9 @@ function Dashboard() {
         <strong>Analytics</strong> Dashboard
         </h1>
 
+
 <UserList /> 
+
     <LogoutButton />
 		
     
