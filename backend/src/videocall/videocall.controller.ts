@@ -32,7 +32,11 @@ export class VideocallController {
     deleteVideocall(@Param('id') id: string) {
         return this.service.delete(id);
     }
-
+    
+    @Get('/invited/:userId') // Nouvelle route pour obtenir les vidéoconférences invitées par un utilisateur
+    getInvitedVideoCalls(@Param('userId') userId: string) {
+        return this.service.getVideoCallsByUserId(userId);
+    }
     /*
     @Put('/:videocallId/join')
     joinVideocall(@Param('videocallId') videocallId: string, @Body() user: SignUpDto) {

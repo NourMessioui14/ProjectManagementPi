@@ -1,4 +1,3 @@
-// ChatRoomHeader.js
 import React from 'react';
 
 const styles = {
@@ -8,12 +7,15 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: '#fff',
+    backgroundColor: '#9575cd', // Changed background color to violet
+    color: '#fff', // Changed text color to white
   },
   roomName: {
     fontSize: '18px',
     fontWeight: 'bold',
     margin: '0',
+    fontFamily: 'Arial, sans-serif', // Changed font family
+    color: '#fff',
   },
   roomImage: {
     width: '40px',

@@ -5,6 +5,7 @@ import ChatSideBarRight from './ChatSideBarRight';
 import InputBar from './InputBar';
 import ChatroomHeader from './ChatroomHeader';
 import ChatroomBody from './ChatroomBody';
+import Sidebar from '../../../Backoffice/components/Sidebar';
 
 const ChatPage = () => {
   const { getMessagesByChatroomId, getChatroomsByUserId } = useContext(GlobalContext);
@@ -47,6 +48,9 @@ const ChatPage = () => {
   };
 
   return (
+
+
+
     <div className="chat-page" style={{ display: 'flex', flexDirection: 'row', height: '100vh', overflow: 'hidden' }}>
       <ChatSideBarLeft onSelectChatroom={handleSelectChatroom} onchatroomname={handleSelectChatroomName} onSelectUserId={handleSelectUserId} />
       <div className="chat-page-center w-full p-2" style={{ flex: '1', display: 'flex', flexDirection: 'column', width: '100%', overflowY: 'auto' }}>

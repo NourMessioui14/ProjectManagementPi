@@ -1,24 +1,66 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Button, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, Stack, Input, FormControl, FormLabel, InputGroup, InputRightElement, Icon } from '@chakra-ui/react';
-import { BiCalendar, BiTime } from 'react-icons/bi'; // Import des icônes de calendrier et d'heure
-import InputForm from '../InputForm';
-import { GlobalContext } from '../../../context/GlobalWrapperChat';
+import React, { useContext, useEffect, useState } from "react";
+import {
+  Button,
+  Drawer,
+  DrawerBody,
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  Stack,
+  Input,
+  FormControl,
+  FormLabel,
+  InputGroup,
+  InputRightElement,
+  Icon,
+  Select,
+} from "@chakra-ui/react";
+import { BiCalendar, BiTime } from "react-icons/bi"; // Import des icônes de calendrier et d'heure
+import InputForm from "../InputForm";
+import { GlobalContext } from "../../../context/GlobalWrapperChat";
 
 export default function DrawerFormVideocalls() {
-  const { isOpen, onClose, addVideoCall, updateVideoCall, errors, setErrors, videoCall } = useContext(GlobalContext);
+  const {
+    isOpen,
+    onClose,
+    addVideoCall,
+    updateVideoCall,
+    errors,
+    setErrors,
+    videoCall,
+    users,
+    findUsers,
+    setSelectvideocallHandler,
+    selectedvideocall,
+  } = useContext(GlobalContext);
+
   const [form, setForm] = useState({});
+  const [selectedUser, setSelectedUser] = useState([]);
 
   useEffect(() => {
-    // Vérifier si l'appel vidéo a un _id et qu'il n'est pas un objet vide
-    if (videoCall && videoCall._id !== undefined && Object.keys(videoCall).length > 0) {
-      setForm(videoCall);
+    findUsers();
+  }, []);
+
+  useEffect(() => {
+    if (selectedvideocall) {
+      setForm(selectedvideocall);
+      setSelectedUser(selectedvideocall.invitedUsers);
     } else {
       setForm({});
     }
-  }, [isOpen, videoCall]);
+  }, [isOpen, selectedvideocall]);
 
   const onChangeHandler = (e) => {
-    const value = e.target.name === 'estimatedDurationMinutes' ? parseInt(e.target.value) : e.target.value;
+    let value =
+      e.target.name === "estimatedDurationMinutes"
+        ? parseInt(e.target.value)
+        : e.target.value;
+
+    if (selectedvideocall && e.target.name === "date") {
+      value = `${selectedvideocall?.date.split("-")[0]}/${selectedvideocall?.date.split("-")[1]}/${selectedvideocall?.date.split("-")[2]}`;
+    }
 
     setForm({
       ...form,
@@ -26,113 +68,173 @@ export default function DrawerFormVideocalls() {
     });
   };
 
+  const removeUserHandler = (userId) => {
+    setSelectedUser((prev) => prev.filter((user) => user !== userId));
+  };
+
+  const selectUsersHandler = (userId) => {
+    if (!selectedUser.includes(userId)) {
+      setSelectedUser((prev) => [...prev, userId]);
+    }
+  };
+
   const onSave = () => {
-    if (form._id) {
-      updateVideoCall(form, setForm);
+    if (selectedvideocall) {
+      updateVideoCall(
+        { ...form, invitedUsers: selectedUser, videocallCreator: "admin" },
+        setForm
+      );
     } else {
-      // Formater la date et l'heure avant de les envoyer
       const formattedForm = {
         ...form,
         date: formatDate(form.date),
         time: formatTime(form.time),
-        videocallCreator: 'admin',
-        invitedUsers: ['admin', 'user1', 'user2'],
+        videocallCreator: "admin",
+        invitedUsers: selectedUser,
       };
-      console.log("Valeurs envoyées :", formattedForm); // Ajout du console.log ici
       addVideoCall(formattedForm, setForm);
     }
   };
 
-  // Fonction pour formater la date
   const formatDate = (date) => {
-    if (!date) return ''; // Retourner une chaîne vide si la date est vide
-    const [year, month, day] = date.split('-');
+    if (!date) return "";
+    const [year, month, day] = date.split("-");
     return `${day}/${month}/${year}`;
   };
 
-  // Fonction pour formater l'heure
   const formatTime = (time) => {
-    if (!time) return ''; // Retourner une chaîne vide si l'heure est vide
+    if (!time) return "";
     return time;
   };
+
+  useEffect(() => {
+    if (isOpen == false) {
+      setSelectedUser([]);
+      setSelectvideocallHandler(null);
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    console.log(selectedvideocall);
+  }, [selectedvideocall]);
 
   return (
     <>
       <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
         <DrawerOverlay />
         <DrawerContent>
-          <DrawerCloseButton onClick={() => {
-            onClose();
-            setErrors({});
-            setForm({});
-          }} />
-          <DrawerHeader>{form._id ? 'Update Video Call' : 'Create Video Call'}</DrawerHeader>
+          <DrawerCloseButton
+            onClick={() => {
+              onClose();
+              setErrors({});
+              setForm({});
+            }}
+          />
+          <DrawerHeader>
+            {selectedvideocall ? "Update Video Call" : "Create Video Call"}
+          </DrawerHeader>
 
           <DrawerBody>
-            <Stack spacing={'24px'}>
+            <Stack spacing={"24px"}>
               <InputForm
                 name="videocallId"
-                onChangeHandler={(e) => onChangeHandler(e)}
-                value={form?.videocallId || ''}
+                onChangeHandler={onChangeHandler}
+                value={form?.videocallId || ""}
                 errors={errors?.videocallId}
                 label="Video Call ID"
               />
               <InputForm
                 name="projectId"
-                onChangeHandler={(e) => onChangeHandler(e)}
-                value={form?.projectId || ''}
+                onChangeHandler={onChangeHandler}
+                value={form?.projectId || ""}
                 errors={errors?.projectId}
                 label="Project ID"
               />
               <InputForm
                 name="subject"
-                onChangeHandler={(e) => onChangeHandler(e)}
-                value={form?.subject || ''}
+                onChangeHandler={onChangeHandler}
+                value={form?.subject || ""}
                 errors={errors?.subject}
                 label="Subject"
               />
+
+              <Select
+                name="user"
+                onChange={(e) => {
+                  selectUsersHandler(e.target.value);
+                }}
+                placeholder="Select a user"
+              >
+                {users.map((user) => (
+                  <option key={user?.["_id"]} value={user?.["_id"]}>
+                    {user?.name}{" "}
+                  </option>
+                ))}
+              </Select>
+
+              {selectedUser.map((selected) => {
+                return (
+                  <span>
+                    {
+                      users.filter((user) => user?.["_id"] == selected)?.[0]
+                        ?.name
+                    }{" "}
+                    <span onClick={() => removeUserHandler(selected)}>X</span>
+                  </span>
+                );
+              })}
+
               <InputForm
                 name="estimatedDurationMinutes"
-                onChangeHandler={(e) => onChangeHandler(e)}
-                value={form?.estimatedDurationMinutes || ''}
+                onChangeHandler={onChangeHandler}
+                value={form?.estimatedDurationMinutes || ""}
                 errors={errors?.estimatedDurationMinutes}
                 label="Estimated Duration (minutes)"
               />
 
-              {/* Champ de sélection de date */}
               <FormControl id="date">
                 <FormLabel>Date</FormLabel>
                 <Input
                   type="date"
                   name="date"
-                  value={form?.date || ''}
+                  value={
+                    !selectedvideocall
+                      ? form?.date || ""
+                      : `${selectedvideocall?.date.split("/")[2]}-${selectedvideocall?.date.split("/")[1]}-${selectedvideocall?.date.split("/")[0]}` ||
+                        ""
+                  }
                   onChange={(e) => onChangeHandler(e)}
                 />
               </FormControl>
 
-              {/* Champ de sélection de l'heure */}
               <FormControl id="time">
                 <FormLabel>Heure</FormLabel>
                 <InputGroup>
                   <Input
                     type="time"
                     name="time"
-                    value={form?.time || ''}
+                    value={form?.time || ""}
                     onChange={(e) => onChangeHandler(e)}
                   />
-                  <InputRightElement pointerEvents="none" children={<Icon as={BiTime} color="gray.300" />} />
+                  <InputRightElement
+                    pointerEvents="none"
+                    children={<Icon as={BiTime} color="gray.300" />}
+                  />
                 </InputGroup>
               </FormControl>
-
             </Stack>
           </DrawerBody>
 
           <DrawerFooter>
-            <Button variant="outline" mr={3} onClick={() => {
-              onClose();
-              setErrors({});
-              setForm({});
-            }}>
+            <Button
+              variant="outline"
+              mr={3}
+              onClick={() => {
+                onClose();
+                setErrors({});
+                setForm({});
+              }}
+            >
               Cancel
             </Button>
             <Button colorScheme="blue" onClick={onSave}>

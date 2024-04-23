@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config'; // Import du module ConfigModule
@@ -12,6 +12,9 @@ import { ReponsesModule } from './reponses/reponses.module';
 import { MessageModule } from './message/message.module';
 import { ChatroomModule } from './chatroom/chatroom.module';
 import { VideocallModule } from './videocall/videocall.module';
+import { SignalingGateway } from './signaling/signaling.gateway';
+//import { GatewayModule } from './gateway/gateway.module';
+//import { LoggerMiddleware } from '@nestjs/common';
 
 @Module({
   imports: [
@@ -31,6 +34,9 @@ import { VideocallModule } from './videocall/videocall.module';
     VideocallModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, SignalingGateway],
 })
-export class AppModule {}
+export class AppModule {
+
+
+}

@@ -26,16 +26,25 @@ import NavbarFront from './FrontOffice/NavbarFront';
 import CustomCard from './FrontOffice/components/Project/CardProject';
 import ProjectListFront from './FrontOffice/components/Project/ProjectListFront';
 import CreateProjectForm from './FrontOffice/components/Project/createprojectfront';
-  import UserRolesChart from './Backoffice/components/User/UserRolesChart';
+import UserRolesChart from './Backoffice/components/User/UserRolesChart';
 import TaskModal from './Backoffice/components/Ticket/TaskModal';
 import DetailsProject from './FrontOffice/components/Project/DetailsProject';
 import ChangePass from './FrontOffice/pages/User/ChangePass';
 import UserConnected from './FrontOffice/pages/User/UserConnected';
 import Profile from './FrontOffice/pages/User/Profile';
+import VideoCallPage from './FrontOffice/components/Chat/videocallpage'; 
+import WebcamComponent2 from './FrontOffice/components/Chat/videocallrooms';
+import WebSocketClient from './FrontOffice/components/Chat/WebSocketClient'; 
+import { WebsocketProvider, socket } from './context/websocketContext';
+import MyVideocalls from './FrontOffice/components/Chat/myvideocalls';
+
 
 function App() {
   return (
+
+    
     <Router>
+      
       <Routes>
         <Route
           path="/backoffice/*"
@@ -75,7 +84,6 @@ function App() {
         <Route path="/chart" element={<UserRolesChart />} />
         <Route path="/userconnected" element={<UserConnected />} />
         <Route path='/changePass' element={<ChangePass/>} />
-
         <Route path="/navbarfront" element={<NavbarFront />} />
         <Route path="/Sidebar" element={<Sidebar />} />
         <Route path="/navbar" element={<Navbar />} />
@@ -85,15 +93,14 @@ function App() {
         <Route path="/home" element={<HomePage />} />
         <Route path="/TaskModal" element={<TaskModal />} />
         <Route path="/detailsproject/:projectId" element={<DetailsProject />} />
-
-        
-
-
+        <Route path='/zoom' element={<VideoCallPage/>} />
+        <Route path='/zoom2' element={<WebcamComponent2/>} />
+        <Route path='/testsocket' element={< WebSocketClient />} />
         <Route path="/userconnected" element={<UserConnected/>} />
-
-
-
+        <Route path="/myvideocalls" element={<MyVideocalls/>} />
       </Routes>
+      
+
     </Router>
   );
 }

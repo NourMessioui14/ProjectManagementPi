@@ -4,38 +4,36 @@ import { GlobalContext } from '../../../context/GlobalWrapperChat';
 const InputBar = ({ currentRoomId, updateMessages }) => {
   const { getChatroomsByUserId, getLastMessageByChatroomId, addMessage, getUserIdFromToken } = useContext(GlobalContext);
  
-
   const [token, setToken] = useState(""); // State to store the token
-
   const [userId ,setUserId] = useState("")
-useEffect(() => {
 
-  const storedToken = localStorage.getItem('token');
+  useEffect(() => {
+    const storedToken = localStorage.getItem('token');
     console.log("Token from localStorage:", storedToken);
-    setToken(storedToken); // Stocke le token dans l'état
-  const getUserId = async () => {
-    try {
-      const userIdFromToken = await getUserIdFromToken(storedToken);
-      setUserId(userIdFromToken.userId)       
+    setToken(storedToken); // Store the token in state
+    const getUserId = async () => {
+      try {
+        const userIdFromToken = await getUserIdFromToken(storedToken);
+        setUserId(userIdFromToken.userId)       
   
-    } catch (error) {
-      console.error('Error getting user ID from token:', error);
-    }
-  };
+      } catch (error) {
+        console.error('Error getting user ID from token:', error);
+      }
+    };
 
-  getUserId(); 
-}, []);
+    getUserId(); 
+  }, []);
 
   const [message, setMessage] = useState('');
-  const [showEmojiPicker, setShowEmojiPicker] = useState(false); // État pour afficher ou masquer la liste d'emoji
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false); // State to show or hide the emoji picker
 
   const handleMessageChange = (e) => {
     setMessage(e.target.value);
   };
 
   const handleEmojiClick = (emoji) => {
-    setMessage(message + emoji); // Ajouter l'emoji sélectionné au texte du message
-    setShowEmojiPicker(false); // Masquer la liste d'emoji après avoir sélectionné un emoji
+    setMessage(message + emoji); // Add the selected emoji to the message text
+    setShowEmojiPicker(false); // Hide the emoji picker after selecting an emoji
   };
 
   const handleSubmit = async () => {
@@ -78,14 +76,14 @@ useEffect(() => {
     return () => clearInterval(interval); // Cleanup function to clear interval on component unmount
   }, [currentRoomId]);
 
-  // Liste d'emojis
+  // Emoji list
   const emojis = ['😀', '😁', '😂', '🤣', '😃', '😄', '😅', '😆', '😉', '😊', '😋', '😎', '😍', '😘', '🥰', '😗', '😙', '😚', '☺️', '🙂', '🤗', '🤩', '🤔', '🤨', '😐', '😑', '😶', '😏', '😒', '🙄', '😬', '🤥', '😌', '😔', '😪', '🤤', '😴', '😷', '🤒', '🤕', '🤢', '🤮', '🤧', '🥵', '🥶', '🥴', '😵', '🤯', '🤠', '🥳', '😎', '🤓', '🧐', '😕', '😟', '🙁', '☹️', '😮', '😯', '😲', '😳', '🥺', '😦', '😧', '😨', '😰', '😥', '😢', '😭', '😱', '😖', '😣', '😞', '😓', '😩', '😫', '🥱', '😤', '😡', '😠', '🤬', '😈', '👿', '💀', '☠️', '💩', '🤡', '👹', '👺', '👻', '👽', '👾', '🤖', '😺', '😸', '😹', '😻', '😼', '😽', '🙀', '😿', '😾'];
 
   return (
     <div className="input-bar" style={styles.inputBar}>
-      {/* Bouton Emoji */}
+      {/* Emoji button */}
       <button style={styles.buttonLeft} onClick={() => setShowEmojiPicker(!showEmojiPicker)}>😀</button>
-      {/* Affichage de la liste d'emoji */}
+      {/* Display emoji picker */}
       {showEmojiPicker && (
         <div style={styles.emojiPicker}>
           {emojis.map((emoji, index) => (
@@ -103,7 +101,7 @@ useEffect(() => {
         onChange={handleMessageChange}
         onKeyDown={handleKeyDown} // Add event listener for key down
       />
-      <button style={styles.buttonRight} onClick={handleSubmit}>Send</button>
+      <button style={styles.buttonRight} onClick={handleSubmit}>➡️</button> {/* Changed button text to a symbol */}
     </div>
   );
 };
@@ -112,7 +110,7 @@ const styles = {
   inputBar: {
     display: 'flex',
     alignItems: 'center',
-    position: 'relative', // Position relative pour permettre le positionnement absolu de la liste d'emojis
+    position: 'relative', // Relative position to allow absolute positioning of emoji picker
     padding: '10px',
     backgroundColor: '#fff',
     borderTop: '1px solid #ccc',
@@ -129,7 +127,7 @@ const styles = {
     padding: '8px',
     borderRadius: '5px',
     cursor: 'pointer',
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#9575cd', // Changed button color to purple
     color: '#fff',
     marginRight: '10px',
     border: 'none',
@@ -139,13 +137,13 @@ const styles = {
     padding: '8px',
     borderRadius: '5px',
     cursor: 'pointer',
-    backgroundColor: '#2196F3',
-    color: '#fff',
-    border: 'none',
+    backgroundColor: '#fff', // Changed button color to white
+    color: '#9575cd', // Changed text color to purple
+    border: '1px solid #9575cd', // Added border
   },
   emojiPicker: {
     position: 'absolute',
-    top: 'calc(100% + 5px)', // Positionner juste en dessous du bouton emoji
+    top: 'calc(100% + 5px)', // Position just below the emoji button
     left: 0,
     backgroundColor: '#fff',
     border: '1px solid #ccc',

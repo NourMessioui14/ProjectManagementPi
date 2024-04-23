@@ -37,6 +37,21 @@ export const WrapperChat = ({ children }) => {
   };
 
 
+  ///////////////
+  const getvideocallsByUserId = async (userId) => {
+    try {
+      const res = await axios.get(
+        `http://localhost:5001/videocalls/invited/${userId}`
+      );
+      return res.data;
+    } catch (err) {
+      console.log(err.response.data);
+      return [];
+    }
+  };
+
+
+
 
 
   // Fonction pour récupérer un utilisateur par son ID
@@ -263,9 +278,9 @@ export const WrapperChat = ({ children }) => {
       });
   };
 
-  const updateVideoCall = (form, setForm, id) => {
+  const updateVideoCall = (form, setForm) => {
     axios
-      .put(`http://localhost:5001/videocalls/${id}`, form)
+      .put(`http://localhost:5001/videocalls/${form.id}`, form)
       .then((res) => {
         toast({
           title: "Video Call Updated",
@@ -300,6 +315,7 @@ export const WrapperChat = ({ children }) => {
     <GlobalContext.Provider
       value={{
         getUserIDByToken,
+        getvideocallsByUserId,
         userID, 
         projects,
         FetchChatrooms,
@@ -329,6 +345,7 @@ export const WrapperChat = ({ children }) => {
         selectedChatroom,
         setSelectChatroomHandler,
         setSelectvideocallHandler,
+        selectedvideocall,
         findUsers,
         users,
       }}

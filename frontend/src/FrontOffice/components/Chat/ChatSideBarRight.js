@@ -3,21 +3,19 @@ import { GlobalContext } from '../../../context/GlobalWrapperChat';
 
 const ChatSideBarRight = ({ onSelectChatroom }) => {
   const { getChatroomsByUserId, getMessagesByChatroomId , getUserIdFromToken} = useContext(GlobalContext);
-   const [chatrooms, setChatrooms] = useState([]);
+  const [chatrooms, setChatrooms] = useState([]);
   const [currentRoomId, setCurrentRoomId] = useState(""); // Define currentRoomId state
   const [token, setToken] = useState(""); // State to store the token
   const [userId ,setUserId] = useState("")
 
   useEffect(() => {
- 
     const storedToken = localStorage.getItem('token');
-      console.log("Token from localStorage:", storedToken);
-      setToken(storedToken); // Stocke le token dans l'état
+    console.log("Token from localStorage:", storedToken);
+    setToken(storedToken); // Stocke le token dans l'état
     const getUserId = async () => {
       try {
         const userIdFromToken = await getUserIdFromToken(storedToken);
         setUserId(userIdFromToken.userId)       
-    
       } catch (error) {
         console.error('Error getting user ID from token:', error);
       }
@@ -25,8 +23,6 @@ const ChatSideBarRight = ({ onSelectChatroom }) => {
 
     getUserId(); 
   }, []);
-
-  
 
   const handleChatroomClick = async (chatroomId) => {
     //console.log("Clicked on chatroom ID:", chatroomId); // Display the clicked chatroom ID in the console
@@ -61,8 +57,8 @@ const ChatSideBarRight = ({ onSelectChatroom }) => {
   }, [currentRoomId]);
 
   return (
-    <div className="sidebar-right" style={{ width: '250px', padding: '15px', backgroundColor: '#fff', borderRadius: '5px', color: '#333', height: '100vh' }}>
-      <h3 style={{ textAlign: 'center', marginBottom: '15px', fontSize: '18px', color: '#333' }}>
+    <div className="sidebar-right" style={{ width: '250px', padding: '15px', backgroundColor: '#7e57c2', borderRadius: '5px', color: '#fff', height: '100vh' }}>
+      <h3 style={{ textAlign: 'center', marginBottom: '15px', fontSize: '18px', color: '#fff' }}>
         Chatrooms
       </h3>
       <div className='p-2' style={{ overflowY: 'auto', maxHeight: 'calc(100vh - 150px)' }}>
@@ -75,17 +71,14 @@ const ChatSideBarRight = ({ onSelectChatroom }) => {
               padding: '10px', // Increased padding
               cursor: 'pointer',
               transition: 'background-color 0.3s',
-              backgroundColor: '#27ae60', // Custom background color
+              backgroundColor: '#9575cd', // Custom background color (violet shade)
               borderRadius: '8px', // Increased border radius
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
             }}
           >
-            <div style={{ fontSize: '16px', fontWeight: 'bold', color: '#fff' }}> {/* Increased font size */}
-              {chatroom?.chatroomId || ""}
-            </div>
-            <div style={{ fontSize: '14px', color: '#fff' }}> {/* Increased font size */}
+            <div style={{ fontSize: '16px', fontWeight: 'bold', color: '#fff' }}>
               {chatroom?.chatroomName || ""}
             </div>
           </div>

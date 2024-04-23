@@ -121,7 +121,7 @@ export default function DrawerFormChatroom() {
                 ))}
               </Select>
 
-              {selectedUser.map((selected) => { return <span>{users.filter((user) => user?.['_id'] == selected)[0].name} <span onClick={() => removeUserHandler(selected)}>X</span></span> })}
+              {selectedUser.map((selected) => { return <span>{users.filter((user) => user?.['_id'] == selected)?.[0]?.name } <span onClick={() => removeUserHandler(selected)}>X</span></span> })}
               <Select
                 name="user"
                 onChange={(e) => { selectUsersHandler(e.target.value) }}
