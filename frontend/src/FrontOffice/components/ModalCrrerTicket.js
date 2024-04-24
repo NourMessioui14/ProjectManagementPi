@@ -147,6 +147,8 @@ function ModalCreateTicket(props) {
               <option value="">Select a state</option>
               <option value="To Do">To Do</option>
               <option value="In Progress">In Progress</option>
+              <option value="In Progress">Done</option>
+
             </Form.Control>
             {validationErrors.etat && <Form.Text className="text-danger">{validationErrors.etat}</Form.Text>}
           </Form.Group>

@@ -4,7 +4,7 @@ import { useDisclosure, useToast } from '@chakra-ui/react';
 
 export const GlobalContext = createContext();
 
-export default function Wrapper({ children }) {
+export default function WrapperS({ children }) {
     const [projects, setProjects] = useState([]);
     const [project, setProject] = useState({}); // pour la fonction update 
 
@@ -216,24 +216,25 @@ export default function Wrapper({ children }) {
     };
 
     const AddSprint = (form, setForm) => {
-        axios
-          .post('/sprint', form)
-          .then((res) => {
-            setSprints([...sprints, res.data])
-            toast({
-              title: 'Sprint Added',
-              status: 'success',
-              duration: 3000,
-              isClosable: true,
-            });
-            setErrors({});
-            setForm({});
-            onClose();
-          })
-          .catch((err) => {
-            setErrors(err.response.data.error);
+      axios
+        .post('/sprint', form)
+        .then((res) => {
+          setSprints([...sprints, res.data])
+          toast({
+            title: 'Sprint Added',
+            status: 'success',
+            duration: 3000,
+            isClosable: true,
           });
-    };
+          setErrors({});
+          setForm({});
+          onClose();
+        })
+        .catch((err) => {
+          setErrors(err.response.data.error);
+        });
+  };
+
     
     const findTicketsByProjectId = async (projectId) => {
       try {

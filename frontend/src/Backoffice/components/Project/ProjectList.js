@@ -71,7 +71,6 @@ function ProjectList() {
             <Table variant="simple">
               <Thead>
                 <Tr>
-                  <Th>Avatar</Th>
                   <Th>Project Name</Th>
                   <Th>Chef de projet</Th>
                   <Th>Start Date</Th>

@@ -5,16 +5,15 @@ import { GlobalContext } from '../../../context/GlobalWrapperChat';
 import Sidebar from '../Sidebar';
 
 const ChatroomRow = ({ id, chatroomId, projectId, chatroomName }) => {
-  const { DeleteChatroom, onOpen } = useContext(GlobalContext);
+  const { DeleteChatroom, onOpen, setSelectChatroomHandler } = useContext(GlobalContext);
 
   const onChangeHandler = () => {
     onOpen(); // Ouvre le formulaire lorsque l'icône d'édition est cliquée
+    setSelectChatroomHandler({ id, chatroomId, projectId, chatroomName })
   };
 
   return (
 
-    
-    
     <Tr>
       <Td>{chatroomId}</Td>
       <Td>{chatroomName}</Td>

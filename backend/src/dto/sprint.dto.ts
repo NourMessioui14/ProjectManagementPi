@@ -10,6 +10,8 @@ export class SprintDto{
     @IsNotEmpty()
     project: string;
 
+    @IsNotEmpty()
+    description: string;
     
     @IsDateString()
     startdate: string; // Format "YYYY-MM-DD"
@@ -17,13 +19,11 @@ export class SprintDto{
     @IsDateString()
     enddate: string; // Format "YYYY-MM-DD"
 
-    @IsNotEmpty()
-    description: string;
+    
 
-    @IsArray()
-
-    @ValidateNested({ each: true })
-    tickets: TicketDto[];
+    // @IsArray()
+    // @ValidateNested({ each: true })
+    // tickets: TicketDto[];
 
 
 }

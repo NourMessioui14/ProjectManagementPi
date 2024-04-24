@@ -4,7 +4,7 @@ import InputForm from '../InputForm';
 import { GlobalContext } from '../../../context/GlobalWrapperChat';
 
 export default function DrawerFormChatroom() {
-  const { isOpen, onOpen, onClose, AddChatroom, UpdateChatroom, errors, setErrors, chatroom, FetchProjects, projects } = useContext(GlobalContext);
+  const {selectedChatroom, chatroom, isOpen, onOpen, onClose, AddChatroom, UpdateChatroom, errors, setErrors , FetchProjects, projects } = useContext(GlobalContext);
   const [form, setForm] = useState({
     chatroomId: '',
     projectId: '',
@@ -12,22 +12,22 @@ export default function DrawerFormChatroom() {
   });
 
   const [projectNames, setProjectNames] = useState([]);
+  const [projectsList, setProjectsList] = useState([]);
 
   useEffect(() => {
     const fetchProjectData = async () => {
-      await FetchProjects();
-      if (projects) {
-        const names = projects.map(project => project.projectname);
-        setProjectNames(names);
-      }
+     const data = await FetchProjects();
+     setProjectsList(data)
+      //  const names = data.map(project => project.projectname);
+        //setProjectNames(names);
     };
 
     fetchProjectData();
   }, [FetchProjects, projects]);
 
   useEffect(() => {
-    if (chatroom && chatroom._id !== undefined && Object.keys(chatroom).length > 0) {
-      setForm(chatroom);
+    if (selectedChatroom ) {
+      setForm(selectedChatroom);
     } else {
       setForm({
         chatroomId: '',
@@ -51,8 +51,8 @@ export default function DrawerFormChatroom() {
       members: ['admin','user1'], 
     };
 
-    if (form._id) {
-      UpdateChatroom(updatedForm, setForm);
+    if (selectedChatroom) {
+      UpdateChatroom(updatedForm, setForm, selectedChatroom.id);
     } else {
       AddChatroom(updatedForm, setForm);
     }
@@ -72,7 +72,7 @@ export default function DrawerFormChatroom() {
               chatroomName: '',
             });
           }} />
-          <DrawerHeader>{form._id ? 'Update Chatroom' : 'Create Chatroom'}</DrawerHeader>
+          <DrawerHeader>{selectedChatroom ? 'Update Chatroom' : 'Create Chatroom'}</DrawerHeader>
 
           <DrawerBody>
             <Stack spacing={'24px'}>
@@ -89,8 +89,8 @@ export default function DrawerFormChatroom() {
                 value={form?.projectId || ''}
                 placeholder="Select a Project"
               >
-                {projectNames.map(projectName => (
-                  <option key={projectName} value={projectName}>{projectName}</option>
+                {projectsList.map((project) => (
+                  <option key={project?.['_id']} value={project?.['_id']}>{project?.projectname}</option>
                 ))}
               </Select>
               <InputForm

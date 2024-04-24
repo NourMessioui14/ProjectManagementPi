@@ -19,7 +19,7 @@ function FooterFront() {
             </div>
             <div className="row">
                 <div className="col-lg-12">
-                    <p className="copyright">Copyright &copy; 2020 Softy Pinko Company - Design: TemplateMo</p>
+                    <p className="copyright">Copyright &copy; 2024 ESPRIT - DRIMTIM</p>
                 </div>
             </div>
         </div>

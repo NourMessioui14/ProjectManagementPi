@@ -1,98 +1,145 @@
 import React from 'react';
+import NavbarHome from './NavbarHome';
+import { useTypewriter, Cursor } from 'react-simple-typewriter';
+import FooterFront from '../../FooterFront';
 
 function HomePage() {
+  const [typeEffect] = useTypewriter({
+    words: ['  Scrum Managment ', '  Project  Managment ', '  Software devoloper'],
+    loop: {},
+    typeSpeed: 100,
+    delaySpeed: 40
+  });
+
+  const centerImageStyle = {
+    display: 'block',
+    marginLeft: 'auto',
+    marginRight: '50px',
+    width: '70%'
+  };
+
+  const blurredImageStyle = {
+    boxShadow: '0 0 10px 10px rgba(255, 255, 255, 0.5)', // Modifier le flou ici
+  };
+
   return (
-    <div className="welcome-area" id="welcome">
+    <div>
+      <NavbarHome />
 
-      {/* Header Text */}
-      <div className="header-text">
-        <div className="container">
-          <div className="row">
-            <div className="offset-xl-3 col-xl-6 offset-lg-2 col-lg-8 col-md-12 col-sm-12">
-              <h1>
-                Elevate your ideas <strong>to success with DeamTim:</strong><br />
-                Simplify, <strong>Organize, Succeed</strong>
-              </h1>
-              <a href="#features" className="main-button-slider">Discover More</a>
+      <div className="welcome-area" id="welcome">
+        <div style={{ textAlign: 'center' }}>
+          <img
+            src={`${process.env.PUBLIC_URL}/templateFront/images/scrum.jpg`}
+            style={{ ...centerImageStyle, ...blurredImageStyle, marginLeft: '200px', width: '400px' }}
+            alt="Logo"
+          />
+        </div>
+
+        <div className="offset-xl-3 col-xl-6 offset-lg-2 col-lg-8 col-md-12 col-sm-12">
+          <div>
+            <h1 style={{ margin: '50px',color: 'white' }}>
+              I'm a
+              <span style={{ fontWeight: 'bold', color: 'fuchsia' }}>
+                {typeEffect}
+              </span>
+              <span style={{ color: 'red' }}>
+                <Cursor />
+              </span>
+            </h1>
+          </div>
+
+          <h1 style={{ color: 'white' }}>
+          Elevate your ideas <strong>to success with DeamTim:</strong>
+          <br />
+          Simplify, <strong>Organize, Succeed</strong>
+        </h1>
+        
+          
+        </div>
+      </div>
+      <div className="about-us-section" style={{ background: '#fff', padding: '50px' }}>
+      <div className="container">
+        <h2 style={{ textAlign: 'center' }}>About Us</h2>
+        <p style={{ textAlign: 'center' }}>
+        Define the different phases of a task. When starting out, look no further than “To Do,” “In Progress,” and “Done.” You can also build a custom workflow to meet your team's needs. 
+        There's no wrong way to do things in DRIMTIM..
+        </p>
+        {/* Add more content or images here as needed */}
+      </div>
+    </div>
+      <div className="row">
+        {/* Testimonial Items */}
+        <div className="col-lg-4 col-md-6 col-sm-12">
+          <div className="team-item">
+            <div className="team-content">
+              <i>
+                <img src="assets/images/testimonial-icon.png" alt="" />
+              </i>
+              <p>
+                Integer molestie aliquam gravida. Nullam nec arcu finibus,
+                imperdiet nulla vitae, placerat nibh. Cras maximus venenatis
+                molestie.
+              </p>
+              <div className="user-image">
+                <img src="/templateFront/images/ss.jpg" />
+              </div>
+              <div className="team-info">
+                <h3 className="user-name">Sprint Managment </h3>
+                <span>Software developer</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Testimonial Item 2 */}
+        <div className="col-lg-4 col-md-6 col-sm-12">
+          <div className="team-item">
+            <div className="team-content">
+              <i>
+                <img src="assets/images/testimonial-icon.png" alt="" />
+              </i>
+              <p>
+                Integer molestie aliquam gravida. Nullam nec arcu finibus,
+                imperdiet nulla vitae, placerat nibh. Cras maximus venenatis
+                molestie.
+              </p>
+              <div className="user-image">
+                <img src="/templateFront/images/scrumm.png" />
+              </div>
+              <div className="team-info">
+                <h3 className="user-name">Scrum Managment </h3>
+                <span>Software developer</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Testimonial Item 3 */}
+        <div className="col-lg-4 col-md-6 col-sm-12">
+          <div className="team-item">
+            <div className="team-content">
+              <i>
+                <img src="assets/images/testimonial-icon.png" alt="" />
+              </i>
+              <p>
+                Integer molestie aliquam gravida. Nullam nec arcu finibus,
+                imperdiet nulla vitae, placerat nibh. Cras maximus venenatis
+                molestie.
+              </p>
+              <div className="user-image">
+                <img src="/templateFront/images/project.png" />
+              </div>
+              <div className="team-info">
+                <h3 className="user-name">Project Managment </h3>
+                <span>Software developer</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Business Growth Section */}
-   
-
-      {/* Testimonials Section */}
-      <div className="section" id="testimonials">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-12">
-              <div className="center-heading">
-                <h2 className="section-title">What do they say?</h2>
-              </div>
-            </div>
-            <div className="offset-lg-3 col-lg-6">
-              <div className="center-text">
-                <p>Donec tempus, sem non rutrum imperdiet, lectus orci fringilla nulla, at accumsan elit eros a turpis. Ut sagittis lectus libero.</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="row">
-            {/* Testimonial Item 1 */}
-            <div className="col-lg-4 col-md-6 col-sm-12">
-              <div className="team-item">
-                <div className="team-content">
-                  <i><img src="assets/images/testimonial-icon.png" alt="" /></i>
-                  <p>Proin a neque nisi. Nam ipsum nisi, venenatis ut nulla quis, egestas scelerisque orci. Maecenas a finibus odio.</p>
-                  <div className="user-image">
-                    <img src="http://placehold.it/60x60" alt="" />
-                  </div>
-                  <div className="team-info">
-                    <h3 className="user-name">Catherine Soft</h3>
-                    <span>Managing Director</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Testimonial Item 2 */}
-            <div className="col-lg-4 col-md-6 col-sm-12">
-              <div className="team-item">
-                <div className="team-content">
-                  <i><img src="assets/images/testimonial-icon.png" alt="" /></i>
-                  <p>Integer molestie aliquam gravida. Nullam nec arcu finibus, imperdiet nulla vitae, placerat nibh. Cras maximus venenatis molestie.</p>
-                  <div className="user-image">
-                    <img src="http://placehold.it/60x60" alt="" />
-                  </div>
-                  <div className="team-info">
-                    <h3 className="user-name">Kelvin Wood</h3>
-                    <span>Digital Marketer</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Testimonial Item 3 */}
-            <div className="col-lg-4 col-md-6 col-sm-12">
-              <div className="team-item">
-                <div className="team-content">
-                  <i><img src="assets/images/testimonial-icon.png" alt="" /></i>
-                  <p>Quisque diam odio, maximus ac consectetur eu, auctor non lorem. Cras quis est non ante ultrices molestie. Ut vehicula et diam at aliquam.</p>
-                  <div className="user-image">
-                    <img src="http://placehold.it/60x60" alt="" />
-                  </div>
-                  <div className="team-info">
-                    <h3 className="user-name">David Martin</h3>
-                    <span>Website Manager</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
+      {/* About Us Section */}
+     <FooterFront/>
     </div>
   );
 }

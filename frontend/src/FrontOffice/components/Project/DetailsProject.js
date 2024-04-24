@@ -22,10 +22,15 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
-  Flex // Import Flex component from Chakra UI
+  Flex, // Import Flex component from Chakra UI
+  Grid
 } from '@chakra-ui/react';
 import NavbarFront from '../../NavbarFront';
 import { Text } from '@chakra-ui/react';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+
+
 
 function DetailsProject() {
   const { projectId } = useParams();
@@ -34,8 +39,8 @@ function DetailsProject() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [project, setProject] = useState({
     projectname: '',
-    description: '',
     chefdeprojet: '',
+    description: '',
     startdate: '',
     enddate: '',
   });
@@ -94,7 +99,7 @@ function DetailsProject() {
         duration: 5000,
         isClosable: true,
       });
-      navigate('/projects');
+      navigate('/ProjectListFront');
     } catch (error) {
       console.error("Error updating project:", error);
       toast({
@@ -106,31 +111,51 @@ function DetailsProject() {
       });
     }
   };
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setProject(prev => ({ ...prev, [name]: value }));
+    setProject(prev => ({
+      ...prev,
+      [name]: value
+    }));
+
+   
+const generatePDF = () => {
+  html2canvas(document.querySelector("#capture")).then(canvas => {
+    const imgData = canvas.toDataURL('image/png');
+    const pdf = new jsPDF({
+      orientation: 'landscape',
+    });
+    pdf.addImage(imgData, 'JPEG', 0, 0);
+    pdf.save("download.pdf");
+  });
+};
+    
+    
   };
+  
 
   return (
     <>
-      <Box bg="white" p={10} borderRadius="lg" boxShadow="lg" width="full" mt={8}> {/* Ajoutez un mt={6} pour déplacer les boutons plus bas */}
-      <Flex justifyContent="flex-end" mr={6}>
-        <Button onClick={() => navigate('/projects')} colorScheme="teal" variant="outline" size="sm" ml={2}>
+
+    <NavbarFront/>
+      <Box bg="white" p={10} borderRadius="lg" boxShadow="lg" width="full" mt={6}> {/* Ajoutez un mt={6} pour déplacer les boutons plus bas */}
+        <Button marginTop="50px" onClick={() => navigate('/ProjectListFront')} colorScheme="teal" variant="outline" size="sm" ml={2}>
           Back to Projects
         </Button>
-      </Flex>
     
       {/* Ticket section */}
       {tickets.length > 0 ? (
         tickets.map((ticket) => (
-          <Box key={ticket._id} p={5} shadow="md" borderWidth="1px" mb={4}>
-            <Flex justifyContent="flex-end"> {/* Wrap the button in Flex */}
-              <Button onClick={() => handleOpenTicketDetails(ticket)} size="sm" colorScheme="teal">
-                View Details of ticket
-              </Button>
-            </Flex>
-          </Box>
+          <div key={ticket._id} p={5} shadow="md" borderWidth="1px"  >
+          <Flex justifyContent="flex-end"> {/* Wrap the button in Flex */}
+            <Button   marginTop="30px" marginBottom="20px" onClick={() => handleOpenTicketDetails(ticket)} size="sm" colorScheme="teal">
+              View Details of ticket
+            </Button>
+          </Flex>
+        </div>
+        
         ))
       ) : (
         <Alert status="info" variant="subtle" flexDirection="column" alignItems="center" justifyContent="center" textAlign="center" height="200px">
@@ -142,63 +167,75 @@ function DetailsProject() {
         </Alert>
       )}
     </Box>
+    <Box bg="white" p={8} borderRadius="lg" boxShadow="lg" width="full">
+    <form onSubmit={handleSubmit}>
       <Box bg="white" p={8} borderRadius="lg" boxShadow="lg" width="full">
-        <form onSubmit={handleSubmit}>
-          <Box bg="white" p={8} borderRadius="lg" boxShadow="lg" width="full">
-            <Heading as="h2" size="xl" textAlign="center" mb={6}>Project Details</Heading>
-            <VStack spacing={4} as="form" onSubmit={handleSubmit}>
-              <FormControl isRequired>
-                <FormLabel>Project Name</FormLabel>
-                <Input name="projectname" value={project.projectname} onChange={handleChange} placeholder="Enter project name" size="lg" />
-              </FormControl>
-              <FormControl>
-                <FormLabel>Description</FormLabel>
-                <Textarea name="description" value={project.description} onChange={handleChange} placeholder="Enter project description" size="lg" />
-              </FormControl>
-              <FormControl>
-                <FormLabel>Chef de projet</FormLabel>
-                <Input name="chefdeprojet" value={project.chefdeprojet} onChange={handleChange} placeholder="Enter project manager's name" size="lg" />
-              </FormControl>
-              <FormControl>
-                <FormLabel>Start Date</FormLabel>
-                <Input name="startdate" type="date" value={project.startdate} onChange={handleChange} size="lg" />
-              </FormControl>
-              <FormControl>
-                <FormLabel>End Date</FormLabel>
-                <Input name="enddate" type="date" value={project.enddate} onChange={handleChange} size="lg" />
-              </FormControl>
-              <Button colorScheme="teal" type="submit" width="full" size="lg">
-                Save Changes
-              </Button>
-            </VStack>
-          </Box>
-        </form>
+        <Heading as="h2" size="xl" textAlign="center" mb={6}>Project Details</Heading>
+        <VStack spacing={4}>
+          <FormControl isRequired>
+            <FormLabel>Project Name</FormLabel>
+            <Input name="projectname" value={project.projectname} onChange={handleChange} placeholder="Enter project name" size="lg" />
+          </FormControl>
+          <FormControl>
+            <FormLabel>Chef de projet</FormLabel>
+            <Input name="chefdeprojet" value={project.chefdeprojet} onChange={handleChange} placeholder="Enter project manager's name" size="lg" />
+          </FormControl>
+          <FormControl>
+            <FormLabel>Description</FormLabel>
+            <Textarea name="description" value={project.description} onChange={handleChange} placeholder="Enter project description" size="lg" />
+          </FormControl>
+          <FormControl>
+            <FormLabel>Start Date</FormLabel>
+            <Input name="startdate" type="date" value={project.startdate} onChange={handleChange} size="lg" />
+          </FormControl>
+          <FormControl>
+            <FormLabel>End Date</FormLabel>
+            <Input name="enddate" type="date" value={project.enddate} onChange={handleChange} size="lg" />
+          </FormControl>
+          <Button colorScheme="teal" type="submit" width="full" size="lg">
+            Save Changes
+          </Button>
+        </VStack>
       </Box>
+    </form>
+  </Box>
+  
+  
 
       {/* Modal for ticket details */}
       <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Details du Ticket</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            {selectedTicket && (
-              <>
-                <Text>Type de ticket: {selectedTicket.typeOfticket}</Text>
-                <Text>Description: {selectedTicket.description}</Text>
-                <Text>Etat: {selectedTicket.etat}</Text>
-
-                {/* Ici, ajoutez plus de champs selon les détails que vous souhaitez afficher */}
-              </>
-            )}
-          </ModalBody>
-          <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
-              Close
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>Details of Tasks</ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>
+        {selectedTicket && (
+          <VStack spacing={4} align="start"> {/* Utilisation de VStack pour aligner verticalement les éléments */}
+            <Grid templateColumns="150px 1fr" gap={4}> {/* Utilisation de Grid pour organiser les champs et les valeurs sur la même ligne */}
+              <Text fontWeight="bold">Type de ticket:</Text>
+              <Text>{selectedTicket.typeOfticket}</Text>
+              <Text fontWeight="bold">Sprint en cours :</Text>
+              <Text>{selectedTicket.sprint && selectedTicket.sprint.sprintname}</Text>
+              <Text fontWeight="bold">Description:</Text>
+              <Text>{selectedTicket.description}</Text>
+              <Text fontWeight="bold">Etat:</Text>
+              <Text>{selectedTicket.etat}</Text>
+              <Text fontWeight="bold">Responsable:</Text>
+              <Text>{selectedTicket.responsable && selectedTicket.responsable.name}</Text>
+            </Grid>
+          </VStack>
+        )}
+      </ModalBody>
+      
+        <ModalFooter>
+          {/* Bouton d'impression */}
+          <Button colorScheme="teal" mr={3} onClick={(generatePDF) => window.print()}>Imprimer</Button>
+          {/* Bouton de fermeture */}
+          <Button colorScheme="blue" mr={3} onClick={onClose}>Close</Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
+    
     </>
   );
 }

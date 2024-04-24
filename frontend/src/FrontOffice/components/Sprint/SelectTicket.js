@@ -1,4 +1,3 @@
-
 import React, { useContext, useEffect, useState } from 'react'
 // import { Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, Input, Button } from "@chakra-ui/react";
 import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, Button, Text, Checkbox,Input } from '@chakra-ui/react';
@@ -8,7 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 function SelectTicket({ isOpen, onClose, board, setBoard }) { // Déstructurez directement les props ici
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
-  const { GetTicketsByProjectId,FetchTickets, tickets,AssignTicketsToSprint } = useContext(GlobalContext);
+  const { FetchTicketsbyProject,FetchTickets, tickets,AssignTicketsToSprint } = useContext(GlobalContext);
   const [scrum, setScrum] = useState([]);
   const [selectedTicket, setSelectedTicket] = useState([]); 
   const [selectedTickets, setSelectedTickets] = useState([]); 
@@ -60,7 +59,7 @@ function SelectTicket({ isOpen, onClose, board, setBoard }) { // Déstructurez d
   const selectAll = watch('selectAll');
 
   useEffect(() => {
-    GetTicketsByProjectId();
+    FetchTickets();
   }, []);
 
   return (

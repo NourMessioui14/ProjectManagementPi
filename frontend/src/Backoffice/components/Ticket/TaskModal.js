@@ -17,6 +17,7 @@ function TaskModal({ isOpen, onClose }) {
       FetchProjects();
       fetchResponsables();
       FetchSprints();
+      
     }, [isOpen, ticket]);
   
     const fetchResponsables = async () => {
@@ -31,7 +32,9 @@ function TaskModal({ isOpen, onClose }) {
         console.error('Error fetching responsables:', error.message);
       }
     };
-  
+    const UpdateTicket = (formT, setFormT, ticketId) => {
+      // Logique pour mettre à jour le ticket
+    };
     const FetchSprints = async () => {
       try {
           const res = await axios.get('/sprint');
@@ -211,6 +214,8 @@ function TaskModal({ isOpen, onClose }) {
             <Select name="etat" onChange={handleSubmit} value={formT?.etat || ''}>
               <option value="To Do">To do</option>
               <option value="In progress">In progress</option>
+              <option value="Done">Done</option>
+
             </Select>
             <FormErrorMessage>{validationErrors.etat}</FormErrorMessage>
           </FormControl>

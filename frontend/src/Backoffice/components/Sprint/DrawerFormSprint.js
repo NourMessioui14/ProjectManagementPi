@@ -1,70 +1,81 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, FormControl, FormErrorMessage, FormLabel, Input, Select, Stack, Textarea } from '@chakra-ui/react';
-import InputForm from '../InputForm';
+import { Button, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, Stack, Input, FormControl, FormErrorMessage, FormLabel,Textarea,Select } from '@chakra-ui/react';
+import InputFormSprint from './InputFormSprint';
+
 import { GlobalContext } from '../../../context/GlobalWrapperSprint';
 
 export default function DrawerFormSprint() {
-  const { isOpen, onClose, AddSprint, UpdateSprint, errors, setErrors, sprint, projects, FetchProjects, tickets, FetchTickets } = useContext(GlobalContext);
+  const { isOpen, onClose, AddSprint, errors, setErrors,UpdateSprint, sprints, sprint,projects, FetchProjects } = useContext(GlobalContext);
   const [form, setForm] = useState({});
-  const [selectedTickets, setSelectedTickets] = useState([]);
 
   const onChangeHandler = (e) => {
-    const { name, value } = e.target;
-    setForm(prevState => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
-
-  const onSave = async () => {
-    try {
-      const formErrors = validateForm(form);
-      if (Object.keys(formErrors).length === 0) {
-        await AddSprint({ ...form, tickets: selectedTickets }, setForm);
-        await FetchTickets();
-      } else {
-        setErrors(formErrors);
-      }
-    } catch (error) {
-      console.error('Error saving sprint:', error);
+    if (e.target.name === 'project') {
+      const selectedProject = projects.find(project => project._id === e.target.value);
+      setForm({
+        ...form,
+        project: selectedProject || null,
+      });
+    } else {
+      setForm({
+        ...form,
+        [e.target.name]: e.target.value,
+      });
     }
   };
 
-  const onUpdate = () => {
-    const formErrors = validateForm(form);
+  const onSave = () => {
+    const formErrors = {};
+  
+    // Vérifier si la date de fin est antérieure à la date de début
+    if (form.startdate && form.enddate && new Date(form.startdate) > new Date(form.enddate)) {
+      formErrors.enddate = 'End date cannot be before start date';
+    }
+  
+    // Vérifier les autres champs obligatoires
+    if (!form.sprintname) formErrors.sprintname = 'Sprint name is required';
+    if (!form.project) formErrors.project = 'Project is required';
+    if (!form.description) formErrors.description = 'Description is required';
+    if (!form.startdate) formErrors.startdate = 'Start date is required';
+    if (!form.enddate) formErrors.enddate = 'End date is required';
+  
     if (Object.keys(formErrors).length === 0) {
-      UpdateSprint({ ...form, tickets: selectedTickets }, setForm, form._id);
+      AddSprint(form, setForm);
     } else {
       setErrors(formErrors);
     }
   };
-
-  const validateForm = (formData) => {
+  
+  const onUpdate = () => {
     const formErrors = {};
-    if (formData.startdate && formData.enddate && new Date(formData.startdate) > new Date(formData.enddate)) {
+  
+    // Vérifier si la date de fin est antérieure à la date de début
+    if (form.startdate && form.enddate && new Date(form.startdate) > new Date(form.enddate)) {
       formErrors.enddate = 'End date cannot be before start date';
     }
-    ['sprintname', 'project', 'description', 'startdate', 'enddate'].forEach(field => {
-      if (!formData[field]) {
-        formErrors[field] = `${field.charAt(0).toUpperCase() + field.slice(1)} is required`;
-      }
-    });
-    return formErrors;
+  
+    // Vérifier les autres champs obligatoires
+    if (!form.sprintname) formErrors.sprintname = 'Sprint name is required';
+    if (!form.project) formErrors.project = 'Project is required';
+    if (!form.description) formErrors.description = 'Description is required';
+    if (!form.startdate) formErrors.startdate = 'Start date is required';
+    if (!form.enddate) formErrors.enddate = 'End date is required';
+  
+    if (Object.keys(formErrors).length === 0) {
+      UpdateSprint(form, setForm, form._id);
+    } else {
+      setErrors(formErrors);
+    }
   };
+  
 
   useEffect(() => {
     if (sprint) {
       setForm(sprint);
-      setSelectedTickets(sprint.tickets || []);
     } else {
-      setForm({});
+      setForm({}); 
     }
     FetchProjects();
-  }, [isOpen, sprint]);
-
-  useEffect(() => {
-    console.log('tickets after FetchTickets:', tickets);
-  }, [tickets]);
+  }, [isOpen, sprint]); 
 
   return (
     <>
@@ -77,10 +88,16 @@ export default function DrawerFormSprint() {
             setForm({});
           }} />
           <DrawerHeader>{form._id ? 'Update sprint' : 'Create sprint'}</DrawerHeader>
+
           <DrawerBody>
             <Stack spacing={'24px'}>
               <FormControl isInvalid={errors?.sprintname}>
-                <InputForm name="sprintname" onChangeHandler={onChangeHandler} value={form?.sprintname || ''} errors={errors?.sprintname} />
+                <InputFormSprint
+                  name="sprintname"
+                  onChangeHandler={onChangeHandler}
+                  value={form?.sprintname || ''}
+                  errors={errors?.sprintname}
+                />
                 <FormErrorMessage>{errors?.sprintname}</FormErrorMessage>
               </FormControl>
               <FormControl isInvalid={errors?.project}>
@@ -101,28 +118,25 @@ export default function DrawerFormSprint() {
                 <FormLabel>Start Date</FormLabel>
                 <Input type="date" name="startdate" onChange={onChangeHandler} value={form?.startdate || ''} />
                 <FormErrorMessage>{errors?.startdate}</FormErrorMessage>
+
                 <FormLabel>End Date</FormLabel>
                 <Input type="date" name="enddate" onChange={onChangeHandler} value={form?.enddate || ''} />
                 <FormErrorMessage>{errors?.enddate}</FormErrorMessage>
               </FormControl>
-              <FormControl>
-                <FormLabel>Tickets</FormLabel>
-                <Select
-                  options={tickets.map(ticket => ({ value: ticket._id, label: ticket.description, key: ticket._id }))}
-                  isMulti
-                  value={selectedTickets}
-                  onChange={(selectedOptions) => setSelectedTickets(selectedOptions)}
-                />
-              </FormControl>
             </Stack>
           </DrawerBody>
+
           <DrawerFooter>
             <Button variant="outline" mr={3} onClick={() => {
               onClose();
               setErrors({});
               setForm({});
-            }}>Cancel</Button>
-            <Button colorScheme="blue" onClick={() => form._id ? onUpdate() : onSave()}>Save</Button>
+            }}>
+              Cancel
+            </Button>
+            <Button colorScheme="blue" onClick={()=> form._id? onUpdate(): onSave()}>
+              Save
+            </Button>
           </DrawerFooter>
         </DrawerContent>
       </Drawer>

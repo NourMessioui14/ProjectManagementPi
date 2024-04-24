@@ -4,6 +4,15 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import emailjs from '@emailjs/browser';
+import {
+  Flex,
+  Box,
+  Heading,
+  Input,
+  Button,
+  Text,
+  Link as ChakraLink,
+} from '@chakra-ui/react';
 
 function EmailVerification() {
   const [email, setEmail] = useState('');
@@ -15,23 +24,23 @@ function EmailVerification() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-  
+
     try {
       if (!email) {
         toast.error('Please fill in all the fields');
         return;
       }
-  
+
       // Fetch data from your API
-      const response = await axios.get(`http://localhost:5001/auth/${email}`);
+      const response = await axios.get(`http://localhost:5001/auth/usermail/${email}`);
       const responseData = response.data;
-  
+
       // For debugging, log the response data
       console.log(responseData);
-  
+
       // Extract data from the response
       const { name, email: emailFromResponse, Verification, id } = responseData;
-  
+
       if (email === emailFromResponse) {
         // Prepare email data
         const emailData = {
@@ -40,15 +49,15 @@ function EmailVerification() {
           from_name: 'Team-Notify',
           to_email: email, // Dynamically set to the email from the form
         };
-  
+
         // For debugging, log the email data
         console.log(emailData);
-  
+
         // Use EmailJS to send the email
         await emailjs.send('service_t20b3rv', 'template_ou1e3gd', emailData, 'Z14sqvbqFSCBB7Khq');
-  
+
         toast.warn('We have sent you a 4-Digit Verification Number on your given Email');
-        navigate(`/NewPassword/${id}`);
+        navigate(`/NewPassword`);
       } else {
         toast.error('This Email Does not Exist');
       }
@@ -57,43 +66,49 @@ function EmailVerification() {
       toast.error('An error occurred. Please try again later.');
     }
   };
-  
+
   return (
     <>
-      <section className="max-w-screen-xl mx-auto grid grid-cols-1 md:grid-cols-2">
-        <article className="writing-section flex justify-center items-center p-8 text-center"></article>
-        <article className="form-section bg-gray-100 flex justify-center items-center p-4">
-          <form action="/" className="bg-white p-6 w-96 rounded-lg" onSubmit={onSubmit}>
-            <div className="my-4">
-              <h1 className="text-blue-500 text-2xl text-center">Forget Password</h1>
-            </div>
-            <div className="mb-4">
-              <label htmlFor="email" className="block font-medium mb-1">
+      <Flex justify="center" align="center" h="100vh" bg="gray.100">
+        <Box p="8" bg="white" rounded="lg" shadow="md">
+          <Heading mb="6" color="blue.500" textAlign="center">
+            Forget Password
+          </Heading>
+          <form onSubmit={onSubmit}>
+            <Box mb="4">
+              <Text mb="1" fontWeight="semibold">
                 Email
-              </label>
-              <input
+              </Text>
+              <Input
                 type="email"
-                id="email"
                 name="email"
-                className="w-full px-3 py-2 border rounded"
                 placeholder="Enter Your email"
                 value={email}
                 onChange={onEmailChange}
+                variant="filled"
+                bg="white"
+                borderColor="gray.300"
+                _hover={{ borderColor: 'blue.500' }}
+                _focus={{ borderColor: 'blue.500' }}
               />
-            </div>
-            <button type="submit" className="w-full bg-blue-500 p-2">
+            </Box>
+            <Button type="submit" colorScheme="blue" width="full">
               Submit
-            </button>
-            <p className="text-center mt-8 italic">Don't have any Account?</p>
-            <p className="text-center font-semibold mb-6 text-blue-500 italic">
-              <Link to={'/Signup'}>SignUp</Link>
-            </p>
-            <p className="font-semibold mt-8 text-blue-500 italic">
-              <Link to={'/Login'}>Back to Login</Link>
-            </p>
+            </Button>
           </form>
-        </article>
-      </section>
+          <Text mt="4" textAlign="center" fontSize="sm">
+            Don't have an Account?{' '}
+            <ChakraLink as={Link} to="/login" color="blue.500">
+              SignUp
+            </ChakraLink>
+          </Text>
+          <Text textAlign="center" fontSize="sm">
+            <ChakraLink as={Link} to="/login" color="blue.500">
+              Back to Login
+            </ChakraLink>
+          </Text>
+        </Box>
+      </Flex>
       <ToastContainer />
     </>
   );

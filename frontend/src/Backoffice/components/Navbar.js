@@ -89,9 +89,7 @@ function Navbar() {
                     <div className="list-group">
                         <a href="#" className="list-group-item">
                             <div className="row g-0 align-items-center">
-                                <div className="col-2">
-                                    <img src="adminkit/img/avatars/avatar-5.jpg" className="avatar img-fluid rounded-circle" alt="Vanessa Tucker"/>
-                                </div>
+                               
                                 <div className="col-10 ps-2">
                                     <div className="text-dark">Vanessa Tucker</div>
                                     <div className="text-muted small mt-1">Nam pretium turpis et arcu. Duis arcu tortor.</div>
@@ -101,9 +99,7 @@ function Navbar() {
                         </a>
                         <a href="#" className="list-group-item">
                             <div className="row g-0 align-items-center">
-                                <div className="col-2">
-                                    <img src="adminkit/img/avatars/avatar-2.jpg" className="avatar img-fluid rounded-circle" alt="William Harris"/>
-                                </div>
+                               
                                 <div className="col-10 ps-2">
                                     <div className="text-dark">William Harris</div>
                                     <div className="text-muted small mt-1">Curabitur ligula sapien euismod vitae.</div>
@@ -113,9 +109,7 @@ function Navbar() {
                         </a>
                         <a href="#" className="list-group-item">
                             <div className="row g-0 align-items-center">
-                                <div className="col-2">
-                                    <img src="adminkit/img/avatars/avatar-4.jpg" className="avatar img-fluid rounded-circle" alt="Christina Mason"/>
-                                </div>
+                                
                                 <div className="col-10 ps-2">
                                     <div className="text-dark">Christina Mason</div>
                                     <div className="text-muted small mt-1">Pellentesque auctor neque nec urna.</div>
@@ -125,9 +119,7 @@ function Navbar() {
                         </a>
                         <a href="#" className="list-group-item">
                             <div className="row g-0 align-items-center">
-                                <div className="col-2">
-                                    <img src="adminkit/img/avatars/avatar-3.jpg" className="avatar img-fluid rounded-circle" alt="Sharon Lessman"/>
-                                </div>
+                               
                                 <div className="col-10 ps-2">
                                     <div className="text-dark">Sharon Lessman</div>
                                     <div className="text-muted small mt-1">Aenean tellus metus, bibendum sed, posuere ac, mattis non.</div>
@@ -146,9 +138,7 @@ function Navbar() {
     <i className="align-middle" data-feather="settings"></i>
   </a>
 
-                <a className="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
-    <img src="adminkit/img/avatars/avatar.jpg" className="avatar img-fluid rounded me-1" alt="Charles Hall" /> <span className="text-dark"></span>
-  </a>
+               
                 <div className="dropdown-menu dropdown-menu-end">
                     <a className="dropdown-item" href="pages-profile.html"><i className="align-middle me-1" data-feather="user"></i> Profile</a>
                     <a className="dropdown-item" href="#"><i className="align-middle me-1" data-feather="pie-chart"></i> Analytics</a>

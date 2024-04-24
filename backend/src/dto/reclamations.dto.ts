@@ -1,27 +1,21 @@
-import { IsEmpty, IsNotEmpty, IsOptional } from "class-validator";
+import { IsNotEmpty, IsOptional, IsEnum } from "class-validator";
 import { User } from "src/auth/schemas/user.schema";
+import { ReclamationCategory } from "src/models/reclamations.model";
 
 export class ReclamationDto {
-   
-  
+  @IsNotEmpty()
+  @IsEnum(ReclamationCategory)
+  Category: ReclamationCategory;
 
   @IsNotEmpty()
- 
-  Category: string;
-
-  @IsNotEmpty()
- 
   Subject: string;
 
   @IsNotEmpty()
+  Description: string;
 
-  Description : string; 
-
-  @IsEmpty({ message: 'You cannot pass user id' })
-  readonly user: User;
-  
   @IsOptional()
-  reponses: any[]; // Ajoutez la propriété reponses, elle peut être de type any[] ou d'un type spécifique si nécessaire
+  user: User;
 
-    
+  @IsOptional()
+  reponses: any[];
 }

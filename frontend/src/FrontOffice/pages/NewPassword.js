@@ -1,99 +1,122 @@
-import { React, useState, props } from 'react'
-import { BrowserRouter as Router, Route, Routes, Link, useNavigate } from "react-router-dom";
-import { toast } from 'react-toastify';
+import React, { useState } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
+import { Box, Text, Input, Button, Alert, AlertIcon, Link as ChakraLink } from '@chakra-ui/react';
+import { Link } from 'react-router-dom';
 
-function NewPassword() {
-    const [newPass, setNewPass] = useState("");
-    const [cNewPass, setCNewPass] = useState("");
-    const navigate = useNavigate();
-    const { id } = useParams();
+const ChangePass = () => {
+  const [formData, setFormData] = useState({
+    newPass: '',
+    confirmNewPass: '',
+  });
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
-    console.log(id)
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
-    const onNewPassChange = (e) => {
-        setNewPass(e.target.value)
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const token = localStorage.getItem('token');
+      console.log('Jeton récupéré:', token);
+
+      if (!token) {
+        console.error('Aucun jeton trouvé. Veuillez vous connecter.');
+        setError('Aucun jeton trouvé. Veuillez vous connecter.');
+        return;
+      }
+      const decodedToken = jwtDecode(token);
+      console.log('Contenu du jeton:', decodedToken);
+
+      const response = await axios.patch('/auth/changePass', formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setSuccess(response.data.message);
+      setFormData({ newPass: '', confirmNewPass: '' }); // Clear input fields
+      setError(''); // Clear any previous errors
+    } catch (error) {
+      setError(error.response.data.message);
     }
-    const onCNewPassChange = (e) => {
-        setCNewPass(e.target.value)
-    }
+  };
 
+  return (
+    <div className='row'>
+      <Box
+        maxW="400px"
+        mx="auto"
+        mt="50vh"
+        transform="translateY(-50%)"
+        p="4"
+        bg="white"
+        borderRadius="md"
+        boxShadow="md"
+        textAlign="center"
+        position="relative"
+      >
+        <Text fontSize="xl" mb="4">
+          Change Password
+        </Text>
+        <form onSubmit={handleSubmit}>
+          <div style={formGroupStyle}>
+            <Text>New Password</Text>
+            <Input
+              type="password"
+              name="newPass"
+              value={formData.newPass}
+              onChange={handleChange}
+              style={inputStyle}
+            />
+          </div>
+          <div style={formGroupStyle}>
+            <Text>Confirm New Password</Text>
+            <Input
+              type="password"
+              name="confirmNewPass"
+              value={formData.confirmNewPass}
+              onChange={handleChange}
+              style={inputStyle}
+            />
+          </div>
+          {error && (
+            <Alert status="error" mb="4">
+              <AlertIcon />
+              {error}
+            </Alert>
+          )}
+          {success && (
+            <Alert status="success" mb="4">
+              <AlertIcon />
+              {success}
+            </Alert>
+          )}
+          <Button type="submit" colorScheme="blue" w="100%">
+            Change Password
+          </Button>
+        </form>
+        <ChakraLink as={Link} to="/home" mt="4" color="blue.500" fontSize="sm">
+          Back to Home
+        </ChakraLink>
+      </Box>
+    </div>    
+  );
+};
 
-    const onSubmit = (e) => {
-        e.preventDefault()
+export default ChangePass;
 
-        if (newPass === cNewPass) {
-            const updatedData = {
-                password: newPass,
-            };
-            axios
-                .patch('http://localhost:5000/auth/' + id, updatedData)
-                .then((response) => {
-                    const userArray = response.data;
-                    toast.success("Password Changed Successfully!")
-                    navigate('/Login')
-                })
-                .catch((err) => {
-                    toast.error("Some Error Occurred Try Again Later")
-                    console.log(err);
-                });
-        }
-        else{
-            toast.error('Password Does not Match')
-        }
+const formGroupStyle = {
+  marginBottom: '20px',
+};
 
-    }
-
-    return (
-        <>
-            <section className='max-w-screen-xl mx-auto grid grid-cols-1 md:grid-cols-2'>
-                <article className='writing-section   flex justify-center items-center p-8 text-center'>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi quia fugiat cumque molestias nobis exercitationem consequatur harum suscipit laudantium explicabo laborum ad, omnis beatae, sequi, veritatis magni aliquam! Error hic laboriosam deleniti inventore minima consequatur, illum corrupti odio maxime nihil asperiores accusamus debitis, repellendus architecto eligendi perferendis quaerat distinctio sunt consequuntur aspernatur. Hic magnam esse impedit, ut placeat unde, commodi quis recusandae ullam possimus sit adipisci. Tempore in dolorem cumque!</p>
-                </article>
-                <article className='form-section bg-gray-100  flex justify-center items-center p-4'>
-                    <form action="/" className='bg-white p-6  w-96 rounded-lg' onSubmit={onSubmit}>
-                        <div className='my-4'>
-                            <h1 className='text-blue-500 text-2xl text-center'>New Password</h1>
-                        </div>
-                        <div className="mb-4">
-                            <label htmlFor="password" className="block font-medium mb-1">
-                                New Password
-                            </label>
-                            <input
-                                type="password"
-                                id="password"
-                                name="password"
-                                className="w-full px-3 py-2 border rounded"
-                                placeholder="Create new Password"
-                                value={newPass}
-                                onChange={onNewPassChange}
-                            />
-                        </div>
-                        <div className="mb-4">
-                            <label htmlFor="cpassword" className="block font-medium mb-1">
-                                Confrim New Password
-                            </label>
-                            <input
-                                type="password"
-                                id="cpassword"
-                                name="cpassword"
-                                className="w-full px-3 py-2 border rounded"
-                                placeholder="Confirm New password"
-                                value={cNewPass}
-                                onChange={onCNewPassChange}
-                            />
-                        </div>
-                        <button className='w-full bg-blue-500 p-2 text-white'>Submit</button>
-                        <p className='text-center mt-8  italic'>Don't have any Account?</p>
-                        <p className='text-center font-semibold mb-6 text-blue-500 italic'><Link to={'/Signup'}>SignUp</Link></p><br />
-                        <p className=' font-semibold mt-8 text-blue-500 italic'><Link to={'/Digitverify'}>Previous</Link></p>
-                    </form>
-                </article>
-            </section>
-        </>
-    )
-}
-
-
-export default NewPassword
+const inputStyle = {
+  width: '100%',
+  padding: '10px',
+  fontSize: '16px',
+  border: '1px solid #ced4da',
+  borderRadius: '4px',
+};

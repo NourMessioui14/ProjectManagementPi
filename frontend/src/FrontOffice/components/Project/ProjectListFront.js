@@ -12,6 +12,12 @@ import {
   HStack,
   Input,
   Button,
+  AlertDialog,
+  AlertDialogOverlay,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogBody,
+  AlertDialogFooter,
 } from '@chakra-ui/react';
 import { IconButton, Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
 import { MdMoreVert, MdStarBorder, MdStar } from "react-icons/md";
@@ -22,6 +28,8 @@ function ProjectListFront() {
   const [projects, setProjects] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const navigate = useNavigate();
 
   const projectsPerPage = 4;
@@ -37,6 +45,28 @@ function ProjectListFront() {
     };
     fetchProjects();
   }, []);
+
+  const handleDelete = async () => {
+    if (selectedProject) {
+      try {
+        await axios.delete(`/project/${selectedProject._id}`);
+        setProjects(prevProjects => prevProjects.filter(project => project._id !== selectedProject._id));
+        setIsDeleteDialogOpen(false);
+      } catch (error) {
+        console.error('Error deleting project:', error);
+      }
+    }
+  };
+
+  const handleOpenDeleteDialog = (project) => {
+    setSelectedProject(project);
+    setIsDeleteDialogOpen(true);
+  };
+
+  const handleCloseDeleteDialog = () => {
+    setSelectedProject(null);
+    setIsDeleteDialogOpen(false);
+  };
 
   const saveRecentProject = (projectId) => {
     const recentProjects = JSON.parse(localStorage.getItem('recentProjects')) || [];
@@ -140,7 +170,7 @@ function ProjectListFront() {
                     <MenuButton as={IconButton} aria-label="Options" icon={<MdMoreVert />} />
                     <MenuList>
                       <MenuItem>Archive project</MenuItem>
-                      <MenuItem>Move to Trash</MenuItem>
+                      <MenuItem onClick={() => handleOpenDeleteDialog(project)}>Move to Trash</MenuItem>
                       <MenuItem onClick={() => {navigate(`/detailsproject/${project._id}`); saveRecentProject(project._id);}}>Project Settings</MenuItem>
                     </MenuList>
                   </Menu>
@@ -156,6 +186,22 @@ function ProjectListFront() {
           <Button key={index} onClick={() => paginate(index + 1)} disabled={currentPage === index + 1}>{index + 1}</Button>
         ))}
       </HStack>
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog isOpen={isDeleteDialogOpen} onClose={handleCloseDeleteDialog}>
+        <AlertDialogOverlay />
+        <AlertDialogContent>
+          <AlertDialogHeader>Delete Project</AlertDialogHeader>
+          <AlertDialogBody>
+            Are you sure you want to delete this project?
+          </AlertDialogBody>
+          <AlertDialogFooter>
+            <Button onClick={handleCloseDeleteDialog}>Cancel</Button>
+            <Button colorScheme="red" onClick={handleDelete} ml={3}>
+              Delete
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

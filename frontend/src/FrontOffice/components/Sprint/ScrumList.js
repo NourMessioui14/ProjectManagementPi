@@ -6,6 +6,9 @@ import { useLocation } from "react-router-dom"; // Importing useLocation from re
 import {Button} from '@chakra-ui/react';
 import { GlobalContext } from '../../../context/GlobalWrapperSprint';
 import SelectTicket from './SelectTicket'; // Importez SelectTicket
+import NavbarFront from '../../NavbarFront';
+import { MdDelete } from "react-icons/md";
+
 
 export default function ScrumList() {
   const [board, setBoard] = useState([]);
@@ -105,6 +108,7 @@ export default function ScrumList() {
 
   return (
     <div>
+
             <Header sprintName={sprintName} description={description} />
       
             <Button colorScheme="teal" variant="outline" maxW={'300px'} minW="150px" onClick={handleAddScrumClick}>
@@ -118,6 +122,8 @@ export default function ScrumList() {
 
           return (
             <div id={`list_${list.id}`} key={list.id} className="list-container" style={styles.listContainer}>
+                                    <div style={{ display: 'flex', alignItems: 'center' }}>
+
               <h2>
               {list.id > 3 ? ( // Vérifier si l'index est supérieur ou égal à 3 (à partir de la quatrième colonne)
                 // Champ d'entrée modifiable pour le titre de la colonne
@@ -132,8 +138,16 @@ export default function ScrumList() {
               )}
             </h2>
               {list.id > 3 && ( // Vérifier si l'index est supérieur ou égal à 3 (à partir de la quatrième colonne)
-              <Button  onClick={() => handleDeleteColumn(list.id)}>Delete Column</Button>
+              // <Button  onClick={() => handleDeleteColumn(list.id)}>Delete Column</Button>
+              //delete column
+              <Button          
+                onClick={() => handleDeleteColumn(list.id)}
+                style={{ fontSize: '1.5rem', padding: '0.5rem', width: '1rem', height: '2rem' ,marginTop: '1.5rem', marginLeft: '-4rem'}}
+              >
+                <MdDelete />
+              </Button>
             )}
+            </div>
                   {list.id === 1 && ( // Condition pour afficher le bouton "New Card" uniquement pour la première liste
 
           <button
@@ -186,12 +200,11 @@ export default function ScrumList() {
                     
                    >
                     <div style={styles.cardContainer}>
-                      <button
-                        style={styles.deleteButton}
-                        onClick={() => handleDeleteCard(list.id, card.id)}
-                      >
-                        Delete
-                      </button>
+                    {/* <Button colorScheme='pink' onClick={() => handleDeleteCard(list.id, card.id)}>
+            <MdDelete />
+          </Button> */}
+                      <div style={{ display: 'flex', alignItems: 'center' }}>
+
                       <input
                           type={"text"}
                           style={styles.description}
@@ -209,6 +222,14 @@ export default function ScrumList() {
                             setBoard(temp_boards);
                           }}
                         />
+                        <Button
+                        
+                        onClick={() => handleDeleteCard(list.id, card.id)}
+                        style={{ fontSize: '1.5rem', padding: '0.5rem', width: '1rem', height: '2rem' ,marginTop: '1.5rem', marginLeft: '2rem'}}
+                      >
+                        <MdDelete />
+                      </Button>
+                      </div>
                     </div>
                   </Draggable>
                 );
@@ -232,14 +253,14 @@ const styles = {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginTop: '100px'
+    marginTop: '50px'
   },
   listContainer: {
     backgroundColor: '#ecf0f1',
     borderRadius: '20px',
-    padding: '10px',
+    padding: '20px',
     width: '30vw',
-    minHeight: "100vh",
+    minHeight: "80vh",
     marginRight: '30px', // Ajoutez un espace entre les colonnes
 
   },
@@ -294,6 +315,3 @@ const styles = {
   
   
 };
-
-
-   

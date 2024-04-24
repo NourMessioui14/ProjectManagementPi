@@ -3,9 +3,8 @@ import { Box, Text, Input, InputGroup, InputRightElement, Button,AlertDialog, Al
 
 import { AiOutlinePlus, AiOutlineSearch } from 'react-icons/ai';
 import DrawerFormSprint from '../../../Backoffice/components/Sprint/DrawerFormSprint';
-import './SprintFront.css';
 import { GlobalContext } from '../../../context/GlobalWrapperSprint';
-
+import NavbarFront from '../../NavbarFront';
 function SprintCard({ id, sprintname,project, description, startdate, enddate }) {
   const { DeleteSprint, onOpen, FindOneSprint } = useContext(GlobalContext);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -13,6 +12,8 @@ function SprintCard({ id, sprintname,project, description, startdate, enddate })
   const openDialog = () => {
     setIsDialogOpen(true);
   };
+
+
 
   const closeDialog = () => {
     setIsDialogOpen(false);
@@ -23,19 +24,19 @@ function SprintCard({ id, sprintname,project, description, startdate, enddate })
     closeDialog();
   };
 
-  const handleShowTable = () => {
-    // Save the project attribute to localStorage
-    localStorage.setItem('selectedProjectID', project._id);
+  // const handleShowTable = () => {
+  //   // Save the project attribute to localStorage
+  //   localStorage.setItem('selectedProjectID', project._id);
     
-    // Log the saved value for verification
-    console.log("selected ProjectID:", project._id);
+  //   // Log the saved value for verification
+  //   console.log("selected ProjectID:", project._id);
     
-    // Proceed with other actions...
-    // For example, redirecting or opening the table
-  };
+  //   // Proceed with other actions...
+  //   // For example, redirecting or opening the table
+  // };
 
   return (
-    <Box className="card">
+    <Box className="cards">
       <div className="text">
         <span>{sprintname}</span>
         <p className="subtitle">{description}</p>
@@ -53,7 +54,7 @@ function SprintCard({ id, sprintname,project, description, startdate, enddate })
 
 <button class="buttonSH">
 {/* <a href={`/scrum?name=${sprintname}&description=${description}&id=${id}`} onClick={handleShowTable}>   */}
-<a href={`/scrum?name=${sprintname}&description=${description}&id=${id}`} onClick={handleShowTable}>  
+<a href={`/scrum?name=${sprintname}&description=${description}&id=${id}`} >  
 
   <span class="buttonSH-content"> Show Table </span></a>
 </button>
@@ -112,6 +113,9 @@ function SprintFront() {
   }, []);
 
   return (
+    <div>
+    <NavbarFront/>
+
     <Box mt="5" rounded={'lg'} boxShadow="base">
       <Box p="4" display={'flex'} justifyContent="space-between">
         <Text fontSize="xl" fontWeight="bold">List of Sprints</Text>
@@ -156,6 +160,7 @@ display={'flex'} justifyContent="space-between">
 </Box>
 <DrawerFormSprint />
 </Box>
+</div>
 );
 }
 

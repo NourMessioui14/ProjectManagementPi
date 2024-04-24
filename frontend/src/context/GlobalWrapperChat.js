@@ -12,7 +12,12 @@ export const WrapperChat = ({ children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
 
+  const [selectedChatroom , setSelectChatroom] = useState(null)
+
   const [videoCalls, setVideoCalls] = useState([]); // Add state for video calls
+
+
+const setSelectChatroomHandler = ( chatroom) => setSelectChatroom(chatroom)
 
   // chatroom functions
   const FetchChatrooms = async () => {
@@ -231,9 +236,8 @@ export const WrapperChat = ({ children }) => {
 
   const FetchProjects = async () => {
     try {
-      const res = await axios.get('http://localhost:5001/project'); // Assuming the endpoint is correct
-      // Assuming the response is an array of projects
-      console.log(res.data); // Log the fetched projects for now
+  return axios.get('http://localhost:5001/project').then(res => res.data); // Assuming the endpoint is correct
+
     } catch (err) {
       console.log(err.response.data);
     }
@@ -268,6 +272,8 @@ export const WrapperChat = ({ children }) => {
       onClose,
       errors,
       setErrors,
+      selectedChatroom,
+      setSelectChatroomHandler
     }}>
       {children}
     </GlobalContext.Provider>

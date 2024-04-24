@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } fro
 import { ReclamationDto } from 'src/dto/reclamations.dto';
 import { ReclamationsService } from './reclamations.service';
 import { AuthGuard } from '@nestjs/passport';
-import { Reclamation, ReclamationDocument } from 'src/models/reclamations.model';
+import { Reclamation, ReclamationCategory, ReclamationDocument } from 'src/models/reclamations.model';
 
 import { User } from 'src/auth/schemas/user.schema';
 import { ReqUser } from 'src/auth/req-user.decorator';
@@ -31,6 +31,11 @@ export class ReclamationsController {
         return this.service.findByUserId(user._id);
     }
 
+    
+    @Get('/categories')
+    getCategories() {
+      return { categories: Object.values(ReclamationCategory) };
+    }
 
     @Get('/user/:id')
     async getUserById(@Param('id') userId: string): Promise<User> {

@@ -3,8 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { Alert, AlertIcon } from '@chakra-ui/react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import { useHistory } from 'react-router-dom';
 
 const RegisterForm = () => {
+  const navigate = useNavigate(); 
+
   const [loginForm, setLoginForm] = useState({
     email: '',
     password: '',
@@ -30,7 +33,6 @@ const RegisterForm = () => {
     });
   };
 
-  const navigate = useNavigate(); 
   const [showPassword, setShowPassword] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [isSignUpSuccess, setIsSignUpSuccess] = useState(false);
@@ -38,14 +40,14 @@ const RegisterForm = () => {
   useEffect(() => {
     const sign_in_btn = document.querySelector("#sign-in-btn");
     const sign_up_btn = document.querySelector("#sign-up-btn");
-    const container = document.querySelector(".container");
+    const container_sig = document.querySelector(".container_sig");
 
     const handleSignUpClick = () => {
-      container.classList.add("sign-up-mode");
+      container_sig.classList.add("sign-up-mode");
     };
 
     const handleSignInClick = () => {
-      container.classList.remove("sign-up-mode");
+      container_sig.classList.remove("sign-up-mode");
     };
 
     sign_up_btn.addEventListener("click", handleSignUpClick);
@@ -86,39 +88,42 @@ const RegisterForm = () => {
   
   const handleSignIn = async (values) => {
     try {
-        const response = await fetch('http://localhost:5001/auth/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(values),
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            console.error('Error during login:', errorData.message || 'Failed to sign in. Please try again later.');
+      const response = await fetch('http://localhost:5001/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(values),
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Error during login:', errorData.message || 'Failed to sign in. Please try again later.');
+      } else {
+        const responseData = await response.json();
+        console.log('Login successful! Received token:', responseData.token);
+        console.log('Role:', responseData.role);
+  
+        localStorage.setItem('token', responseData.token);
+  
+        // Ajoutez des conditions pour chaque type de rôle ici
+        if (responseData.role === 'admin') {
+          localStorage.setItem('role', responseData.role); 
+          navigate('/Sidebar');
         } else {
-            const responseData = await response.json();
-            console.log('Login successful! Received token:', responseData.token);
-            console.log('Role:', responseData.role);
-            localStorage.setItem('token', responseData.token);
-
-
-            if (responseData.role === 'admin') {
-                localStorage.setItem('role', responseData.role); 
-                navigate('/backoffice');
-            } else {
-                navigate('/projects'); 
-            }
+          // Rediriger les utilisateurs simple_user vers /home
+          navigate('/cardproject'); 
         }
+      }
     } catch (error) {
-        console.error('Error during login request:', error);
+      console.error('Error during login request:', error);
     }
-};
+  };
+  
 
   return (
-    <div className="container">
-      <div className="forms-container">
+    <div className="container_sig">
+      <div className="forms-container_sig">
         <div className="signin-signup">
           {/* Sign in Form */}
           <Formik
@@ -166,6 +171,7 @@ const RegisterForm = () => {
                   </ErrorMessage>
                 </div>
                 <button type="submit" className="btn solid">Login</button>
+                <a href="/forgetPassword" className="forgot-password-link">Forgot password?</a>
                 <p className="social-text">Or Sign in with social platforms</p>
                 <div className="social-media">
                   <a href="#" className="social-icon">
@@ -310,7 +316,7 @@ const RegisterForm = () => {
           )}
         </div>
       </div>
-      <div className="panels-container">
+      <div className="panels-container_sig">
         <div className="panel left-panel">
           <div className="content">
             <h3>You don't have an account?</h3>
