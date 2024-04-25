@@ -140,7 +140,7 @@ const generatePDF = () => {
     <>
 
     <NavbarFront/>
-      <Box bg="white" p={10} borderRadius="lg" boxShadow="lg" width="full" mt={6}> {/* Ajoutez un mt={6} pour déplacer les boutons plus bas */}
+      <div bg="white" p={10} borderRadius="lg" boxShadow="lg" width="full" mt={6}> {/* Ajoutez un mt={6} pour déplacer les boutons plus bas */}
         <Button marginTop="50px" onClick={() => navigate('/ProjectListFront')} colorScheme="teal" variant="outline" size="sm" ml={2}>
           Back to Projects
         </Button>
@@ -172,7 +172,7 @@ const generatePDF = () => {
 
             </Flex>
           </Box>
-    </Box>
+    </div>
     <Box bg="white" p={8} borderRadius="lg" boxShadow="lg" width="full">
     <form onSubmit={handleSubmit}>
       <Box bg="white" p={8} borderRadius="lg" boxShadow="lg" width="full">
