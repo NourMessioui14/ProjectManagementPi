@@ -13,6 +13,10 @@ function Sidebar() {
         <ul className="sidebar-nav">
           <li className="sidebar-header">Pages</li>
 
+          <Link to="/charts" className="sidebar-link">
+          <i className="align-middle" data-feather="bar-chart-2"></i> <span className="align-middle">Dashboard</span>
+          </Link>
+
           <li className="sidebar-item active">
             <Link className="sidebar-link" to="/projects">
               <i className="align-middle" data-feather="sliders"></i> <span className="align-middle">Project Management</span>
@@ -51,9 +55,7 @@ function Sidebar() {
           
           <li className="sidebar-header">Plugins & Addons</li>
           
-          <Link to="/charts" className="sidebar-link">
-          <i className="align-middle" data-feather="bar-chart-2"></i> <span className="align-middle">Charts</span>
-</Link>
+
 
 
           
