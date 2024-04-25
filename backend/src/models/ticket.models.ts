@@ -1,8 +1,5 @@
 
 export type TicketDocument = Ticket & Document ;
-
-
-
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Types } from "mongoose"; // Importer Types à partir de mongoose
 import { Project, ProjectDocument, ProjectSchema } from "./project.models";

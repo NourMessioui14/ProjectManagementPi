@@ -67,7 +67,7 @@ function App() {
         <Route path="/projects" element={<ProjectList />} />
         <Route path="/tickets" element={<TicketList />} />
         <Route path="/sprints" element={<SprintList />} />
-        <Route path="/sprintFront" element={<SprintFront />} />
+        <Route path="/sprintFront/:projectId" element={<SprintFront />} />
         <Route path="/scrum" element={<ScrumList />} />
         <Route path="/reclamations" element={<ReclamationsList />} />
         <Route path="/reclamationsFront" element={<ReclamationUser />} />

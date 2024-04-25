@@ -1,3 +1,4 @@
+
 import React, { useContext, useEffect, useState } from 'react'
 // import { Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, Input, Button } from "@chakra-ui/react";
 import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, Button, Text, Checkbox,Input } from '@chakra-ui/react';
@@ -73,15 +74,6 @@ function SelectTicket({ isOpen, onClose, board, setBoard }) { // Déstructurez d
         <form onSubmit={handleSubmit(onSubmit)}>
             <div>
               <div>
-              <Input placeholder='Enter project name' />
-                {/* <div>
-                  <input
-                    type="checkbox"
-                    value="all"
-                    {...register("selectAll")}
-                  />
-                  <p>Select all</p>
-                </div> */}
 
                 <div>
                   {tickets.map(ticket => (

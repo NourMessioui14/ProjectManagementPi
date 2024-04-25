@@ -39,7 +39,10 @@ async getTicketsByProjectId(@Param('projectId') projectId: string) {
     return await this.service.findAllTicketsByProjectId(projectId);
 }
 
-
+@Get('/bysprint/:sprintId')
+async getTicketsBySprintId(@Param('sprintId') sprintId: string) {
+    return await this.service.findAllTicketsBySprintId(sprintId);
+}
 
 
 }

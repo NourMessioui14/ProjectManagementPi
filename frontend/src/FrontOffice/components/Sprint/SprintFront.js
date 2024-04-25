@@ -1,18 +1,24 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Box, Text, Input, InputGroup, InputRightElement, Button,AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter } from '@chakra-ui/react';
+import { Box, Text, Input,InputRightElement, InputGroup, Button,AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter } from '@chakra-ui/react';
 
-import { AiOutlinePlus, AiOutlineSearch } from 'react-icons/ai';
+import { AiOutlinePlus } from 'react-icons/ai';
 import DrawerFormSprint from '../../../Backoffice/components/Sprint/DrawerFormSprint';
 import { GlobalContext } from '../../../context/GlobalWrapperSprint';
 import NavbarFront from '../../NavbarFront';
-function SprintCard({ id, sprintname,project, description, startdate, enddate }) {
+import './SprintFront.css';
+import { useParams, useNavigate } from 'react-router-dom';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+import TicketsBySprint from './TicketsBySprint';
+function SprintCard({ id, sprintname,description, startdate, enddate }) {
   const { DeleteSprint, onOpen, FindOneSprint } = useContext(GlobalContext);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const { sprintId } = useParams();
+  const navigate = useNavigate();
 
   const openDialog = () => {
     setIsDialogOpen(true);
   };
-
 
 
   const closeDialog = () => {
@@ -24,16 +30,17 @@ function SprintCard({ id, sprintname,project, description, startdate, enddate })
     closeDialog();
   };
 
-  // const handleShowTable = () => {
-  //   // Save the project attribute to localStorage
-  //   localStorage.setItem('selectedProjectID', project._id);
-    
-  //   // Log the saved value for verification
-  //   console.log("selected ProjectID:", project._id);
-    
-  //   // Proceed with other actions...
-  //   // For example, redirecting or opening the table
-  // };
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedSprintId, setSelectedSprintId] = useState(null); // État pour stocker l'ID du sprint sélectionné
+
+  const openModal = (sprintId) => { // Prend l'ID du sprint comme argument
+    setSelectedSprintId(sprintId); // Met à jour l'ID du sprint sélectionné
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <Box className="cards">
@@ -44,20 +51,17 @@ function SprintCard({ id, sprintname,project, description, startdate, enddate })
       <Text className="date">End Date: {new Date(enddate).toLocaleDateString()}</Text>
         </div>
         <div className="buttonSH-container">
+        <Button class="buttonSH" onClick={() => openModal(id)}><span class="buttonSH-content">Show Tickets</span></Button> {/* Passe l'ID du sprint */}
+        <TicketsBySprint isOpen={isModalOpen} onClose={closeModal} id={selectedSprintId} /> {/* Passe l'ID du sprint au modal */}
+      
 
-        {/* <button class="buttontable">
-          <a href={`/scrum?name=${sprintname}&description=${description}`}> Show Table </a>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
-          <path fill="currentColor" d="M8.29 7.71a.996.996 0 0 0 0 1.41L12.59 12 8.29 16.29a.996.996 0 1 0 1.41 1.41l5.3-5.3a.996.996 0 0 0 0-1.41L9.7 6.29a.996.996 0 0 0-1.41 0z"/>
-          </svg>
-        </button> */}
-
-<button class="buttonSH">
-{/* <a href={`/scrum?name=${sprintname}&description=${description}&id=${id}`} onClick={handleShowTable}>   */}
-<a href={`/scrum?name=${sprintname}&description=${description}&id=${id}`} >  
+<button class="buttonSH" style={{ marginLeft: '10px' }}>
+<a href={`/scrum?name=${sprintname}&description=${description}&id=${id}`}>  
 
   <span class="buttonSH-content"> Show Table </span></a>
 </button>
+{/* <Button onClick={() => navigate(`/TicketsBySprint/${id}`)}>Show tickets</Button> */}
+
 
       </div>
       <button>
@@ -105,12 +109,32 @@ function SprintCard({ id, sprintname,project, description, startdate, enddate })
 }
 
 function SprintFront() {
-  const { FetchSprints, sprints, onOpen } = useContext(GlobalContext);
+  const { FetchSprints, sprints, onOpen,fetchSprintsByProjectId,FetchTickets } = useContext(GlobalContext);
   const [searchTerm, setSearchTerm] = useState('');
+  const { projectId } = useParams(); // Obtenir l'ID du projet à partir des paramètres d'URL
 
+  // useEffect(() => {
+  //   FetchSprints();
+  // }, []);
   useEffect(() => {
-    FetchSprints();
-  }, []);
+    fetchSprintsByProjectId(projectId);
+  }, [projectId, fetchSprintsByProjectId]); 
+
+  const filteredSprints = sprints.filter(sprint =>
+    sprint.sprintname.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+    
+const generatePDF = () => {
+  html2canvas(document.querySelector("#capture")).then(canvas => {
+    const imgData = canvas.toDataURL('image/png');
+    const pdf = new jsPDF({
+      orientation: 'landscape',
+    });
+    pdf.addImage(imgData, 'JPEG', 0, 0);
+    pdf.save("download.pdf");
+  });
+};
 
   return (
     <div>
@@ -123,16 +147,15 @@ function SprintFront() {
       <Box p="4"
 display={'flex'} justifyContent="space-between">
 <Button
-  class="buttonAS"
+  colorScheme='purple'
+  borderRadius='md'
   leftIcon={<AiOutlinePlus fontSize={'20px'} />}
   onClick={onOpen}
 >
   Add New Sprint
 </Button>
-{/* </Box>
-<Box p="4" display={'flex'} justifyContent="space-between"> */}
-
 <InputGroup className="input__container--variant">
+  
       <Input
         className="input__search--variant"
         placeholder="Search Sprint"
@@ -140,13 +163,14 @@ display={'flex'} justifyContent="space-between">
         onChange={(e) => setSearchTerm(e.target.value)}
       />
     </InputGroup>
+    
+<Button colorScheme="purple" mr={3} onClick={(generatePDF) => window.print()}>Print details</Button>
+
+
 </Box>
 <Box display="flex" justifyContent="space-around" flexWrap="wrap">
-{sprints
-  .filter((sprint) =>
-    sprint.sprintname.toLowerCase().includes(searchTerm.toLowerCase())
-  )
-  .map(({ _id, sprintname,project, description, startdate, enddate }) => (
+{filteredSprints
+  .map(({ _id, sprintname,project, description, startdate, enddate}) => (
     <SprintCard
       key={_id}
       id={_id}
@@ -158,6 +182,7 @@ display={'flex'} justifyContent="space-between">
     />
   ))}
 </Box>
+
 <DrawerFormSprint />
 </Box>
 </div>

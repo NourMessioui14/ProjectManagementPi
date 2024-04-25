@@ -166,6 +166,12 @@ const generatePDF = () => {
           
         </Alert>
       )}
+      <Box p={5} shadow="md" borderWidth="1px" mb={4}>
+            <Flex justifyContent="flex-end"> 
+            <Button onClick={() => navigate(`/SprintFront/${projectId}`)}>Show Sprints</Button>
+
+            </Flex>
+          </Box>
     </Box>
     <Box bg="white" p={8} borderRadius="lg" boxShadow="lg" width="full">
     <form onSubmit={handleSubmit}>

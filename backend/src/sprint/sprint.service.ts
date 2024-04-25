@@ -10,7 +10,7 @@ export class SprintService {
 
     constructor(
         @InjectModel(Sprint.name) private readonly sprintModel: Model<SprintDocument>,
-        private readonly ticketService: TicketService) {}
+        private ticketService: TicketService) {}
     
      Add(body: SprintDto){
          return this.sprintModel.create(body);
@@ -31,20 +31,13 @@ export class SprintService {
         return this.sprintModel.deleteMany({_id:id});
      }
 
-    //  async assignTicketsToSprint(sprintId: string, ticketIds: string[]): Promise<Sprint> {
-    //     const sprint = await this.FindOnesprint(sprintId);
-    //     if (!sprint) {
-    //         throw new Error('Sprint not found');
-    //     }
 
-    //     // Récupérer les tickets à partir des IDs fournis
-    //     const tickets = await Promise.all(ticketIds.map(ticketId => this.ticketService.FindOneticket(ticketId)));
-        
-    //     // Assigner les tickets au sprint
-    //     sprint.tickets = tickets;
-        
-    //     // Enregistrer les modifications dans la base de données
-    //     return sprint.save();
-    // }
+     async findAllSprintsByProjectId(projectId: string): Promise<Sprint[]> {
+        console.log(`Searching for sprints with project ID: ${projectId}`);
+        const sprints = await this.sprintModel.find({ 'project._id': projectId }).exec();
+        console.log(`Found sprints: ${JSON.stringify(sprints)}`);
+        return sprints;
+    }
+
 
 }

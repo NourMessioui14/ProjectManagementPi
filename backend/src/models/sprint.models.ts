@@ -21,7 +21,11 @@ export type SprintDocument = Sprint & Document ;
     @Prop({ required: true })
     enddate: string;
 
-    // @Prop({ type: TicketSchema, default: [] })
-    // tickets: Ticket[];
  }
 export const SprintSchema = SchemaFactory.createForClass(Sprint);
+
+
+
+
+
+
