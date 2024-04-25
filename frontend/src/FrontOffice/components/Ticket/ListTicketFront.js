@@ -16,6 +16,7 @@ import {
 import { GlobalContext } from '../../../context/GlobalWrapper';
 import { FaInfoCircle } from 'react-icons/fa'; // Utiliser une icône pour "Details"
 import NavbarFront from '../../NavbarFront';
+import TicketModal from '../../ticketPrediction';
 
 const getBadgeColor = (etat) => {
   switch (etat) {
@@ -43,6 +44,8 @@ function ListTicketFront() {
     responsable: '',
   });
   const [currentPage, setCurrentPage] = useState(1);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
 
   useEffect(() => {
     FetchTickets();
@@ -74,6 +77,7 @@ function ListTicketFront() {
   const handleSelectTicket = (ticket) => {
     setSelectedTicket(ticket);
   };
+  
 
   const bg = useColorModeValue("white", "gray.700");
 
@@ -85,10 +89,32 @@ function ListTicketFront() {
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+  // Fonction handleSaveTicket mise à jour pour supprimer l'appel à createTicket
+  const handleSaveTicket = (description) => {
+    // Analyse de la description et extraction des informations pertinentes
+    const keywords = ['projectname', 'sprintname', 'typeOfticket', 'etat', 'responsable'];
+    const ticketData = {};
+  
+    keywords.forEach((keyword) => {
+      const regex = new RegExp(`${keyword}\\s*:\\s*(.*)`, 'i');
+      const match = description.match(regex);
+      if (match && match[1]) {
+        ticketData[keyword.toLowerCase()] = match[1].trim();
+      }
+    });
+    // Vous pouvez traiter les données du ticket ici ou les transmettre à une autre fonction
+  };
+  
+
   return (
     <>
       <NavbarFront />
-
+      <Button colorScheme="blue" onClick={() => setIsModalOpen(true)}>
+        Create Ticket
+      </Button>
+      <TicketModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onSave={handleSaveTicket} />
+      {/* Autres éléments de votre interface */}
+  
       <Box mt="100px" padding="4" minH="calc(100vh - 200px)">
         <Flex justifyContent="center" alignItems="flex-start">
           <VStack spacing={4} width="40%">
@@ -109,15 +135,14 @@ function ListTicketFront() {
                   {ticket.description}
                 </Text>
                 <Button
-  onClick={() => handleSelectTicket(ticket)}
-  size="sm"
-  variant="outline"
-  leftIcon={<FaInfoCircle />} // Utiliser une icône pour "Details"
-  colorScheme="pink" // Changer la couleur du bouton en bleu
->
-  Details
-</Button>
-
+                  onClick={() => handleSelectTicket(ticket)}
+                  size="sm"
+                  variant="outline"
+                  leftIcon={<FaInfoCircle />} // Utiliser une icône pour "Details"
+                  colorScheme="pink" // Changer la couleur du bouton en bleu
+                >
+                  Details
+                </Button>
               </Flex>
             ))}
           </VStack>
@@ -187,10 +212,9 @@ function ListTicketFront() {
                 />
               </FormControl>
               <button onClick={handleSubmit}  type="button" className="btn btn-gradient-primary btn-icon-text">
-                          <i className="mdi mdi-file-check btn-icon-prepend"></i>
-              Save Changes
-            </button>
-            
+                <i className="mdi mdi-file-check btn-icon-prepend"></i>
+                Save Changes
+              </button>
             </Box>
           )}
         </Flex>

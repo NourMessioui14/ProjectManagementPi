@@ -1,37 +1,37 @@
-import * as tf from '@tensorflow/tfjs';
+import React, { useState } from 'react';
+import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter, Textarea, Button } from '@chakra-ui/react';
 
-// Données d'exemple : descriptions de ticket et étiquettes correspondantes (par exemple, les types de ticket)
-const descriptions = ["Problème avec l'authentification de l'utilisateur", "Erreur lors de l'accès au serveur", "Problème de connexion Internet"];
-const labels = ["Authentification", "Serveur", "Connexion"];
+const TicketModal = ({ isOpen, onClose, onSave }) => {
+  const [description, setDescription] = useState('');
 
-// Prétraitement des données : tokenisation et vectorisation des descriptions de ticket
-const tokenizer = tf.tokenization.textTokenizer();
-const sequences = tokenizer.textsToSequences(descriptions);
-const paddedSequences = tf.keras.preprocessing.sequence.padSequences(sequences);
+  const handleSave = () => {
+    onSave(description);
+    onClose();
+  };
 
-// Définition du modèle
-const model = tf.sequential();
-model.add(tf.layers.embedding({inputDim: vocabSize, outputDim: embeddingSize, inputLength: maxLength}));
-model.add(tf.layers.flatten());
-model.add(tf.layers.dense({units: 64, activation: 'relu'}));
-model.add(tf.layers.dense({units: labels.length, activation: 'softmax'}));
+  return (
+    <Modal isOpen={isOpen} onClose={onClose}>
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>Create New Ticket</ModalHeader>
+        <ModalBody>
+          <Textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Enter ticket description" />
+        </ModalBody>
+        <ModalFooter>
+          <Button colorScheme="blue" mr={3} onClick={handleSave}>
+            Save
+          </Button>
+          <Button variant="ghost" onClick={onClose}>
+            Close
+          </Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
+  );
+};
 
-// Compilation du modèle
-model.compile({optimizer: 'adam', loss: 'sparseCategoricalCrossentropy', metrics: ['accuracy']});
+export default TicketModal;
 
-// Entraînement du modèle
-const epochs = 10;
-const batchSize = 32;
-model.fit(paddedSequences, labels, {epochs, batchSize})
-  .then(() => {
-    console.log('Entraînement terminé');
-    
-    // Utilisation du modèle pour prédire les tickets à partir de nouvelles descriptions
-    const newDescriptions = ["Problème de sécurité détecté", "Erreur lors du traitement des paiements"];
-    const newSequences = tokenizer.textsToSequences(newDescriptions);
-    const newPaddedSequences = tf.keras.preprocessing.sequence.padSequences(newSequences);
-    const predictions = model.predict(newPaddedSequences);
-
-    predictions.print();
-  })
-  .catch(err => console.error('Erreur d\'entraînement du modèle :', err));
+export function ticketPrediction() {
+  // Contenu de la fonction ticketPrediction
+}

@@ -8,12 +8,13 @@ import { AuthModule } from 'src/auth/auth.module';
 import { ProjectModule } from 'src/project/project.module';
 import { ProjectService } from 'src/project/project.service';
 import { User, UserSchema } from 'src/auth/schemas/user.schema'; // Import UserModel here
+import { Sprint, SprintSchema } from 'src/models/sprint.models';
 
 
 @Module({
 
   imports: [MongooseModule.forFeature([{ name: Ticket.name, schema: TicketSchema }
-                                        ,{ name: User.name, schema: UserSchema },]),AuthModule,ProjectModule],
+                                        ,{ name: User.name, schema: UserSchema }, { name: Sprint.name, schema: SprintSchema },]),AuthModule,ProjectModule],
   controllers: [TicketController],
   providers: [TicketService,EmailService,ProjectService, ],
   exports: [TicketService, MongooseModule]

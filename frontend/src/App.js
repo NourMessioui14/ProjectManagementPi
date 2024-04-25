@@ -33,6 +33,7 @@ import Profile from './FrontOffice/pages/User/Profile';
 import SprintFront from './FrontOffice/components/Sprint/SprintFront';
 import CreateReclamationForm from './FrontOffice/components/Reclamation/CreateReclamationForm';
 import ListTicketFront from './FrontOffice/components/Ticket/ListTicketFront';
+import TicketPredictor from './FrontOffice/ticketPrediction';
 function App() {
   return (
     <Router>
@@ -91,6 +92,10 @@ function App() {
         <Route path="/addReclamation" element={<CreateReclamationForm/>} />
         <Route path="/userconnected" element={<UserConnected/>} />
         <Route path="/listTicket" element={<ListTicketFront/>} />
+        <Route path="/TicketPredictor" element={<TicketPredictor/>} />
+        <Route path="/details/:projectId" element={<DetailsProject />} /> {/* Configurez la route pour les détails du projet avec un paramètre d'identifiant de projet */}
+
+
 
 
 

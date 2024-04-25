@@ -1,18 +1,18 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   Card, CardHeader, CardBody, Box, Heading, Text, Stack, StackDivider, Button,
   Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, Avatar, Flex, SimpleGrid
 } from '@chakra-ui/react';
-import { Link } from 'react-router-dom';
 import { GlobalContext } from '../../../context/GlobalWrapper';
 import NavbarFront from '../../NavbarFront';
 
 function CustomCard() {
   const { projects, FetchProjects } = useContext(GlobalContext);
+  const navigate = useNavigate(); // Utilisez useNavigate pour obtenir la fonction de navigation
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
-  const [recentProjects, setRecentProjects] = useState([]); // State to store recent projects
-
+  const [recentProjects, setRecentProjects] = useState([]);
 
   useEffect(() => {
     FetchProjects();
@@ -47,13 +47,9 @@ function CustomCard() {
 
   const favoriteProjects = projects.filter(project => project.isFavorite);
 
-  // Récupérer les projets récemment consultés à partir du local storage
-  const recentProjectIds = JSON.parse(localStorage.getItem('recentProjects')) || [];
-  const recentProjectsToShow = projects.filter(project => recentProjectIds.includes(project._id));
-
   return (
     <div>
-    <NavbarFront/>
+      <NavbarFront/>
       <section className="section" id="blog">
         <div className="container" mt="4">
           <Heading as="h5" size="lg" textAlign="left" mt="8">Recent Projects</Heading>
@@ -86,33 +82,35 @@ function CustomCard() {
             ))}
           </Flex>
           <SimpleGrid columns={{ base: 1, md: 2 }} spacing={5}>
-          <Box>
-            <Heading as="h6" size="md" textAlign="left" mt="4">Favorite Projects</Heading>
-            <Stack mt="4">
-              {favoriteProjects.map(project => (
-                <Box key={project._id} p="2">
-                  <Flex align="center">
-                    <Avatar src={getAvatar(project._id)} alt="Avatar" size="sm" />
-                    <Text ml="4" fontSize="sm">{project.projectname}</Text>
-                  </Flex>
-                </Box>
-              ))}
-            </Stack>
-          </Box>
-          <Box>
-            <Heading as="h6" size="md" textAlign="left" mt="4">Recently Viewed</Heading>
-            <Stack mt="4">
-              {recentProjectsToShow.map(project => (
-                <Box key={project._id} p="2">
-                  <Flex align="center">
-                    <Avatar src={getAvatar(project._id)} alt="Avatar" size="sm" />
-                    <Text ml="4" fontSize="sm">{project.projectname}</Text>
-                  </Flex>
-                </Box>
-              ))}
-            </Stack>
-          </Box>
-        </SimpleGrid>
+            <Box>
+              <Heading as="h6" size="md" textAlign="left" mt="4">Favorite Projects</Heading>
+              <Stack mt="4">
+                {favoriteProjects.map(project => (
+                  <Box key={project._id} p="2" onClick={() => navigate(`/details/${project._id}`)}>
+                    <Flex align="center">
+                      <Avatar src={getAvatar(project._id)} alt="Avatar" size="sm" />
+                      <Text ml="4" fontSize="sm">{project.projectname}</Text>
+                    </Flex>
+                  </Box>
+                ))}
+              </Stack>
+            </Box>
+            <Box>
+              <Heading as="h6" size="md" textAlign="left" mt="4">Recently Viewed</Heading>
+              <Stack mt="4">
+                {recentProjects.map(project => (
+                  <Box key={project._id} p="2">
+                    <Flex align="center">
+                      <Avatar src={getAvatar(project._id)} alt="Avatar" size="sm" />
+                      <Text ml="4" fontSize="sm">{project.projectname}</Text>
+                    </Flex>
+                  </Box>
+                ))}
+              </Stack>
+            </Box>
+            
+            
+          </SimpleGrid>
         </div>
       </section>
       
@@ -132,4 +130,5 @@ function CustomCard() {
     </div>
   );
 }
+
 export default CustomCard;
