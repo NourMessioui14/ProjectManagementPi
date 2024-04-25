@@ -78,7 +78,7 @@ function SprintList() {
         
         <Box>
         <Button
-          colorScheme="pink"
+          colorScheme="teal"
           maxW={'300px'}
           minW="150px"
           leftIcon={<AiOutlinePlus fontSize={'20px'} />}
@@ -120,7 +120,7 @@ function SprintList() {
       </Box>
       <Flex justifyContent="center" alignItems="center" mt="4">
             <Button onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1} leftIcon={<AiOutlineArrowLeft />} mr="2"></Button>
-            <Center bg='pink.500' color="white" borderRadius="md" w="30px" h="30px">
+            <Center bg='teal.500' color="white" borderRadius="md" w="30px" h="30px">
               {currentPage}
             </Center>            
             <Button onClick={() => paginate(currentPage + 1)} disabled={indexOfLastSprint >= filteredSprints.length} rightIcon={<AiOutlineArrowRight />}ml="2"></Button>

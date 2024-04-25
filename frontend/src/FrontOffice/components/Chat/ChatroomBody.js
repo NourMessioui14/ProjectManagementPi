@@ -41,12 +41,15 @@ const styles = {
   messageRight: {
     alignSelf: 'flex-end',
     marginBottom: '15px',
+    marginLeft: 'auto', // Déplace le message vers la droite
+    paddingRight: '15px',
   },
   messageLeft: {
     alignSelf: 'flex-start',
     marginBottom: '15px',
     marginLeft: '20px',
-    padding: '15px'
+    padding: '15px',
+    backgroundColor: '#d3d3d3', // Arrière-plan différent pour les messages de gauche
   },
   deleteButton: {
     position: 'absolute',
@@ -68,10 +71,13 @@ const styles = {
   },
 };
 
+
+
+
 const ChatroomBody = ({ messages }) => {
   const messagesEndRef = useRef(null);
   const [selectedMessage, setSelectedMessage] = useState(null);
-  const { DeleteMessage } = useContext(GlobalContext);
+  const { DeleteMessage,findOneUserById } = useContext(GlobalContext);
 
   const scrollToBottom = () => {
     if (messagesEndRef.current) {
@@ -81,17 +87,18 @@ const ChatroomBody = ({ messages }) => {
 
   useEffect(() => {
     scrollToBottom();
+    
   }, [messages]);
+
+  
 
   const handleDoubleClick = (message) => {
     setSelectedMessage(message);
   };
 
   const handleDeleteClick = () => {
-    // Implémentez votre logique de suppression ici
     console.log('Message deleted:', selectedMessage._id);
     DeleteMessage(selectedMessage._id);
-    // Ajoutez ici la logique pour supprimer le message avec l'ID selectedMessage._id
     setSelectedMessage(null);
   };
 
@@ -99,20 +106,53 @@ const ChatroomBody = ({ messages }) => {
     setSelectedMessage(null);
   };
 
+  const {   getUserIdFromToken} = useContext(GlobalContext);
+
+
+
+  const [token, setToken] = useState(""); // State to store the token
+
+  const [userId ,setUserId] = useState("")
+useEffect(() => {
+
+  const storedToken = localStorage.getItem('token');
+    console.log("Token from localStorage:", storedToken);
+    setToken(storedToken); // Stocke le token dans l'état
+  const getUserId = async () => {
+    try {
+      const userIdFromToken = await getUserIdFromToken(storedToken);
+      setUserId(userIdFromToken.userId)       
+  
+    } catch (error) {
+      console.error('Error getting user ID from token:', error);
+    }
+  };
+
+  getUserId(); 
+}, []);
+
+  useEffect(() => {
+     findOneUserById(userId)
+      .then((user) => {
+        console.log('User found:', user);
+      })
+      .catch((error) => {
+        console.log('Error fetching user:', error);
+      });
+  }, []);
+
   return (
     <div style={styles.chatRoomBody}>
       {messages.map((message, index) => (
         <div key={message._id} style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start', marginBottom: '15px' }}>
-          {/* Avatar */}
           <div style={{ marginRight: '10px' }}>
-            <img src={avatarImage} alt="Avatar" style={{ width: '40px', height: '40px', borderRadius: '50%' }} />
+            {message.senderId !== userId && <img src={avatarImage} alt="Avatar" style={{ width: '40px', height: '40px', borderRadius: '50%' }} />}
           </div>
-          {/* Message */}
           <div
             className="message"
             style={{
               ...styles.message,
-              ...(message.senderId === 'sender1' ? styles.messageRight : styles.messageLeft),
+              ...(message.senderId === userId ? styles.messageRight : styles.messageLeft),
               ...(selectedMessage && selectedMessage._id === message._id && { marginBottom: '50px' }),
             }}
             onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}

@@ -127,6 +127,7 @@ function ProjectListFront() {
   return (
     <div style={{ marginTop: '140px' }}>
       <NavbarFront/>
+      <div> 
       <HStack justifyContent="space-between" marginBottom="10px">
         <Input
           placeholder="Search project"
@@ -202,6 +203,7 @@ function ProjectListFront() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+    </div>
     </div>
   );
 }

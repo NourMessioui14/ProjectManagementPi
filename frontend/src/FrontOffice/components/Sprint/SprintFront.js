@@ -137,12 +137,15 @@ const generatePDF = () => {
 };
 
   return (
-    <div>
-    <NavbarFront/>
+    <div style={{ marginTop: '140px' }}>
+     
+      <NavbarFront/> 
+     
+      <div> 
 
     <Box mt="5" rounded={'lg'} boxShadow="base">
       <Box p="4" display={'flex'} justifyContent="space-between">
-        <Text fontSize="xl" fontWeight="bold">List of Sprints</Text>
+        <Text fontSize="xl" fontWeight="bold"></Text>
       </Box>
       <Box p="4"
 display={'flex'} justifyContent="space-between">
@@ -185,6 +188,8 @@ display={'flex'} justifyContent="space-between">
 
 <DrawerFormSprint />
 </Box>
+
+</div>
 </div>
 );
 }

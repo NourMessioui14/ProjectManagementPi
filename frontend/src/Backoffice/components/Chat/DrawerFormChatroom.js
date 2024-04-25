@@ -4,7 +4,7 @@ import InputForm from '../InputForm';
 import { GlobalContext } from '../../../context/GlobalWrapperChat';
 
 export default function DrawerFormChatroom() {
-  const {selectedChatroom, chatroom, isOpen, onOpen, onClose, AddChatroom, UpdateChatroom, errors, setErrors , FetchProjects, projects } = useContext(GlobalContext);
+  const { setSelectChatroomHandler,selectedChatroom, chatroom, isOpen, onOpen, onClose, AddChatroom, UpdateChatroom, errors, setErrors, FetchProjects, projects, users, findUsers } = useContext(GlobalContext);
   const [form, setForm] = useState({
     chatroomId: '',
     projectId: '',
@@ -14,20 +14,23 @@ export default function DrawerFormChatroom() {
   const [projectNames, setProjectNames] = useState([]);
   const [projectsList, setProjectsList] = useState([]);
 
+
+  const [selectedUser, setSelectedUser] = useState([])
   useEffect(() => {
     const fetchProjectData = async () => {
-     const data = await FetchProjects();
-     setProjectsList(data)
+      const data = await FetchProjects();
+      setProjectsList(data)
       //  const names = data.map(project => project.projectname);
-        //setProjectNames(names);
+      //setProjectNames(names);
     };
 
     fetchProjectData();
   }, [FetchProjects, projects]);
 
   useEffect(() => {
-    if (selectedChatroom ) {
+    if (selectedChatroom) {
       setForm(selectedChatroom);
+      setSelectedUser(selectedChatroom.members)
     } else {
       setForm({
         chatroomId: '',
@@ -47,8 +50,8 @@ export default function DrawerFormChatroom() {
   const onSave = () => {
     const updatedForm = {
       ...form,
-      chatroomCreator: 'admin', 
-      members: ['admin','user1'], 
+      chatroomCreator: 'admin',
+      members:  selectedUser,
     };
 
     if (selectedChatroom) {
@@ -57,6 +60,30 @@ export default function DrawerFormChatroom() {
       AddChatroom(updatedForm, setForm);
     }
   };
+
+  useEffect(() => {
+    findUsers()
+  }, [])
+
+  useEffect(() => {
+    if (isOpen == false) {
+      setSelectedUser([])
+      setSelectChatroomHandler(null)
+    }
+  }, [isOpen])
+
+  const selectUsersHandler = (userId) => {
+
+    if (!selectedUser.includes(userId)) {
+      setSelectedUser(prev => [...prev, userId])
+    }
+
+
+  }
+  const removeUserHandler = (userId) => {
+
+    setSelectedUser(prev => prev.filter((user) => user !== userId))
+  }
 
   return (
     <>
@@ -91,6 +118,17 @@ export default function DrawerFormChatroom() {
               >
                 {projectsList.map((project) => (
                   <option key={project?.['_id']} value={project?.['_id']}>{project?.projectname}</option>
+                ))}
+              </Select>
+
+              {selectedUser.map((selected) => { return <span>{users.filter((user) => user?.['_id'] == selected)?.[0]?.name } <span onClick={() => removeUserHandler(selected)}>X</span></span> })}
+              <Select
+                name="user"
+                onChange={(e) => { selectUsersHandler(e.target.value) }}
+                placeholder="Select a user"
+              >
+                {users.map((user) => (
+                  <option key={user?.['_id']} value={user?.['_id']}>{user?.name}  </option>
                 ))}
               </Select>
               <InputForm

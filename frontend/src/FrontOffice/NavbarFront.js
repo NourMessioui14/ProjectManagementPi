@@ -39,16 +39,17 @@ function NavbarFront() {
                 <ul className="nav">
                   <li><Link to="/home" >Home</Link></li>
                   <li><Link to="/cardproject" >Your Job </Link></li>
-                  <li><Link to="/sprintFront" >Sprint  </Link></li>
+                  <li><Link to="/ProjectListFront" >Project  </Link></li>
                   <li><Link to="/messenger" >Chatroom</Link></li>
+                  <li><Link to="/myvideocalls" >videoCalls</Link></li>
                   
                   {/* Dropdown Réclamations */}
                   <li className="dropdown"  onClick={toggleDropdown}>
                     <button className="active">Claims <i className="fa fa-caret-down"></i></button>
                     {showDropdown && (
                       <div className="">
-                        <Link to="/reclamationsFront">View My Claims</Link>
-                        <Link to="/addReclamation">Add a Claim</Link>
+                        <Link to="/reclamationsFront"  style={{ fontSize: '9px' }}> My Claims</Link>
+                        <Link to="/addReclamation"  style={{ fontSize: '9px' }}>Add a Claim</Link>
                       </div>
                     )}
                   </li>

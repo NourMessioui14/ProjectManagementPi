@@ -29,6 +29,7 @@ function ReclamationsList() {
     const handlePrevPage = () => {
         setCurrentPage(currentPage - 1);
     };
+    
 
     const filteredReclamations = Reclamations.filter((reclamation) =>
         reclamation.Subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -72,7 +73,7 @@ function ReclamationsList() {
                                 <Text fontSize="xl" fontWeight="bold" mb="4" >
                                     List of claims
                                 </Text>
-                                {currentReclamations.map(({ _id, user, Category, Subject, Description, reponses }) => (
+                                {currentReclamations.map(({ _id, user, Category, Subject, Description, reponses,createdAt }) => (
                                     <Row
                                         key={_id}
                                         id={_id}
@@ -81,6 +82,7 @@ function ReclamationsList() {
                                         Subject={Subject}
                                         Description={Description}
                                         reponses={reponses}
+                                        createdAt={createdAt}
                                     />
                                 ))}
                                 <Box mt="4" textAlign="center">
@@ -106,8 +108,7 @@ function ReclamationsList() {
                 </Box>
             </Box>
 
-            {/* Affichez le composant Chart */}
-            <ChartRecComponent reclamations={filteredReclamations} />
+       
         </Box>
     );
 }

@@ -34,6 +34,10 @@ import SprintFront from './FrontOffice/components/Sprint/SprintFront';
 import CreateReclamationForm from './FrontOffice/components/Reclamation/CreateReclamationForm';
 import ListTicketFront from './FrontOffice/components/Ticket/ListTicketFront';
 import TicketPredictor from './FrontOffice/ticketPrediction';
+import ChartPage from './Backoffice/components/Reclamation/ChartPage';
+import MyVideocalls from './FrontOffice/components/Chat/myvideocalls';
+import Zoomjdid from './FrontOffice/components/Chat/zoomjdid';
+
 function App() {
   return (
     <Router>
@@ -95,9 +99,10 @@ function App() {
         <Route path="/TicketPredictor" element={<TicketPredictor/>} />
         <Route path="/details/:projectId" element={<DetailsProject />} /> {/* Configurez la route pour les détails du projet avec un paramètre d'identifiant de projet */}
 
+        <Route path="/charts" element={<ChartPage />} />
 
-
-
+        <Route path="/myvideocalls" element={<MyVideocalls/>} />
+        <Route path="/zoomjdid" element={<Zoomjdid/>} />
 
       </Routes>
     </Router>
