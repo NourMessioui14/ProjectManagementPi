@@ -1,31 +1,15 @@
 
 import React, { useContext, useEffect, useState } from 'react'
-// import { Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, Input, Button } from "@chakra-ui/react";
 import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, Button, Text, Checkbox,Input } from '@chakra-ui/react';
 import { useForm } from "react-hook-form";
 import { GlobalContext } from '../../../context/GlobalWrapperSprint';
 import { v4 as uuidv4 } from 'uuid';
 
-function SelectTicket({ isOpen, onClose, board, setBoard }) { // Déstructurez directement les props ici
+function SelectTicket({ isOpen, onClose, setBoard }) { 
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
-  const { FetchTicketsbyProject,FetchTickets, tickets,AssignTicketsToSprint } = useContext(GlobalContext);
-  const [scrum, setScrum] = useState([]);
+  const {FetchTickets, tickets } = useContext(GlobalContext);
   const [selectedTicket, setSelectedTicket] = useState([]); 
-  const [selectedTickets, setSelectedTickets] = useState([]); 
-  const [sprintId, setSprintId] = useState(""); // Assuming you get sprintId from somewhere
-
-  
-
-
-  const handleTicketSelection = (ticketId) => {
-    setSelectedTickets((prevSelectedTickets) =>
-      prevSelectedTickets.includes(ticketId)
-        ? prevSelectedTickets.filter((id) => id !== ticketId)
-        : [...prevSelectedTickets, ticketId]
-    );
-  };
-
-  
+    
 
 
   const onSubmit = (data) => {
@@ -53,11 +37,9 @@ function SelectTicket({ isOpen, onClose, board, setBoard }) { // Déstructurez d
       });
       return updatedBoard;
     });
-    // Call AssignTicketsToSprint with sprintId and selectedTickets
-    AssignTicketsToSprint(sprintId, selectedTickets);
+    
   };
 
-  const selectAll = watch('selectAll');
 
   useEffect(() => {
     FetchTickets();
@@ -76,19 +58,18 @@ function SelectTicket({ isOpen, onClose, board, setBoard }) { // Déstructurez d
               <div>
 
                 <div>
-                  {tickets.map(ticket => (
-                    <div key={ticket._id}>
-                      <Checkbox
-                        value={ticket.description}
-                        {...register("tickets")}
-                        isInvalid={errors && errors.tickets}
-                        onChange={() => setSelectedTicket(ticket)}
-                        disabled={selectAll === 'all'}
-                      >
-                        {ticket.description}
-                      </Checkbox>
-                    </div>
-                  ))}
+                {tickets.map(ticket => (
+  <div key={ticket._id}>
+    <Checkbox
+      value={ticket.description}
+      {...register("tickets")}
+      isInvalid={errors && errors.tickets}
+      onChange={() => setSelectedTicket(ticket)}
+    >
+      {ticket.description} - Owner: {ticket.responsable.name} - state : {ticket.etat}{/* Assurez-vous que "name" est la propriété que vous souhaitez afficher */}
+    </Checkbox>
+  </div>
+))}
                 </div>
               </div>
             </div>

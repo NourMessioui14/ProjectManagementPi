@@ -385,7 +385,7 @@ export default function ScrumList() {
                         /> */}
 
 
-<span
+                        <span
                           type={"text"}
                           style={styles.description}
                           
@@ -404,11 +404,8 @@ export default function ScrumList() {
                           
                         >{card.description}</span>
 
-
-
-
-
                         <div style={{ position: 'relative' }}>
+                          
   <Button 
     colorScheme='blackAlpha' 
     variant='link'
