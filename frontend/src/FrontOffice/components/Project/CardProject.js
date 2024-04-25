@@ -1,18 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import {
-  Card, CardHeader, CardBody, Box, Heading, Text, Stack, StackDivider, Button,
-  Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, Avatar, Flex, SimpleGrid
+  Box, Heading, Text, Stack, Button, Avatar, Flex, Tabs, TabList, Tab, TabPanels, TabPanel
 } from '@chakra-ui/react';
-import { Link } from 'react-router-dom';
 import { GlobalContext } from '../../../context/GlobalWrapper';
 import NavbarFront from '../../NavbarFront';
 
 function CustomCard() {
   const { projects, FetchProjects } = useContext(GlobalContext);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedProject, setSelectedProject] = useState(null);
-  const [recentProjects, setRecentProjects] = useState([]); // State to store recent projects
-
+  const navigate = useNavigate();
+  const [recentProjects, setRecentProjects] = useState([]);
 
   useEffect(() => {
     FetchProjects();
@@ -21,14 +18,8 @@ function CustomCard() {
     setRecentProjects(recentProjectsToShow);
   }, [FetchProjects, projects]);
 
-  const handleReadMore = (project) => {
-    setSelectedProject(project);
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setSelectedProject(null);
-    setIsModalOpen(false);
+  const handleFavoriteProjectClick = (projectId) => {
+    navigate(`/details/${projectId}`);
   };
 
   const avatarList = [
@@ -45,91 +36,74 @@ function CustomCard() {
     return avatarList[index];
   };
 
-  const favoriteProjects = projects.filter(project => project.isFavorite);
-
-  // Récupérer les projets récemment consultés à partir du local storage
-  const recentProjectIds = JSON.parse(localStorage.getItem('recentProjects')) || [];
-  const recentProjectsToShow = projects.filter(project => recentProjectIds.includes(project._id));
-
   return (
     <div>
-    <NavbarFront/>
+      <NavbarFront />
       <section className="section" id="blog">
         <div className="container" mt="4">
           <Heading as="h5" size="lg" textAlign="left" mt="8">Recent Projects</Heading>
           <Flex justifyContent="flex-end" mt="4">
             <Link to="/ProjectListFront">
-              <Button>See All Projects</Button>
+              <Button className="main-button" variant="outline" colorScheme="teal">See All Projects</Button> {/* Modifier le style du bouton "See All Projects" */}
             </Link>
           </Flex>
           <Flex flexWrap="wrap" justifyContent="space-between">
             {projects.slice(0, 3).map(project => (
               <Box key={project._id} width={{ base: '100%', sm: '48%', md: '30%' }} mt="4">
-                <Card borderWidth="1px" borderRadius="lg" p="4">
-                  <CardHeader>
+                <Box borderWidth="1px" borderRadius="lg" p="4">
+                  <Flex align="center">
                     <Avatar src={getAvatar(project._id)} alt="Avatar" size="md" />
                     <Heading size="md" ml="4">{project.projectname}</Heading>
-                  </CardHeader>
-                  <CardBody>
-                    <Stack divider={<StackDivider />} spacing="4">
-                      <Box>
-                        <Text fontWeight="bold">Description:</Text>
-                        <Text fontSize="sm">{project.description.length > 80 ? `${project.description.substring(0, 80)}...` : project.description}</Text>
-                        {project.description.length > 80 && (
-                          <Button onClick={() => handleReadMore(project)} mt="2">Read More</Button>
-                        )}
-                      </Box>
-                    </Stack>
-                  </CardBody>
-                </Card>
+                    {project.isFavorite && (
+                      <Box ml="2" color="yellow.400">&#9733;</Box> 
+                    )}
+                  </Flex>
+                  <Text fontWeight="bold">Description:</Text>
+                  <Text fontSize="sm">{project.description.length > 80 ? `${project.description.substring(0, 80)}...` : project.description}</Text>
+                  {project.description.length > 80 && (
+                    <Button onClick={() => handleFavoriteProjectClick(project._id)} mt="2" colorScheme="blue">Read More</Button> 
+                  )}
+                </Box>
               </Box>
             ))}
           </Flex>
-          <SimpleGrid columns={{ base: 1, md: 2 }} spacing={5}>
-          <Box>
-            <Heading as="h6" size="md" textAlign="left" mt="4">Favorite Projects</Heading>
-            <Stack mt="4">
-              {favoriteProjects.map(project => (
-                <Box key={project._id} p="2">
-                  <Flex align="center">
-                    <Avatar src={getAvatar(project._id)} alt="Avatar" size="sm" />
-                    <Text ml="4" fontSize="sm">{project.projectname}</Text>
-                  </Flex>
-                </Box>
-              ))}
-            </Stack>
-          </Box>
-          <Box>
-            <Heading as="h6" size="md" textAlign="left" mt="4">Recently Viewed</Heading>
-            <Stack mt="4">
-              {recentProjectsToShow.map(project => (
-                <Box key={project._id} p="2">
-                  <Flex align="center">
-                    <Avatar src={getAvatar(project._id)} alt="Avatar" size="sm" />
-                    <Text ml="4" fontSize="sm">{project.projectname}</Text>
-                  </Flex>
-                </Box>
-              ))}
-            </Stack>
-          </Box>
-        </SimpleGrid>
+          <Tabs mt="4">
+            <TabList>
+              <Tab>Favorite Projects</Tab>
+              <Tab>Recently Viewed</Tab>
+            </TabList>
+            <TabPanels>
+              <TabPanel>
+                <Stack mt="4">
+
+                  {projects.filter(project => project.isFavorite).map(project => (
+                    
+                    <Flex key={project._id} p="2" align="center" onClick={() => handleFavoriteProjectClick(project._id)}>
+                    <Box ml="2" color="yellow.400">&#9733;</Box> 
+
+
+                      <Avatar src={getAvatar(project._id)} alt="Avatar" size="sm" />
+                      <Text ml="4" fontSize="sm">{project.projectname}</Text>
+                    </Flex>
+                  ))}
+                </Stack>
+              </TabPanel>
+              <TabPanel>
+                <Stack mt="4">
+                  {recentProjects.map(project => (
+                    <Flex key={project._id} p="2" align="center">
+                      <Avatar src={getAvatar(project._id)} alt="Avatar" size="sm" />
+                      <Text ml="4" fontSize="sm">{project.projectname}</Text>
+                    </Flex>
+                  ))}
+                </Stack>
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
         </div>
       </section>
-      
-      <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>{selectedProject && selectedProject.projectname}</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Text>{selectedProject && selectedProject.description}</Text>
-          </ModalBody>
-          <ModalFooter>
-            <Button onClick={handleCloseModal}>Close</Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
     </div>
   );
 }
+
 export default CustomCard;

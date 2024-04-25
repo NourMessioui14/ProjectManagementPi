@@ -8,11 +8,14 @@ import Navbar from '../Navbar';
 import Sidebar from '../Sidebar';
 
 const Chatrooms = () => {
-  const { FetchChatrooms, chatrooms, isOpen, onOpen, onClose } = useContext(GlobalContext);
+  const { FetchChatrooms, chatrooms, isOpen, onOpen, onClose, findUsers, FetchProjects } = useContext(GlobalContext);
 
   useEffect(() => {
     FetchChatrooms();
+    findUsers()
+    FetchProjects()
   }, []);
+ 
 
   return (
     <Box mt="5" rounded={'lg'} boxShadow="base">
@@ -42,17 +45,19 @@ const Chatrooms = () => {
                     <Th>Chatroom id</Th>
                     <Th>Chatroom Name</Th>
                     <Th>Project ID</Th>
+                    <Th>Members</Th>
                     <Th>Actions</Th>  
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {chatrooms?.map(({ _id, projectId, chatroomId, chatroomName }) => (
+                  {chatrooms?.map(({ _id, projectId, chatroomId, chatroomName, members }) => (
                     <ChatroomRow
                       key={_id}
                       id={_id}
                       chatroomId={chatroomId}
                       projectId={projectId}
                       chatroomName={chatroomName}
+                      members={members}
                     />
                   ))}
                 </Tbody>

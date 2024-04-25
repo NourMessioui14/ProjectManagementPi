@@ -51,11 +51,12 @@ function Sidebar() {
           
           <li className="sidebar-header">Plugins & Addons</li>
           
-          <li className="sidebar-item">
-            <a className="sidebar-link" href="charts-chartjs.html">
-              <i className="align-middle" data-feather="bar-chart-2"></i> <span className="align-middle">Charts</span>
-            </a>
-          </li>
+          <Link to="/charts" className="sidebar-link">
+          <i className="align-middle" data-feather="bar-chart-2"></i> <span className="align-middle">Charts</span>
+</Link>
+
+
+          
           <li className="sidebar-item">
             <a className="sidebar-link" href="maps-google.html">
               <i className="align-middle" data-feather="map"></i> <span className="align-middle">Maps</span>

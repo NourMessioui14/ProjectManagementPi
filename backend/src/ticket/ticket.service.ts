@@ -6,14 +6,15 @@ import { Ticket, TicketDocument } from 'src/models/ticket.models';
 import { EmailService } from './Email.service';
 import { User, UserDocument } from 'src/auth/schemas/user.schema';
 import { Project, ProjectDocument } from 'src/models/project.models';
+import { Sprint, SprintDocument } from 'src/models/sprint.models';
 
 @Injectable()
 export class TicketService {
 
     constructor(@InjectModel(Ticket.name) private ticketModel: Model<TicketDocument>,
-    @InjectModel(User.name) private userModel: Model<UserDocument>,
-    @InjectModel(Project.name) private projectModel: Model<ProjectDocument>, // Ceci devrait correspondre exactement
-
+        @InjectModel(User.name) private userModel: Model<UserDocument>,
+        @InjectModel(Project.name) private projectModel: Model<ProjectDocument>,
+        @InjectModel(Sprint.name) private sprintModel: Model<SprintDocument>,
 
     
 
@@ -23,7 +24,7 @@ export class TicketService {
     async AddTicket(body: TicketDto) {
         const newTicket = await this.ticketModel.create(body);
     
-        // Supposons que vous avez l'ID du responsable en tant que partie de body
+        // Supposons que vous vavez l'ID du responsable en tant que partie de body
         // ou que vous le déterminez d'une autre manière
         const responsableId = body.responsable;
     
@@ -39,6 +40,62 @@ export class TicketService {
     
         return newTicket;
     }
+
+    async createTicketFromDescription(description: string): Promise<Ticket> {
+        const keywords = {
+            project: 'project',
+            sprint: 'sprint',
+            typeOfticket: 'typeOfticket',
+            etat: 'etat',
+            description: 'description',
+            responsable: 'responsable'
+        };
+    
+        const ticketData: Partial<TicketDto> = {};
+        Object.entries(keywords).forEach(([key, modelKey]) => {
+            const regex = new RegExp(`${key}:\\s*([^,]+?)(?=\\s*(?:${Object.keys(keywords).join('|')}|$))`, 'i');
+            const match = description.match(regex);
+            if (match && match[1]) {
+                ticketData[modelKey] = match[1].trim();
+            }
+        });
+    
+        console.log('Ticket data:', ticketData); // Log ticket data
+    
+        if (!ticketData.project || !ticketData.typeOfticket ||  !ticketData.etat || !ticketData.description || !ticketData.responsable) {
+            console.error('Missing required ticket fields:', ticketData);
+            throw new NotFoundException('Missing required ticket fields.');
+        }
+    
+        console.log('Ticket data after validation:', ticketData); // Log ticket data after validation
+    
+const project = await this.projectModel.findById(ticketData.project).exec();             if (!project) {
+            console.log("Project search error:", `Project with ID '${ticketData.project}' not found.`);
+            throw new NotFoundException(`Project with ID '${ticketData.project}' not found.`);
+        }
+        console.log('Project:', project); // Log project
+    
+        const sprint = await this.sprintModel.findOne({ sprintname: { $regex: new RegExp(ticketData.sprint, 'i') } }).exec();
+        if (!sprint) {
+            console.log("Sprint search error:", `Sprint with name '${ticketData.sprint}' not found.`);
+            throw new NotFoundException(`Sprint with name '${ticketData.sprint}' not found.`);
+        }
+    
+        console.log('Sprint:', sprint); // Log sprint
+    
+        const user = await this.userModel.findOne({ name: { $regex: new RegExp(ticketData.responsable, 'i') } }).exec();
+        if (!user) {
+            console.log("User search error:", `User with name '${ticketData.responsable}' not found.`);
+            throw new NotFoundException(`User with name '${ticketData.responsable}' not found.`);
+        }
+    
+        console.log('User:', user); // Log user
+    
+        const newTicket = await this.ticketModel.create(ticketData as TicketDto);
+        console.log("Ticket created successfully!", newTicket);
+        return newTicket;
+    }
+    
 
     FindAllticket(){
         return this.ticketModel.find();

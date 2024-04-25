@@ -83,12 +83,11 @@ function ChartRecComponent({ reclamations }) {
     }, [reclamations]);
 
     return (
-        <Box p="4">
+        <Box p="4" style={{ width: "600px", height: "400px", margin: "0 auto" }}> {/* Définir la taille du conteneur */}
             <Text fontSize="xl" fontWeight="bold" mb="4">
                 Claims by Category
             </Text>
-            
-            <canvas id="reclamationsChart"></canvas>
+            <canvas id="reclamationsChart" style={{ width: "100%", height: "100%" }}></canvas> {/* Définir la taille du canvas */}
         </Box>
     );
 }
