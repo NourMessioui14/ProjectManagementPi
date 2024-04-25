@@ -17,6 +17,8 @@ export default function ScrumList() {
   const searchParams = new URLSearchParams(location.search);
   const sprintName = searchParams.get("name");
   const description = searchParams.get("description");
+  const sprintId = searchParams.get("id");
+
   const [searchTerm, setSearchTerm] = useState('');
 
   const [selectedColor, setSelectedColor] = useState('#ecf0f1');
@@ -65,52 +67,6 @@ export default function ScrumList() {
       localStorage.setItem(`cardColor_${cardId}`, color);
     });
   }, [cardColors]);
-  
-  
-  
-  //const [tickets, setTickets] = useState([]);
-  
-  // const { sprintId } = useParams(); // Obtenir l'ID du projet à partir des paramètres d'URL
-
-  // useEffect(() => {
-  //   fetchTicketsBySprintId(sprintId);
-  // }, [sprintId, fetchTicketsBySprintId]); 
-
-  // const filteredTickets = tickets.filter(ticket =>
-  //   ticket.description.toLowerCase().includes(searchTerm.toLowerCase())
-  // );
-
-  // useEffect(() => {
-  //   const initialBoard = [
-  //     {
-  //       id: 1,
-  //       title: "To Do",
-  //       cards: filteredTickets.filter(ticket => ticket.status === "To Do").map(ticket => ({
-  //         id: ticket._id,
-  //         description: ticket.description
-  //       }))
-  //     },
-  //     {
-  //       id: 2,
-  //       title: "In Progress",
-  //       cards: filteredTickets.filter(ticket => ticket.status === "In Progress").map(ticket => ({
-  //         id: ticket._id,
-  //         description: ticket.description
-  //       }))
-  //     },
-  //     {
-  //       id: 3,
-  //       title: "Completed",
-  //       cards: filteredTickets.filter(ticket => ticket.status === "Completed").map(ticket => ({
-  //         id: ticket._id,
-  //         description: ticket.description
-  //       }))
-  //     }
-  //     // Ajoutez d'autres colonnes au besoin en suivant le même schéma
-  //   ];
-  
-  //   setBoard(initialBoard);
-  // }, [filteredTickets]);
 
   
   useEffect(() => {
@@ -150,27 +106,6 @@ export default function ScrumList() {
       setSelectedColor(storedColor);
     }
   }, []);
-
-  // useEffect(() => {
-  //   if (tickets.length > 0) {
-  //     setBoard(prevBoard => {
-  //       const updatedBoard = prevBoard.map(column => {
-  //         if (column.id === 1) { // Première colonne
-  //           return {
-  //             ...column,
-  //             cards: tickets.map(ticket => ({
-  //               id: ticket._id,
-  //               description: ticket.description
-  //             }))
-  //           };
-  //         }
-  //         return column;
-  //       });
-  //       return updatedBoard;
-        
-  //     });
-  //   }
-  // }, [tickets]);
   
   useEffect(() => {
     if (board.length > 0) window.localStorage.setItem("data", JSON.stringify(board));
@@ -231,19 +166,6 @@ export default function ScrumList() {
     <div>
 
             <Header sprintName={sprintName} description={description} />
-      
-            {/* <Button
-              colorScheme='purple'
-              borderRadius='3xl'
-            style={styles.newColumn}
-            onClick={handleAddScrumClick}
-            >Add Column</Button>
-            
-            <Button onClick={() => setIsColorPickerOpen(!isColorPickerOpen)}>Pick Color</Button>
-{isColorPickerOpen && (
-  <SketchPicker color={selectedColor} onChange={handleColorChange} />
-)}
- */}
 <Menu >
   <MenuButton colorScheme='blackAlpha'
               borderRadius='2xl'
@@ -461,7 +383,7 @@ export default function ScrumList() {
 
       </div>
       
-            <SelectTicket isOpen={isOpen} onClose={() => setIsOpen(false)} setBoard={setBoard} /> 
+            <SelectTicket isOpen={isOpen} onClose={() => setIsOpen(false)} setBoard={setBoard} id={sprintId} /> 
 
       </div>
   );

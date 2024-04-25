@@ -5,9 +5,9 @@ import { useForm } from "react-hook-form";
 import { GlobalContext } from '../../../context/GlobalWrapperSprint';
 import { v4 as uuidv4 } from 'uuid';
 
-function SelectTicket({ isOpen, onClose, setBoard }) { 
+function SelectTicket({ isOpen, onClose, setBoard,id }) { 
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
-  const {FetchTickets, tickets } = useContext(GlobalContext);
+  const {FetchTickets, tickets,fetchTicketsBySprintId } = useContext(GlobalContext);
   const [selectedTicket, setSelectedTicket] = useState([]); 
     
 
@@ -42,8 +42,11 @@ function SelectTicket({ isOpen, onClose, setBoard }) {
 
 
   useEffect(() => {
-    FetchTickets();
-  }, []);
+    if (isOpen && id) { // Si le modal est ouvert et sprintId est défini
+      fetchTicketsBySprintId(id); // Fetch les tickets pour le sprint spécifié
+    }
+  }, [isOpen, id]); // Réagit aux changements de isOpen et sprintId
+
 
   return (
 
