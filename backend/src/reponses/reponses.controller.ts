@@ -38,15 +38,6 @@ export class ReponsesController {
     {
         return this.service.Search();
     }
-/*
-    @Post(':reclamationId')
-  async addReponseToReclamation(@Param('reclamationId') reclamationId: string, @Body() reponseDto: ReponseDto) {
-    const reponse = await this.service.addReponseToReclamation(reclamationId, reponseDto);
-    if (!reponse) {
-      throw new NotFoundException('Réclamation non trouvée');
-    }
-    return reponse;
-  }*/
 
 
 

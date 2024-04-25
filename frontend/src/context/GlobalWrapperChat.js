@@ -1,48 +1,48 @@
 // GlobalWrapper.js
 import React, { createContext, useState } from "react";
 import axios from "axios";
-import { useDisclosure, useToast } from '@chakra-ui/react';
+import { useDisclosure, useToast } from "@chakra-ui/react";
 
 export const GlobalContext = createContext();
 
 export const WrapperChat = ({ children }) => {
-  
   const [chatrooms, setChatrooms] = useState([]); // Add state for chatrooms
   const [errors, setErrors] = useState({});
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
 
-  const [selectedChatroom , setSelectChatroom] = useState(null)
+  const [selectedChatroom, setSelectChatroom] = useState(null);
+  const [selectedvideocall, setSelectvideocall] = useState(null);
 
   const [videoCalls, setVideoCalls] = useState([]); // Add state for video calls
 
+  const setSelectChatroomHandler = (chatroom) => setSelectChatroom(chatroom);
+  const setSelectvideocallHandler = (videoCall) =>
+    setSelectvideocall(videoCall);
 
-const setSelectChatroomHandler = ( chatroom) => setSelectChatroom(chatroom)
+  const [users, setUsers] = useState([]);
 
-  // chatroom functions
-  const FetchChatrooms = async () => {
+  const [projects, setProjects] = useState([]);
+
+  const [userID , setUserID] = useState("")
+
+
+  const getUserIDByToken = async (token) => {
     try {
-      const res = await axios.get('http://localhost:5001/chatrooms');
-      setChatrooms(res.data);
-    } catch (err) {
-      console.log(err.response.data);
+      const userIdFromToken = await getUserIdFromToken(token) ;
+       setUserID(userIdFromToken.userId)
+     } catch (error) {
+      console.error('Error getting user ID from token:', error);
     }
   };
 
-  const getUserIdFromToken = async (token) => {
-    try {
-      const res = await axios.get(`http://localhost:5001/user-id-from-token/${token}`);
-      return res.data;
-    } catch (err) {
-      console.log(err.response.data);
-      return null;
-    }
-  };
 
-  
-  const getChatroomsByUserId = async (userId) => {
+  ///////////////
+  const getvideocallsByUserId = async (userId) => {
     try {
-      const res = await axios.get(`http://localhost:5001/chatrooms/user/${userId}`);
+      const res = await axios.get(
+        `http://localhost:5001/videocalls/invited/${userId}`
+      );
       return res.data;
     } catch (err) {
       console.log(err.response.data);
@@ -51,9 +51,72 @@ const setSelectChatroomHandler = ( chatroom) => setSelectChatroom(chatroom)
   };
 
 
+
+
+
+  // Fonction pour récupérer un utilisateur par son ID
+  const findOneUserById = async (id) => {
+    try {
+      return axios
+        .get(`http://localhost:5001/auth/users/${id}`)
+        .then((res) => res.data);
+    } catch (err) {
+      console.log(err);
+      return null;
+    }
+  };
+
+  const findUsers = async () => {
+    try {
+      const usersList = await axios
+        .get(`http://localhost:5001/auth/users`)
+        .then((res) => res.data);
+      setUsers(usersList);
+    } catch (err) {
+      console.log(err);
+      return null;
+    }
+  };
+
+  // chatroom functions
+  const FetchChatrooms = async () => {
+    try {
+      const res = await axios.get("http://localhost:5001/chatrooms");
+      setChatrooms(res.data);
+    } catch (err) {
+      console.log(err.response.data);
+    }
+  };
+
+  const getUserIdFromToken = async (token) => {
+    try {
+      const res = await axios.get(
+        `http://localhost:5001/chatrooms/user-id-from-token/${token}`
+      );
+      return res.data;
+    } catch (err) {
+      console.log(err.response.data);
+      return null;
+    }
+  };
+
+  const getChatroomsByUserId = async (userId) => {
+    try {
+      const res = await axios.get(
+        `http://localhost:5001/chatrooms/user/${userId}`
+      );
+      return res.data;
+    } catch (err) {
+      console.log(err.response.data);
+      return [];
+    }
+  };
+
   const getMessagesByChatroomId = async (chatroomId) => {
     try {
-      const res = await axios.get(`http://localhost:5001/messages/byChatroom/${chatroomId}`);
+      const res = await axios.get(
+        `http://localhost:5001/messages/byChatroom/${chatroomId}`
+      );
       return res.data;
     } catch (err) {
       console.log(err.response.data);
@@ -63,7 +126,9 @@ const setSelectChatroomHandler = ( chatroom) => setSelectChatroom(chatroom)
 
   const getLastMessageByChatroomId = async (chatroomId) => {
     try {
-      const res = await axios.get(`http://localhost:5001/messages/lastMessage/${chatroomId}`);
+      const res = await axios.get(
+        `http://localhost:5001/messages/lastMessage/${chatroomId}`
+      );
       return res.data;
     } catch (err) {
       console.log(err.response.data);
@@ -71,10 +136,12 @@ const setSelectChatroomHandler = ( chatroom) => setSelectChatroom(chatroom)
     }
   };
 
-
   const addMessage = async (messageData) => {
     try {
-      const res = await axios.post('http://localhost:5001/messages', messageData);
+      const res = await axios.post(
+        "http://localhost:5001/messages",
+        messageData
+      );
       return res.data;
     } catch (err) {
       console.log(err.response.data);
@@ -87,7 +154,7 @@ const setSelectChatroomHandler = ( chatroom) => setSelectChatroom(chatroom)
       .delete(`http://localhost:5001/messages/${id}`)
       .then((res) => {
         // Handle success if needed
-        console.log('Message deleted:', id);
+        console.log("Message deleted:", id);
       })
       .catch((err) => {
         console.log(err.response.data);
@@ -98,25 +165,22 @@ const setSelectChatroomHandler = ( chatroom) => setSelectChatroom(chatroom)
     axios
       .delete(`http://localhost:5001/messages/byDate/${dateId}`)
       .then((res) => {
-        console.log('Message deleted by date:', dateId);
+        console.log("Message deleted by date:", dateId);
         // Gérer le succès si nécessaire
       })
       .catch((err) => {
         console.log(err.response.data);
       });
   };
-  
 
-
-  
   const DeleteChatroom = (id) => {
     axios
       .delete(`http://localhost:5001/chatrooms/${id}`)
       .then((res) => {
         setChatrooms(chatrooms.filter((u) => u._id !== id));
         toast({
-          title: 'Chatroom Deleted',
-          status: 'success',
+          title: "Chatroom Deleted",
+          status: "success",
           duration: 4000,
           isClosable: true,
         });
@@ -128,12 +192,12 @@ const setSelectChatroomHandler = ( chatroom) => setSelectChatroom(chatroom)
 
   const AddChatroom = (form, setForm) => {
     axios
-      .post('http://localhost:5001/chatrooms', form)
+      .post("http://localhost:5001/chatrooms", form)
       .then((res) => {
         setChatrooms([...chatrooms, res.data]);
         toast({
-          title: 'Chatroom Added',
-          status: 'success',
+          title: "Chatroom Added",
+          status: "success",
           duration: 4000,
           isClosable: true,
         });
@@ -144,15 +208,15 @@ const setSelectChatroomHandler = ( chatroom) => setSelectChatroom(chatroom)
       .catch((err) => {
         setErrors(err.response.data.error);
       });
-  };   
+  };
 
   const UpdateChatroom = (form, setForm, id) => {
     axios
       .put(`http://localhost:5001/chatrooms/${id}`, form)
       .then((res) => {
         toast({
-          title: 'Chatroom Updated',
-          status: 'success',
+          title: "Chatroom Updated",
+          status: "success",
           duration: 4000,
           isClosable: true,
         });
@@ -170,7 +234,7 @@ const setSelectChatroomHandler = ( chatroom) => setSelectChatroom(chatroom)
 
   const fetchVideoCalls = async () => {
     try {
-      const res = await axios.get('http://localhost:5001/videocalls');
+      const res = await axios.get("http://localhost:5001/videocalls");
       setVideoCalls(res.data);
     } catch (err) {
       console.log(err.response.data);
@@ -183,8 +247,8 @@ const setSelectChatroomHandler = ( chatroom) => setSelectChatroom(chatroom)
       .then((res) => {
         setVideoCalls(videoCalls.filter((u) => u._id !== id));
         toast({
-          title: 'Video Call Deleted',
-          status: 'success',
+          title: "Video Call Deleted",
+          status: "success",
           duration: 4000,
           isClosable: true,
         });
@@ -196,12 +260,12 @@ const setSelectChatroomHandler = ( chatroom) => setSelectChatroom(chatroom)
 
   const addVideoCall = (form, setForm) => {
     axios
-      .post('http://localhost:5001/videocalls', form)
+      .post("http://localhost:5001/videocalls", form)
       .then((res) => {
         setVideoCalls([...videoCalls, res.data]);
         toast({
-          title: 'Video Call Added',
-          status: 'success',
+          title: "Video Call Added",
+          status: "success",
           duration: 4000,
           isClosable: true,
         });
@@ -214,13 +278,13 @@ const setSelectChatroomHandler = ( chatroom) => setSelectChatroom(chatroom)
       });
   };
 
-  const updateVideoCall = (form, setForm, id) => {
+  const updateVideoCall = (form, setForm) => {
     axios
-      .put(`http://localhost:5001/videocalls/${id}`, form)
+      .put(`http://localhost:5001/videocalls/${form.id}`, form)
       .then((res) => {
         toast({
-          title: 'Video Call Updated',
-          status: 'success',
+          title: "Video Call Updated",
+          status: "success",
           duration: 4000,
           isClosable: true,
         });
@@ -232,49 +296,60 @@ const setSelectChatroomHandler = ( chatroom) => setSelectChatroom(chatroom)
       .catch((err) => {
         setErrors(err.response.data.error);
       });
-  };  
+  };
 
   const FetchProjects = async () => {
     try {
-  return axios.get('http://localhost:5001/project').then(res => res.data); // Assuming the endpoint is correct
+      const projectsList = await axios
+        .get("http://localhost:5001/project")
+        .then((res) => res.data); // Assuming the endpoint is correct
 
+      setProjects(projectsList);
+      return projectsList;
     } catch (err) {
       console.log(err.response.data);
     }
   };
 
-
-
-  
-
   return (
-    <GlobalContext.Provider value={{
-      FetchChatrooms,
-      getUserIdFromToken,
-      fetchVideoCalls,
-      chatrooms,
-      videoCalls,
-      FetchProjects,
-      DeleteMessageByDate,
-      getChatroomsByUserId,
-      getMessagesByChatroomId,
-      getLastMessageByChatroomId,
-      addMessage,
-      DeleteChatroom,
-      DeleteMessage,
-      deleteVideoCall,
-      AddChatroom,
-      addVideoCall,
-      UpdateChatroom,
-      updateVideoCall,
-      isOpen,
-      onOpen,
-      onClose,
-      errors,
-      setErrors,
-      selectedChatroom,
-      setSelectChatroomHandler
-    }}>
+    <GlobalContext.Provider
+      value={{
+        getUserIDByToken,
+        getvideocallsByUserId,
+        userID, 
+        projects,
+        FetchChatrooms,
+        getUserIdFromToken,
+        fetchVideoCalls,
+        chatrooms,
+        videoCalls,
+        findOneUserById,
+        FetchProjects,
+        DeleteMessageByDate,
+        getChatroomsByUserId,
+        getMessagesByChatroomId,
+        getLastMessageByChatroomId,
+        addMessage,
+        DeleteChatroom,
+        DeleteMessage,
+        deleteVideoCall,
+        AddChatroom,
+        addVideoCall,
+        UpdateChatroom,
+        updateVideoCall,
+        isOpen,
+        onOpen,
+        onClose,
+        errors,
+        setErrors,
+        selectedChatroom,
+        setSelectChatroomHandler,
+        setSelectvideocallHandler,
+        selectedvideocall,
+        findUsers,
+        users,
+      }}
+    >
       {children}
     </GlobalContext.Provider>
   );

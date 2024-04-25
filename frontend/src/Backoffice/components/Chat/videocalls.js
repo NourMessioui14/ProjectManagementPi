@@ -42,15 +42,16 @@ const VideoCalls = () => {
                 <Tr>
                   <Th>Video Call ID</Th>
                   <Th>Project ID</Th>
+                  <Th>invited users</Th>
                   <Th>Subject</Th>
-                  <Th>Estimated Duration (minutes)</Th>
+                  <Th>Estimated Duration </Th>
                   <Th>Date</Th> {/* Ajout de la colonne Date */}
                   <Th>Heure</Th> {/* Ajout de la colonne Heure */}
                   <Th>Actions</Th>
                 </Tr>
               </Thead>
               <Tbody>
-                {videoCalls?.map(({ _id, projectId, videocallId ,subject, estimatedDurationMinutes, date, time }) => (
+                {videoCalls?.map(({ _id, invitedUsers ,projectId, videocallId ,subject, estimatedDurationMinutes, date, time }) => (
                   <VideoCallRow
                     key={_id}
                     id={_id}
@@ -59,7 +60,8 @@ const VideoCalls = () => {
                     subject={subject}
                     estimatedDurationMinutes={estimatedDurationMinutes}
                     date={date} // Passer la date à VideoCallRow
-                    time={time} // Passer l'heure à VideoCallRow
+                    time={time} // Passer l'heure à VideoCallRow*
+                    invitedUsers={invitedUsers}
                   />
                 ))}
               </Tbody>

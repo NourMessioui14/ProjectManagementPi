@@ -8,9 +8,6 @@ export enum ReclamationCategory {
   ENHANCEMENT = 'Enhancement',
   MissingDocumentation = 'Missing Documentation',
   Other = 'Other',
-
-  
-  // Ajoutez d'autres catégories au besoin
 }
 
 export type ReclamationDocument = Reclamation & Document;
@@ -31,6 +28,9 @@ export class Reclamation {
 
   @Prop({ type: [{ type: MongooseSchema.Types.ObjectId, ref: 'Reponse' }] })
   reponses: Reponse[];
+  
+  @Prop({ default: Date.now }) // Champ pour la date de la réclamation
+  createdAt: Date; // Champ pour la date de la réclamation
 }
 
 export const ReclamationSchema = SchemaFactory.createForClass(Reclamation);

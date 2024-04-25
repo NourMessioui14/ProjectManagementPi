@@ -57,9 +57,7 @@ function RowSprint({ id, sprintname,project, description, startdate, enddate, ti
 
         <Td>
           <Box display="flex" gap="1">
-          <Button colorScheme="blue" onClick={() => toggleTickets(id)}>
-  {showTickets ? 'Hide Tickets' : 'Show Tickets'}
-</Button>
+   
 
 
             <Button colorScheme="blue">

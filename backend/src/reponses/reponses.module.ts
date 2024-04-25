@@ -4,6 +4,7 @@ import { ReponsesService } from './reponses.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Reponse, ReponseSchema } from 'src/models/response.models';
 import { Reclamation, ReclamationSchema } from 'src/models/reclamations.model';
+import { EmailServiceReponse } from './EmailReponse.service';
 
 @Module({
   imports : [  MongooseModule.forFeature([
@@ -12,6 +13,6 @@ import { Reclamation, ReclamationSchema } from 'src/models/reclamations.model';
   ]),
 ],
   controllers: [ReponsesController],
-  providers: [ReponsesService]
+  providers: [ReponsesService,EmailServiceReponse]
 })
 export class ReponsesModule {}

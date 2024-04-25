@@ -33,6 +33,9 @@ export class VideocallService {
     delete(id: string) {
         return this.videocallModel.deleteMany({ _id: id });
     }
+    async getVideoCallsByUserId(userId: string): Promise<VideoCall[]> {
+        return this.videocallModel.find({ 'invitedUsers': userId }).exec();
+    }
 
     
     /*

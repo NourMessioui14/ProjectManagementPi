@@ -82,11 +82,11 @@ export class ChatroomService {
         return { chatroom, message };
     }
 
-    getUserIdFromToken(token: string): string | null {
+    getUserIdFromToken(token: string): {userId : string} | null {
         try {
           const decodedToken = jwt.decode(token) as { id: string };
           if (decodedToken && decodedToken.id) {
-            return decodedToken.id;
+            return { userId: decodedToken.id};
           }
           return null;
         } catch (error) {
