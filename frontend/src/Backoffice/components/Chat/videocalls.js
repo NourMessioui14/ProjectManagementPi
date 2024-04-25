@@ -44,7 +44,7 @@ const VideoCalls = () => {
                   <Th>Project ID</Th>
                   <Th>invited users</Th>
                   <Th>Subject</Th>
-                  <Th>Estimated Duration (minutes)</Th>
+                  <Th>Estimated Duration </Th>
                   <Th>Date</Th> {/* Ajout de la colonne Date */}
                   <Th>Heure</Th> {/* Ajout de la colonne Heure */}
                   <Th>Actions</Th>

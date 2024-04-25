@@ -1,10 +1,10 @@
-// MyVideocalls.js
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { GlobalContext } from '../../../context/GlobalWrapperChat'; // Import du contexte global
+import NavbarFront from '../../NavbarFront'; // Import NavbarFront component
 
 const MyVideocalls = () => {
-  const userId = "admin"; // Définition de la valeur constante userId
+  const userId = "660df613bf77d98a5616eef3"; // Définition de la valeur constante userId
   const { getvideocallsByUserId } = useContext(GlobalContext); // Utilisation du contexte global
 
   const [videocalls, setVideocalls] = useState([]);
@@ -44,49 +44,53 @@ const MyVideocalls = () => {
   };
 
   return (
-    <table style={{ borderCollapse: 'collapse', width: '100%' }}>
-      <thead>
-        <tr>
-          <th style={tableHeaderStyle}>Call ID</th>
-          <th style={tableHeaderStyle}>Project ID</th>
-          <th style={tableHeaderStyle}>Creator</th>
-          <th style={tableHeaderStyle}>Subject</th>
-          <th style={tableHeaderStyle}>Duration (minutes)</th>
-          <th style={tableHeaderStyle}>Invited Users</th>
-          <th style={tableHeaderStyle}>Date</th>
-          <th style={tableHeaderStyle}>Time</th>
-          <th style={tableHeaderStyle}>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {videocalls.map((call, index) => {
-          const meetingTime = new Date(call.formattedDate + ' ' + call.formattedTime);
-          const buttonStyle = isCloseToSystemDate(meetingTime) ? greenButtonStyle : grayButtonStyle;
-          const disabled = !isCloseToSystemDate(meetingTime);
-          return (
-            <tr key={index}>
-              <td style={tableCellStyle}>{call.videocallId}</td>
-              <td style={tableCellStyle}>{call.projectId}</td>
-              <td style={tableCellStyle}>{call.videocallCreator}</td>
-              <td style={tableCellStyle}>{call.subject}</td>
-              <td style={tableCellStyle}>{call.estimatedDurationMinutes}</td>
-              <td style={tableCellStyle}>{call.invitedUsers.join(', ')}</td>
-              <td style={tableCellStyle}>{call.date}</td>
-              <td style={tableCellStyle}>{call.time}</td>
-              <td style={tableCellStyle}>
-                <button
-                  style={buttonStyle}
-                  onClick={() => handleJoinMeeting(call.videocallId)}
-                  disabled={disabled}
-                >
-                  Join Meeting
-                </button>
-              </td>
-            </tr>
-          );
-        })}
-      </tbody>
-    </table>
+    <div style={{ marginTop: '150px' }}>
+      <NavbarFront /> {/* Add the NavbarFront component here */}
+      <h2 style={{ textAlign: 'center' }}>My Videocalls</h2>
+      <table style={{ borderCollapse: 'collapse', width: '100%' }}>
+        <thead>
+          <tr>
+            <th style={tableHeaderStyle}>Call ID</th>
+            <th style={tableHeaderStyle}>Project ID</th>
+            <th style={tableHeaderStyle}>Creator</th>
+            <th style={tableHeaderStyle}>Subject</th>
+            <th style={tableHeaderStyle}>Duration (minutes)</th>
+            
+            <th style={tableHeaderStyle}>Date</th>
+            <th style={tableHeaderStyle}>Time</th>
+            <th style={tableHeaderStyle}>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {videocalls.map((call, index) => {
+            const meetingTime = new Date(call.formattedDate + ' ' + call.formattedTime);
+            const buttonStyle = isCloseToSystemDate(meetingTime) ? blueButtonStyle : grayButtonStyle;
+            const disabled = !isCloseToSystemDate(meetingTime);
+            return (
+              <tr key={index}>
+                <td style={tableCellStyle}>{call.videocallId}</td>
+                <td style={tableCellStyle}>{call.projectId}</td>
+                <td style={tableCellStyle}>{call.videocallCreator}</td>
+                <td style={tableCellStyle}>{call.subject}</td>
+                <td style={tableCellStyle}>{call.estimatedDurationMinutes}</td>
+                
+                <td style={tableCellStyle}>{call.date}</td>
+                <td style={tableCellStyle}>{call.time}</td>
+                <td style={tableCellStyle}>
+                  <button
+                    style={buttonStyle}
+                    onClick={() => handleJoinMeeting(call.videocallId)}
+                    disabled={disabled}
+                  >
+                    Join Meeting
+                  </button>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
   );
 };
 
@@ -117,8 +121,8 @@ const grayButtonStyle = {
   cursor: 'not-allowed',
 };
 
-const greenButtonStyle = {
-  backgroundColor: '#4CAF50',
+const blueButtonStyle = {
+  backgroundColor: '#007bff',
   border: 'none',
   color: 'white',
   padding: '8px 16px',

@@ -37,6 +37,9 @@ import WebcamComponent2 from './FrontOffice/components/Chat/videocallrooms';
 import WebSocketClient from './FrontOffice/components/Chat/WebSocketClient'; 
 import { WebsocketProvider, socket } from './context/websocketContext';
 import MyVideocalls from './FrontOffice/components/Chat/myvideocalls';
+import VideoChatComponent from './FrontOffice/components/Chat/VideoChatComponent';
+import zoomjdid from './FrontOffice/components/Chat/zoomjdid';
+import Zoomjdid from './FrontOffice/components/Chat/zoomjdid';
 
 
 function App() {
@@ -98,6 +101,8 @@ function App() {
         <Route path='/testsocket' element={< WebSocketClient />} />
         <Route path="/userconnected" element={<UserConnected/>} />
         <Route path="/myvideocalls" element={<MyVideocalls/>} />
+        <Route path="/agora" element={<VideoChatComponent/>} />
+        <Route path="/zoomjdid" element={<Zoomjdid/>} />
       </Routes>
       
 
