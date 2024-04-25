@@ -39,6 +39,7 @@ export class TicketController{
 async getTicketsByProjectId(@Param('projectId') projectId: string) {
     return await this.service.findAllTicketsByProjectId(projectId);
 }
+<<<<<<< HEAD
 @Post('/create-from-description')
 async createTicketFromDescription(@Body() body: { description: string }) {
     try {
@@ -47,6 +48,15 @@ async createTicketFromDescription(@Body() body: { description: string }) {
     } catch (error) {
         return { success: false, message: 'Erreur lors de la création du ticket', error: error.message };
     }
+=======
+
+@Get('/bysprint/:sprintId')
+async getTicketsBySprintId(@Param('sprintId') sprintId: string) {
+    return await this.service.findAllTicketsBySprintId(sprintId);
+}
+
+
+>>>>>>> 08411c2f54ebb82efaa96cb35e6ca0fa5c9bf08a
 }
 }
 

@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import { Header } from "./Header";
 import Draggable from 'react-draggable';
 
-import { useLocation } from "react-router-dom"; // Importing useLocation from react-router-dom
-import {Button} from '@chakra-ui/react';
+import { useLocation,useParams } from "react-router-dom"; // Importing useLocation from react-router-dom
+import {Button,Text,Menu, MenuButton, MenuList, MenuItem,Textarea,Heading} from '@chakra-ui/react';
 import { GlobalContext } from '../../../context/GlobalWrapperSprint';
 import SelectTicket from './SelectTicket'; // Importez SelectTicket
 import NavbarFront from '../../NavbarFront';
 import { MdDelete } from "react-icons/md";
-
+import { SketchPicker } from 'react-color';
+import {ChevronDownIcon,EditIcon } from '@chakra-ui/icons'
 
 export default function ScrumList() {
   const [board, setBoard] = useState([]);
@@ -16,7 +17,102 @@ export default function ScrumList() {
   const searchParams = new URLSearchParams(location.search);
   const sprintName = searchParams.get("name");
   const description = searchParams.get("description");
+  const [searchTerm, setSearchTerm] = useState('');
 
+  const [selectedColor, setSelectedColor] = useState('#ecf0f1');
+  const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
+  const [isColorCardPickerOpen, setIsColorCardPickerOpen] = useState(null);
+
+  const handleColorChange = (color) => {
+    setSelectedColor(color.hex);
+    localStorage.setItem('selectedColor', color.hex); // Enregistrez la couleur sélectionnée dans le stockage local
+  };
+
+  const [cardColors, setCardColors] = useState({});
+  const handleCardColorChange = (cardId, color) => {
+    setCardColors(prevColors => ({
+      ...prevColors,
+      [cardId]: color
+    }));
+    localStorage.setItem(`cardColor_${cardId}`, color); // Enregistrez la couleur sélectionnée dans le stockage local
+  };
+
+  const handleColorCardPickerOpen = (cardId) => {
+    setIsColorCardPickerOpen(cardId); // Mettez à jour l'état avec l'ID de la carte
+  };
+  
+  const handleColorCardPickerClose = () => {
+    setIsColorCardPickerOpen(null); // Réinitialisez l'état à null pour fermer tous les SketchPickers
+  };
+  
+
+  useEffect(() => {
+    const storedColors = {};
+    // Parcourez toutes les cartes pour récupérer leurs couleurs du stockage local
+    board.forEach(list => {
+      list.cards.forEach(card => {
+        const storedColor = localStorage.getItem(`cardColor_${card.id}`);
+        if (storedColor) {
+          storedColors[card.id] = storedColor;
+        }
+      });
+    });
+    setCardColors(storedColors);
+  }, [board]);
+  useEffect(() => {
+    // Parcourez toutes les entrées de cardColors et enregistrez-les dans le stockage local
+    Object.entries(cardColors).forEach(([cardId, color]) => {
+      localStorage.setItem(`cardColor_${cardId}`, color);
+    });
+  }, [cardColors]);
+  
+  
+  
+  //const [tickets, setTickets] = useState([]);
+  
+  // const { sprintId } = useParams(); // Obtenir l'ID du projet à partir des paramètres d'URL
+
+  // useEffect(() => {
+  //   fetchTicketsBySprintId(sprintId);
+  // }, [sprintId, fetchTicketsBySprintId]); 
+
+  // const filteredTickets = tickets.filter(ticket =>
+  //   ticket.description.toLowerCase().includes(searchTerm.toLowerCase())
+  // );
+
+  // useEffect(() => {
+  //   const initialBoard = [
+  //     {
+  //       id: 1,
+  //       title: "To Do",
+  //       cards: filteredTickets.filter(ticket => ticket.status === "To Do").map(ticket => ({
+  //         id: ticket._id,
+  //         description: ticket.description
+  //       }))
+  //     },
+  //     {
+  //       id: 2,
+  //       title: "In Progress",
+  //       cards: filteredTickets.filter(ticket => ticket.status === "In Progress").map(ticket => ({
+  //         id: ticket._id,
+  //         description: ticket.description
+  //       }))
+  //     },
+  //     {
+  //       id: 3,
+  //       title: "Completed",
+  //       cards: filteredTickets.filter(ticket => ticket.status === "Completed").map(ticket => ({
+  //         id: ticket._id,
+  //         description: ticket.description
+  //       }))
+  //     }
+  //     // Ajoutez d'autres colonnes au besoin en suivant le même schéma
+  //   ];
+  
+  //   setBoard(initialBoard);
+  // }, [filteredTickets]);
+
+  
   useEffect(() => {
     let data = window.localStorage.getItem("data");
     if (data) {
@@ -48,8 +144,34 @@ export default function ScrumList() {
   }, []);
   
 
-  
+  useEffect(() => {
+    const storedColor = localStorage.getItem('selectedColor');
+    if (storedColor) {
+      setSelectedColor(storedColor);
+    }
+  }, []);
 
+  // useEffect(() => {
+  //   if (tickets.length > 0) {
+  //     setBoard(prevBoard => {
+  //       const updatedBoard = prevBoard.map(column => {
+  //         if (column.id === 1) { // Première colonne
+  //           return {
+  //             ...column,
+  //             cards: tickets.map(ticket => ({
+  //               id: ticket._id,
+  //               description: ticket.description
+  //             }))
+  //           };
+  //         }
+  //         return column;
+  //       });
+  //       return updatedBoard;
+        
+  //     });
+  //   }
+  // }, [tickets]);
+  
   useEffect(() => {
     if (board.length > 0) window.localStorage.setItem("data", JSON.stringify(board));
   }, [board]);
@@ -105,15 +227,47 @@ export default function ScrumList() {
     setBoard(updatedBoard);
   };
   
-
   return (
     <div>
 
             <Header sprintName={sprintName} description={description} />
       
-            <Button colorScheme="teal" variant="outline" maxW={'300px'} minW="150px" onClick={handleAddScrumClick}>
-  Add Column
-</Button>
+            {/* <Button
+              colorScheme='purple'
+              borderRadius='3xl'
+            style={styles.newColumn}
+            onClick={handleAddScrumClick}
+            >Add Column</Button>
+            
+            <Button onClick={() => setIsColorPickerOpen(!isColorPickerOpen)}>Pick Color</Button>
+{isColorPickerOpen && (
+  <SketchPicker color={selectedColor} onChange={handleColorChange} />
+)}
+ */}
+<Menu >
+  <MenuButton colorScheme='blackAlpha'
+              borderRadius='2xl'
+            style={styles.newColumn} as={Button} rightIcon={<ChevronDownIcon />}>
+    Customize my table
+  </MenuButton>
+  <MenuList>
+    <MenuItem 
+        onClick={handleAddScrumClick}>
+      
+        Add Column
+      
+    </MenuItem>
+    <MenuItem onClick={() => setIsColorPickerOpen(!isColorPickerOpen)}>
+      
+        Pick Columns Color
+      
+    </MenuItem>
+  </MenuList>
+</Menu>
+{isColorPickerOpen && (
+  <SketchPicker color={selectedColor} onChange={handleColorChange} />
+)}
+
 
         <div>
       <div style={styles.boardContainer}>
@@ -121,8 +275,8 @@ export default function ScrumList() {
             console.log("ID de la liste :", list.id); // Ajout du console.log pour déboguer
 
           return (
-            <div id={`list_${list.id}`} key={list.id} className="list-container" style={styles.listContainer}>
-                                    <div style={{ display: 'flex', alignItems: 'center' }}>
+<div id={`list_${list.id}`} key={list.id} className="list-container" style={{ ...styles.listContainer, backgroundColor: selectedColor }}>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
 
               <h2>
               {list.id > 3 ? ( // Vérifier si l'index est supérieur ou égal à 3 (à partir de la quatrième colonne)
@@ -131,29 +285,35 @@ export default function ScrumList() {
                   type="text"
                   value={list.title}
                   onChange={(e) => handleUpdateColumnTitle(list.id, e.target.value)}
-                  style={styles.transparentInput}                />
+                  style={{...styles.transparentInput,    fontWeight: 500, // Mettre le texte en gras
+                }}                
+                  />
               ) : (
                 // Sinon, afficher simplement le titre de la colonne
-                list.title
+                <span style={{fontWeight: 500}}>{list.title}</span>
               )}
-            </h2>
+              </h2>
               {list.id > 3 && ( // Vérifier si l'index est supérieur ou égal à 3 (à partir de la quatrième colonne)
               // <Button  onClick={() => handleDeleteColumn(list.id)}>Delete Column</Button>
               //delete column
-              <Button          
+              <Button
+              colorScheme='blackAlpha' 
+    variant='link'          
                 onClick={() => handleDeleteColumn(list.id)}
-                style={{ fontSize: '1.5rem', padding: '0.5rem', width: '1rem', height: '2rem' ,marginTop: '1.5rem', marginLeft: '-4rem'}}
+                style={{ fontSize: '1.5rem', padding: '0.5rem', width: '1rem', height: '2rem' ,marginTop: '1.5rem', marginLeft: '-4rem', right: '0'}}
               >
                 <MdDelete />
               </Button>
-            )}
+                )}
             </div>
                   {list.id === 1 && ( // Condition pour afficher le bouton "New Card" uniquement pour la première liste
 
-          <button
+          <Button
+          colorScheme='blackAlpha'
+          borderRadius='2xl'
             style={styles.newCard}
             onClick={handleNewCardClick}
-          >+ New Ticket</button>
+          >+ New Ticket</Button>
           )}
               {list.cards.map((card) => {
                 return (
@@ -199,13 +359,13 @@ export default function ScrumList() {
                     }}
                     
                    >
-                    <div style={styles.cardContainer}>
-                    {/* <Button colorScheme='pink' onClick={() => handleDeleteCard(list.id, card.id)}>
-            <MdDelete />
-          </Button> */}
+                    <div key={card.id} className="card-container" style={{ ...styles.cardContainer, backgroundColor: cardColors[card.id] || '#ffffff' }}>
+
+                    
+                    
                       <div style={{ display: 'flex', alignItems: 'center' }}>
 
-                      <input
+                      {/* <Textarea
                           type={"text"}
                           style={styles.description}
                           value={card.description}
@@ -221,14 +381,76 @@ export default function ScrumList() {
                             console.log(temp_boards); // Vérifier si temp_boards est correctement mis à jour
                             setBoard(temp_boards);
                           }}
-                        />
-                        <Button
+                          
+                        /> */}
+
+
+<span
+                          type={"text"}
+                          style={styles.description}
+                          
+                          onChange={(e) => {
+                            let temp_boards = [...board];
+                            for (let i = 0; i < temp_boards.length; i++) {
+                              for (let j = 0; j < temp_boards[i].cards.length; j++) {
+                                if (temp_boards[i].cards[j].id === card.id) {
+                                  temp_boards[i].cards[j].description = e.target.value;
+                                }
+                              }
+                            }
+                            console.log(temp_boards); // Vérifier si temp_boards est correctement mis à jour
+                            setBoard(temp_boards);
+                          }}
+                          
+                        >{card.description}</span>
+
+
+
+
+
+                        <div style={{ position: 'relative' }}>
+  <Button 
+    colorScheme='blackAlpha' 
+    variant='link'
+    onClick={() => handleDeleteCard(list.id, card.id)}
+    style={{ 
+      fontSize: '1.5rem', 
+      padding: '0.5rem', 
+      width: '1rem', 
+      height: '2rem', 
+      marginTop: '1.5rem', 
+      right: '0',
+    }}
+  >
+    <MdDelete />
+  </Button>
+  <Button 
+      colorScheme='blackAlpha' 
+      onClick={() => {
+        const nextColorPickerState = isColorCardPickerOpen === card.id ? null : card.id;
+        setIsColorCardPickerOpen(nextColorPickerState);
+      }}    variant='link' 
+    style={{ 
+      fontSize: '1.3rem', 
+      padding: '0.5rem', 
+      width: '1rem', 
+      height: '2rem', 
+      marginTop: '4rem', 
+      right: '0', 
+    }}
+  >
+    <EditIcon/>
+  </Button>
+</div>
+{isColorCardPickerOpen === card.id && (
+  <SketchPicker 
+    color={cardColors[card.id] || '#ffffff'} 
+    onChange={(color) => handleCardColorChange(card.id, color.hex)} 
+
+  />
+)}
+
                         
-                        onClick={() => handleDeleteCard(list.id, card.id)}
-                        style={{ fontSize: '1.5rem', padding: '0.5rem', width: '1rem', height: '2rem' ,marginTop: '1.5rem', marginLeft: '2rem'}}
-                      >
-                        <MdDelete />
-                      </Button>
                       </div>
                     </div>
                   </Draggable>
@@ -289,14 +511,22 @@ const styles = {
     fontWeight: "bold",
   },
   newCard: {
-    backgroundColor: 'rgb(158, 129, 254)',
-    color: '#ffffff',
     border: 'none',
     width: "100%",
     padding: '10px',
-    borderRadius: '5px',
     cursor: 'pointer',
     outline: 'none'
+  },
+  newColumn: {
+    border: 'none',
+    width: "30%",
+    padding: '10px',
+    cursor: 'pointer',
+    outline: 'none',
+    display: 'flex',
+  justifyContent: 'center',
+  margin: '0 auto', // Pour centrer horizontalement
+
   },
   deleteButton: {
     backgroundColor: '#e74c3c',

@@ -14,9 +14,6 @@ export default function WrapperS({ children }) {
     const [sprints, setSprints] = useState([]);
     const [sprint, setSprint] = useState({}); // pour la fonction update
     
-    const [scrums, setScrums] = useState([]);
-    const [scrum, setScrum] = useState({}); // pour la fonction update
-
     const [errors, setErrors] = useState({});
     const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -93,13 +90,27 @@ export default function WrapperS({ children }) {
 
   const FetchTickets = async () => {
     try {
-      const res = await axios.get('/ticket');
-      console.log('Tickets API Response:', res.data);
-      setTickets(res.data);
-    } catch (err) {
-      console.error('Error fetching tickets:', err);
+      const response = await axios.get('/ticket');
+      if (response.data) {
+        setTickets(response.data);
+      } else {
+        throw new Error('No data received');
+      }
+    } catch (error) {
+      console.error('Error fetching tickets:', error);
     }
   };
+  const fetchTicketsBySprintId = async (sprintId) => {
+    try {
+      const response = await axios.get(`/ticket/bysprint/${sprintId}`);
+      console.log("Tickets retrieved by sprintId:", response.data); // Ajouter ce log pour vérifier les tickets récupérés
+  
+      setTickets(response.data);
+    } catch (error) {
+      console.error('Error fetching tickets:', error);
+    }
+  };
+  
     
     const AddTicket = (formT, setFormT) => {
         axios
@@ -186,8 +197,6 @@ export default function WrapperS({ children }) {
           setErrors(err.response.data.error);
         });
     };
-
-    
     
     const FetchSprints = async () => {
         try {
@@ -197,6 +206,18 @@ export default function WrapperS({ children }) {
             console.log(err.response.data);
         }
     };
+
+    const fetchSprintsByProjectId = async (projectId) => {
+      try {
+          const response = await axios.get(`/sprint/byproject/${projectId}`);
+          console.log("sprints retrieved by projectId:", response.data); // Ajouter ce log pour vérifier les tickets récupérés
+
+          setSprints(response.data);
+      } catch (error) {
+          console.error('Error fetching sprints:', error);
+      }
+  };
+
 
     const DeleteSprint = (id) => {
         axios
@@ -275,86 +296,6 @@ export default function WrapperS({ children }) {
         });
     };
 
-    const FetchScrums = async () => {
-      try {
-          const res = await axios.get('/scrum');
-          setScrums(res.data);
-      } catch (err) {
-          console.log(err.response.data);
-      }
-  };
-
-    const AddScrum = (form) => {
-      // Extraire les données pertinentes de l'interface utilisateur
-      const title = form.title;
-      const description = form.description;
-      const cards = form.cards;
-    
-      // Créer l'objet scrum à envoyer au backend
-      const newScrum = {
-        title: title,
-        description: description,
-        cards: cards
-      };
-    
-      // Envoyer l'objet scrum au backend
-      axios
-        .post('/scrum', newScrum)
-        .then((res) => {
-          // Mettre à jour l'état local avec le nouveau scrum
-          setScrums((prevScrums) => [...prevScrums, res.data]);
-          toast({
-            title: 'Scrum Added',
-            status: 'success',
-            duration: 3000,
-            isClosable: true,
-          });
-        })
-        .catch((err) => {
-          console.error('Error adding scrum:', err);
-          toast({
-            title: 'Error',
-            description: 'Failed to add scrum',
-            status: 'error',
-            duration: 3000,
-            isClosable: true,
-          });
-        });
-    };
-    
-    
-    
-    
-
-
-    const UpdateScrum = (form, resetForm,id) => {
-      axios
-          .put(`/scrum/${id}`, form)
-          .then((res) => {
-              setScrums((prevScrums) => {
-                  const updatedScrums = prevScrums.map((scrum) => {
-                      if (scrum._id === res.data._id) {
-                          return res.data;
-                      }
-                      return scrum;
-                  });
-                  return updatedScrums;
-              });
-              toast({
-                  title: 'Scrum Updated',
-                  status: 'success',
-                  duration: 3000,
-                  isClosable: true,
-              });
-              setErrors({});
-              resetForm(); // Réinitialise le formulaire
-              onClose();
-          })
-          .catch((err) => {
-              setErrors(err.response.data.error);
-          });
-  };
-
 
   const AssignTicketsToSprint = async (sprintId, ticketIds) => {
     try {
@@ -399,15 +340,10 @@ export default function WrapperS({ children }) {
             setSprint,
             UpdateSprint,
             findTicketsByProjectId,
-            FetchScrums,
-            AddScrum,
-            UpdateScrum,
-            setScrums,
-            scrum,
-            setScrum,
-            scrums,
             AssignTicketsToSprint,
-            FetchTicketsbyProject
+            FetchTicketsbyProject,
+            fetchSprintsByProjectId,
+            fetchTicketsBySprintId
 
   
         }}>

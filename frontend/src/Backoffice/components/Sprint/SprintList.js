@@ -12,7 +12,8 @@ import {
   Input,
   InputGroup,
   InputRightElement,
-  Flex
+  Flex,
+  Center
 } from '@chakra-ui/react';
 import { AiOutlinePlus, AiOutlineSearch, AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai';
 import RowSprint from './RowSprint';
@@ -21,41 +22,27 @@ import { GlobalContext } from '../../../context/GlobalWrapperSprint';
 import Sidebar from '../Sidebar';
 
 function SprintList() {
-  const { FetchSprints,sprint, sprints, onOpen, FetchTickets, setShowTickets, showTickets, findTicketsByProjectId } = useContext(GlobalContext);
+  const { FetchSprints, sprints, onOpen} = useContext(GlobalContext);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
 
-  const [sprintsPerPage] = useState(4);
+  const [sprintsPerPage] = useState(5);
 
+  
   useEffect(() => {
     FetchSprints();
   }, []);
 
-  const toggleTickets = (sprintId) => {
-    FetchTickets(sprintId);
-    setShowTickets(!showTickets);
-  };
-
-  const handleShowTickets = async (projectId) => {
-    try {
-      const tickets = await findTicketsByProjectId(projectId);
-      console.log('Tickets for project:', tickets);
-    } catch (error) {
-      console.error('Error fetching tickets:', error);
-    }
-  };
 
   const filteredSprints = sprints.filter(sprint =>
+    sprint.project?.projectname?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     sprint.sprintname.toLowerCase().includes(searchTerm.toLowerCase()) ||
     sprint.description.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // pagination 
-  // Index du dernier projet de la page
+  
   const indexOfLastSprint = currentPage * sprintsPerPage;
-  // Index du premier projet de la page
   const indexOfFirstSprint = indexOfLastSprint - sprintsPerPage;
-  // Projets actuellement affichés sur la page
   const currentSprints = filteredSprints.slice(indexOfFirstSprint, indexOfLastSprint);
 
   // Changer de page
@@ -67,12 +54,15 @@ function SprintList() {
       
      
       <Box mt="5" rounded={'lg'} boxShadow="base">
-      <Box display="flex"> {/* Utilisez Box avec display flex pour aligner les composants horizontalement */}
+      <Box display="flex"> 
         <Sidebar/>
         <Box flexGrow={1}>
+          <Box>
         <Text fontSize="xl" fontWeight="bold">
           List of Sprints
         </Text>
+        </Box>
+        <Box display="flex" alignItems="center" justifyContent="space-between">
         <Box>
         <InputGroup>
           <Input
@@ -85,10 +75,10 @@ function SprintList() {
           </InputRightElement>
         </InputGroup>
         </Box>
+        
         <Box>
         <Button
-          colorScheme="teal"
-          variant="outline"
+          colorScheme="pink"
           maxW={'300px'}
           minW="150px"
           leftIcon={<AiOutlinePlus fontSize={'20px'} />}
@@ -97,12 +87,14 @@ function SprintList() {
           Add New Sprint
         </Button>
         </Box>
-
+        </Box>
+        <Box>
       <TableContainer>
         <Table variant="simple">
           <Thead>
             <Tr>
               <Th>sprint Name</Th>
+              <Th>Project</Th>
               <Th>Description</Th>
               <Th>start date</Th>
               <Th>end date</Th>
@@ -111,31 +103,30 @@ function SprintList() {
           </Thead>
 
           <Tbody>
-            {sprints
-              .filter((sprint) =>
-                sprint.sprintname.toLowerCase().includes(searchTerm.toLowerCase())
-              )
-              .map(({ _id, sprintname, description, startdate, enddate }) => (
+            {currentSprints.map(({ _id, sprintname,project, description, startdate, enddate }) => (
                 <RowSprint
                   key={_id}
                   id={_id}
                   sprintname={sprintname}
+                  project={project ? project.projectname : 'Unknown'}
                   description={description}
                   startdate={startdate}
                   enddate={enddate}
-                  onShowTickets={handleShowTickets} 
                 />
               ))}
           </Tbody>
         </Table>
       </TableContainer>
+      </Box>
       <Flex justifyContent="center" alignItems="center" mt="4">
-            <Button onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1} leftIcon={<AiOutlineArrowLeft />}>
-            </Button>
-            <Box mx="2" p="2" borderRadius="md" bgColor="teal" color="white">Page {currentPage}</Box>
-            <Button onClick={() => paginate(currentPage + 1)} disabled={indexOfLastSprint >= filteredSprints.length} rightIcon={<AiOutlineArrowRight />}>
-            </Button>
-          </Flex>
+            <Button onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1} leftIcon={<AiOutlineArrowLeft />} mr="2"></Button>
+            <Center bg='pink.500' color="white" borderRadius="md" w="30px" h="30px">
+              {currentPage}
+            </Center>            
+            <Button onClick={() => paginate(currentPage + 1)} disabled={indexOfLastSprint >= filteredSprints.length} rightIcon={<AiOutlineArrowRight />}ml="2"></Button>
+      </Flex>
+
+
       <DrawerFormSprint />
       </Box>
 

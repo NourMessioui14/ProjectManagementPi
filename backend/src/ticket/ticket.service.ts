@@ -122,6 +122,15 @@ const project = await this.projectModel.findById(ticketData.project).exec();    
         return tickets;
     }
     
+    
+    async findAllTicketsBySprintId(sprintId: string): Promise<Ticket[]> {
+        console.log(`Searching for tickets with sprint ID: ${sprintId}`);
+        // Utilisez l'ID du projet pour filtrer les tickets
+        const tickets = await this.ticketModel.find({ 'sprint._id': sprintId }).exec();
+        console.log(`Found tickets: ${JSON.stringify(tickets)}`);
+    
+        return tickets;
+    }
   
 
 }

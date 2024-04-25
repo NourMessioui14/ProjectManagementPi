@@ -1,49 +1,21 @@
+import {
+  Box,  Flex ,Heading,Text
+} from '@chakra-ui/react';
 export function Header({ sprintName , description }) {
-  return (
-    
-    <header style={styles.header}>
-      <h1 style={styles.title}>
-        {sprintName ? sprintName : "Default Sprint Name"}
-      </h1>
-      <p style={styles.subtitle}>
-      {description ? description : "Default Description"}
-      </p>
-    </header>
-  );
-}
+    return (
+      <Box bg="white" p={3} borderRadius="lg"  width="full" mt={2}> {/* Ajoutez un mt={6} pour déplacer les boutons plus bas */}
 
+      <Box p={5} shadow="2xl" borderWidth="1px" mb={4} rounded='3xl'>
+            
+            <Heading size='md'>
+              <Text fontSize='5xl'as='b'>{sprintName ? sprintName : "Default Sprint Name"}</Text>
+            </Heading>
+            <Heading size='xs'>   
+              <Text fontSize='xl' as='samp'>{description ? description : "Default Description"}</Text>        
+            </Heading> 
+      </Box>
 
-
-
-const styles = {
-  header: {
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      padding: '20px',
-
-      backgroundColor: '#ecf0f1',
-      color: '#ffffff',
-      width: '100%',
-      // position: 'fixed',
-      // top: 0,
-      // ledt: 0,
-      // zIndex: 1
-  },
-
-  title: {
-      margin: 0,
-      padding: 0,
-      fontSize: '2.5rem',
-      fontWeight: 'bold',
-      textShadow: '2px 2px 2px #000000'
-  },
-
-  subtitle: {
-      margin: 0,
-      padding: 0,
-      fontSize: '1.5rem',
-      fontWeight: 'bold',
-      textShadow: '2px 2px 2px #000000'
+      </Box>
+    );
   }
-}
+ 
