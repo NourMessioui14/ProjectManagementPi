@@ -1,5 +1,4 @@
 import React, { useRef, useEffect, useState } from 'react';
-import AgoraRTM from 'agora-rtm-sdk'; // Import Agora RTM SDK
 
 const Zoomjdid = () => {
   const videoRef = useRef(null);
@@ -7,21 +6,6 @@ const Zoomjdid = () => {
   const [localStream, setLocalStream] = useState(null);
   const [remoteStream, setRemoteStream] = useState(null);
   let peerConnection;
-
-  // Agora RTM configuration
-  const APP_ID = 'd21340ac17f64a90a95f267118ff6014';
-  const TOKEN = null; // Replace null with your token if authentication is required
-
-  const [client, setClient] = useState(null);
-  const [channel, setChannel] = useState(null);
-
-  const servers = {
-    iceServers:[
-      {
-        urls:['stun:stun1.l.google.com:19302', 'stun:stun2.l.google.com:19302']
-      }
-    ]
-  };
 
   useEffect(() => {
     const startWebcam = async () => {
@@ -52,105 +36,114 @@ const Zoomjdid = () => {
       if (peerConnection) {
         peerConnection.close();
       }
-      if (channel) {
-        channel.leave();
-      }
-      if (client) {
-        client.logout();
-        client.destroy();
-      }
     };
   }, []);
 
+  const createPeerConnection = () => {
+    peerConnection = new RTCPeerConnection();
+    peerConnection.ontrack = handleTrackEvent;
+  };
+
+  const handleTrackEvent = (event) => {
+    setRemoteStream(event.streams[0]);
+  };
+
   const createOffer = async () => {
+    createPeerConnection();
+
     try {
-      peerConnection = new RTCPeerConnection(servers);
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-      peerConnection.addStream(stream);
-      setLocalStream(stream);
-
-      peerConnection.ontrack = (event) => {
-        setRemoteStream(event.streams[0]);
-        if (otherContainerRef.current) {
-          otherContainerRef.current.srcObject = event.streams[0];
-        }
-      };
-
-      // Log ICE candidates
-      peerConnection.onicecandidate = async (event) => {
-        if (event.candidate) {
-          console.log('ICE candidate:', event.candidate);
-        }
-      };
-
       const offer = await peerConnection.createOffer();
-      console.log('Offer created:', offer); // Console log lors de la création de l'offre
       await peerConnection.setLocalDescription(offer);
-
-      // Initialize Agora RTM client instance
-      const agoraClient = await AgoraRTM.createInstance(APP_ID);
-      setClient(agoraClient);
-
-      // Login to Agora RTM
-      await agoraClient.login({ uid: getRandomUUID(), token: TOKEN });
-      console.log('done login')
-
-      // Create and join the channel
-      const agoraChannel = agoraClient.createChannel('main');
-      await agoraChannel.join();
-      console.log('done join chanel')
-      setChannel(agoraChannel);
-
-      // Listen for member joined event
-      agoraChannel.on('memberJoined', (memberId) => {
-        console.log(`User ${memberId} joined the channel.`);
-      });
+      document.getElementById('offer-sdp').value = JSON.stringify(peerConnection.localDescription);
     } catch (error) {
       console.error('Error creating offer:', error);
     }
   };
 
-  // Appel de la fonction createOffer dès l'ouverture du composant
-  useEffect(() => {
-    createOffer();
-  }, []);
+  const createAnswer = async () => {
+    createPeerConnection();
 
-  // Generate a random UUID
-  const getRandomUUID = () => {
-    return Math.floor(Math.random() * 1000000).toString();
+    try {
+      const offer = JSON.parse(document.getElementById('offer-sdp').value);
+      await peerConnection.setRemoteDescription(new RTCSessionDescription(offer));
+
+      const answer = await peerConnection.createAnswer();
+      await peerConnection.setLocalDescription(answer);
+      document.getElementById('answer-sdp').value = JSON.stringify(peerConnection.localDescription);
+    } catch (error) {
+      console.error('Error creating answer:', error);
+    }
+  };
+
+  const addAnswer = async () => {
+    let answer = JSON.parse(document.getElementById('answer-sdp').value)
+    console.log('answer:', answer)
+    if (!peerConnection.currentRemoteDescription){
+        peerConnection.setRemoteDescription(answer);
+    }
   };
 
   return (
-
-    <div className="webcam-container">
-      <div className="video-preview">
-        <video ref={videoRef} autoPlay playsInline muted />
+    <div style={styles.container}>
+      <div style={styles.videoContainer}>
+        <video id="user-1" ref={videoRef} style={styles.video} autoPlay playsInline muted srcObject={localStream}></video>
+        <video id="user-2" ref={otherContainerRef} style={styles.video} autoPlay playsInline srcObject={remoteStream}></video>
       </div>
-      <div className="other-container">
-        <video ref={otherContainerRef} autoPlay playsInline muted />
+      <div style={styles.buttonContainer}>
+        <button id="create-offer" style={styles.button} onClick={createOffer}>Create Offer</button>
+        <button id="create-answer" style={styles.button} onClick={createAnswer}>Create Answer</button>
+        <button id="add-answer" style={styles.button} onClick={addAnswer}>Add Answer</button>
       </div>
-      {/* Retiré le bouton, la création de l'offre est désormais appelée automatiquement */}
-      <style>{`
-        .webcam-container {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-        }
-
-        .video-preview, .other-container {
-          width: 320px;
-          height: 240px;
-          border: 1px solid black;
-          margin-bottom: 20px;
-        }
-
-        .video-preview video, .other-container video {
-          width: 100%;
-          height: 100%;
-        }
-      `}</style>
+      <div style={styles.textareaContainer}>
+        <textarea id="offer-sdp" style={styles.textarea} rows="4" cols="50"></textarea>
+        <textarea id="answer-sdp" style={styles.textarea} rows="4" cols="50"></textarea>
+      </div>
     </div>
   );
+};
+
+const styles = {
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '100vh',
+  },
+  videoContainer: {
+    display: 'flex',
+    marginBottom: '20px',
+  },
+  video: {
+    width: '300px',
+    height: '200px',
+    margin: '0 10px',
+  },
+  buttonContainer: {
+    marginBottom: '20px',
+  },
+  button: {
+    margin: '0 10px',
+    padding: '10px 20px',
+    fontSize: '16px',
+    backgroundColor: '#007bff',
+    color: '#fff',
+    border: 'none',
+    borderRadius: '5px',
+    cursor: 'pointer',
+    outline: 'none',
+  },
+  textareaContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    marginBottom: '20px',
+  },
+  textarea: {
+    width: 'calc(50% - 15px)',
+    padding: '10px',
+    borderRadius: '5px',
+    border: '1px solid #ccc',
+  },
 };
 
 export default Zoomjdid;
