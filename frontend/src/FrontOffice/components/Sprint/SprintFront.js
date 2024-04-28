@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Box, Text, Input,InputRightElement, InputGroup, Button,AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter } from '@chakra-ui/react';
+import { Box, Text, Input,InputRightElement, InputGroup, Button,AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter, Tooltip } from '@chakra-ui/react';
 
 import { AiOutlinePlus } from 'react-icons/ai';
 import DrawerFormSprint from '../../../Backoffice/components/Sprint/DrawerFormSprint';
@@ -10,6 +10,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import TicketsBySprint from './TicketsBySprint';
+import { DownloadIcon, WarningTwoIcon } from '@chakra-ui/icons'
+
 function SprintCard({ id, sprintname,description, startdate, enddate }) {
   const { DeleteSprint, onOpen, FindOneSprint } = useContext(GlobalContext);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -66,6 +68,8 @@ function SprintCard({ id, sprintname,description, startdate, enddate }) {
       </div>
       <button>
       <div className="icons">
+      <Tooltip hasArrow label='Update Sprint' bg='green.600' placement='bottom'>
+
   <Button className="btn btn-wide update" onClick={() => {
     console.log("Second button clicked");
     onOpen();
@@ -77,11 +81,15 @@ function SprintCard({ id, sprintname,description, startdate, enddate }) {
       <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"></path>
     </svg>
   </Button>
+  </Tooltip>
+  <Tooltip hasArrow label='Delete Sprint' bg='red.600' placement='bottom'>
+
   <Button className="btn btn-wide decline" onClick={openDialog}>
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
       <path d="M12.354 3.646a.5.5 0 0 1 0 .708L8.707 8l3.647 3.646a.5.5 0 0 1-.708.708L8 8.707l-3.646 3.647a.5.5 0 0 1-.708-.708L7.293 8 3.646 4.354a.5.5 0 0 1 .708-.708L8 7.293l3.646-3.647a.5.5 0 0 1 .708 0z"/>
     </svg>
   </Button>
+  </Tooltip>
 </div>
 </button>
       <AlertDialog isOpen={isDialogOpen} onClose={closeDialog}>
@@ -167,10 +175,22 @@ display={'flex'} justifyContent="space-between">
       />
     </InputGroup>
     
-<Button colorScheme="purple" mr={3} onClick={(generatePDF) => window.print()}>Print details</Button>
+<Button colorScheme="purple" mr={3} onClick={(generatePDF) => window.print()} 
+  leftIcon={<DownloadIcon fontSize={'20px'} />}
+  >Print details</Button>
 
 
 </Box>
+{filteredSprints.length === 0 ? (
+            <Box textAlign="center" p="4">
+              <Box>
+              <WarningTwoIcon boxSize={40} color='grey'/>
+              </Box>
+              <Box>
+              <Text as='b' fontSize='2xl' color='grey' > You Haven't Added Any Sprint To This Project</Text>
+              </Box>
+            </Box>
+          ) : (
 <Box display="flex" justifyContent="space-around" flexWrap="wrap">
 {filteredSprints
   .map(({ _id, sprintname,project, description, startdate, enddate}) => (
@@ -185,7 +205,7 @@ display={'flex'} justifyContent="space-between">
     />
   ))}
 </Box>
-
+)}
 <DrawerFormSprint />
 </Box>
 
