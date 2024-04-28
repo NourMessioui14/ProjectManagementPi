@@ -41,6 +41,7 @@ import VideoChatComponent from './FrontOffice/components/Chat/VideoChatComponent
 import zoomjdid from './FrontOffice/components/Chat/zoomjdid';
 import Zoomjdid from './FrontOffice/components/Chat/zoomjdid';
 import WebRTCComponent from './FrontOffice/components/Chat/TestChat';
+import Zoomzoom from './FrontOffice/components/Chat/zoomzoom';
 
 
 function App() {
@@ -104,6 +105,7 @@ function App() {
         <Route path="/myvideocalls" element={<MyVideocalls/>} />
         <Route path="/agora" element={<VideoChatComponent/>} />
         <Route path="/zoomjdid" element={<Zoomjdid/>} />
+        <Route path="/zoomzoom" element={<Zoomzoom/>} />
         <Route path="/text-chat" element={<WebRTCComponent/>} />
 
       </Routes>

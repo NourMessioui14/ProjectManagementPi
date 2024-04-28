@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import micimage from './mic.png';
+import cameraimage from './camera.png';
+import phoneimage from './phone.png';
+import { Link } from 'react-router-dom';
 
 class Zoomjdid extends Component {
     constructor(props) {
@@ -7,12 +11,17 @@ class Zoomjdid extends Component {
             firstCamera: true,
             localStream: null,
             remoteStream: null,
+            cameraBtnActive: true,
+            micBtnActive: true,
         };
         this.peerConnection = new RTCPeerConnection();
     }
 
     componentDidMount() {
         this.init();
+        // Initial background color for buttons
+        document.getElementById('camera-btn').style.backgroundColor = 'rgb(179, 102, 249, .9)';
+        document.getElementById('mic-btn').style.backgroundColor = 'rgb(179, 102, 249, .9)';
     }
 
     componentWillUnmount() {
@@ -42,72 +51,97 @@ class Zoomjdid extends Component {
     };
 
     toggleCamera = async () => {
-        const { firstCamera } = this.state;
-        this.setState({ firstCamera: !firstCamera }, async () => {
-            const { firstCamera } = this.state;
-            let localStream = await navigator.mediaDevices.getUserMedia({ video: firstCamera, audio: true });
-            this.setState({ localStream }, () => {
-                const senders = this.peerConnection.getSenders();
-                senders.forEach(sender => {
-                    this.peerConnection.removeTrack(sender);
-                });
-                this.state.localStream.getTracks().forEach((track) => {
-                    this.peerConnection.addTrack(track, this.state.localStream);
-                });
-            });
-        });
+        const { localStream, cameraBtnActive } = this.state;
+        let videoTrack = localStream.getTracks().find(track => track.kind === 'video');
+
+        if (videoTrack.enabled) {
+            videoTrack.enabled = false;
+            document.getElementById('camera-btn').style.backgroundColor = 'rgb(255, 80, 80)';
+        } else {
+            videoTrack.enabled = true;
+            document.getElementById('camera-btn').style.backgroundColor = 'rgb(179, 102, 249, .9)';
+        }
+        this.setState({ cameraBtnActive: !cameraBtnActive });
     };
+
+    toggleMic = async () => {
+        const { localStream, micBtnActive } = this.state;
+        let audioTrack = localStream.getTracks().find(track => track.kind === 'audio');
+
+        if (audioTrack.enabled) {
+            audioTrack.enabled = false;
+            document.getElementById('mic-btn').style.backgroundColor = 'rgb(255, 80, 80)';
+        } else {
+            audioTrack.enabled = true;
+            document.getElementById('mic-btn').style.backgroundColor = 'rgb(179, 102, 249, .9)';
+        }
+        this.setState({ micBtnActive: !micBtnActive });
+    };
+
+
+    //////
+
 
     createOffer = async () => {
-        const { peerConnection } = this;
-        peerConnection.onicecandidate = async (event) => {
-            if (event.candidate) {
-                document.getElementById('offer-sdp').value = JSON.stringify(peerConnection.localDescription);
-            }
-        };
+      const { peerConnection } = this;
+      peerConnection.onicecandidate = async (event) => {
+          if (event.candidate) {
+              document.getElementById('offer-sdp').value = JSON.stringify(peerConnection.localDescription);
+          }
+      };
 
-        const offer = await peerConnection.createOffer();
-        await peerConnection.setLocalDescription(offer);
-    };
+      const offer = await peerConnection.createOffer();
+      await peerConnection.setLocalDescription(offer);
+  };
 
-    createAnswer = async () => {
-        const { peerConnection } = this;
-        let offer = JSON.parse(document.getElementById('offer-sdp').value);
+  createAnswer = async () => {
+      const { peerConnection } = this;
+      let offer = JSON.parse(document.getElementById('offer-sdp').value);
 
-        peerConnection.onicecandidate = async (event) => {
-            if (event.candidate) {
-                console.log('Adding answer candidate...:', event.candidate);
-                document.getElementById('answer-sdp').value = JSON.stringify(peerConnection.localDescription);
-            }
-        };
+      peerConnection.onicecandidate = async (event) => {
+          if (event.candidate) {
+              console.log('Adding answer candidate...:', event.candidate);
+              document.getElementById('answer-sdp').value = JSON.stringify(peerConnection.localDescription);
+          }
+      };
 
-        await peerConnection.setRemoteDescription(offer);
+      await peerConnection.setRemoteDescription(offer);
 
-        let answer = await peerConnection.createAnswer();
-        await peerConnection.setLocalDescription(answer);
-    };
+      let answer = await peerConnection.createAnswer();
+      await peerConnection.setLocalDescription(answer);
+  };
 
-    addAnswer = async () => {
-        console.log('Add answer triggered');
-        let answer = JSON.parse(document.getElementById('answer-sdp').value);
-        if (!this.peerConnection.currentRemoteDescription) {
-            this.peerConnection.setRemoteDescription(answer);
-        }
-    };
+  addAnswer = async () => {
+      console.log('Add answer triggered');
+      let answer = JSON.parse(document.getElementById('answer-sdp').value);
+      if (!this.peerConnection.currentRemoteDescription) {
+          this.peerConnection.setRemoteDescription(answer);
+      }
+  };
 
     render() {
-        const { localStream, remoteStream, firstCamera } = this.state;
+        const { localStream, remoteStream } = this.state;
         return (
             <div style={styles.container}>
                 <div style={styles.videoContainer}>
-                    <video id="user-1" style={styles.video} autoPlay playsInline muted srcObject={localStream}></video>
-                    <video id="user-2" style={styles.video} autoPlay playsInline srcObject={remoteStream}></video>
+                    <video id="user-1" style={{ ...styles.video, border: '2px solid #000' }} autoPlay playsInline muted srcObject={localStream}></video>
+                    <video id="user-2" style={{ ...styles.video, border: '2px solid #000' }} autoPlay playsInline srcObject={remoteStream}></video>
                 </div>
-                <div style={styles.buttonContainer}>
-                    <button style={styles.button} onClick={this.toggleCamera}>
-                        {firstCamera ? 'Disable CAM' : 'Enable CAM'}
-                    </button>
-                    <button id="create-offer" style={styles.button} onClick={this.createOffer}>
+                <div id="controls" style={styles.buttonContainer}>
+                    <div className="control-container" id="camera-btn" onClick={this.toggleCamera} style={styles.button}>
+                        <img src={cameraimage} alt="Camera" style={styles.buttonIcon} />
+                    </div>
+                    <div className="control-container" id="mic-btn" onClick={this.toggleMic} style={styles.button}>
+                        <img src={micimage} alt="Microphone" style={styles.buttonIcon} />
+                    </div>
+                    <Link to="/myvideocalls" style={styles.linkButton}>
+                        <img src={phoneimage} alt="Phone" style={styles.buttonIcon} />
+                    </Link>
+                </div>
+
+                <div>
+
+                <button id="create-offer" style={styles.button} onClick={this.createOffer}>
                         Create Offer
                     </button>
                     <button id="create-answer" style={styles.button} onClick={this.createAnswer}>
@@ -116,11 +150,19 @@ class Zoomjdid extends Component {
                     <button id="add-answer" style={styles.button} onClick={this.addAnswer}>
                         Add Answer
                     </button>
-                </div>
-                <div style={styles.textareaContainer}>
+
+                    <div style={styles.textareaContainer}>
                     <textarea id="offer-sdp" style={styles.textarea} rows="4" cols="50"></textarea>
                     <textarea id="answer-sdp" style={styles.textarea} rows="4" cols="50"></textarea>
+
                 </div>
+
+
+
+                </div>
+
+
+
             </div>
         );
     }
@@ -139,34 +181,37 @@ const styles = {
         marginBottom: '20px',
     },
     video: {
-        width: '300px',
-        height: '200px',
+        width: '400px',
+        height: '300px',
         margin: '0 10px',
     },
     buttonContainer: {
+        display: 'flex',
+        gap: '1em',
         marginBottom: '20px',
     },
     button: {
-        margin: '0 10px',
-        padding: '10px 20px',
-        fontSize: '16px',
-        backgroundColor: '#007bff',
-        color: '#fff',
-        border: 'none',
-        borderRadius: '5px',
+        padding: '10px',
+        backgroundColor: 'rgb(179, 102, 249, .9)',
+        borderRadius: '50%',
         cursor: 'pointer',
         outline: 'none',
     },
-    textareaContainer: {
-        display: 'flex',
-        justifyContent: 'space-between',
+    buttonIcon: {
+        width: '24px',
+        height: '24px',
     },
-    textarea: {
-        width: 'calc(50% - 15px)',
-        padding: '10px',
-        borderRadius: '5px',
-        border: '1px solid #ccc',
+    linkButton: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'red',
+        borderRadius: '50%',
+        width: '40px',
+        height: '40px',
+        textDecoration: 'none',
     },
 };
 
 export default Zoomjdid;
+
