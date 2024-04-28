@@ -23,6 +23,7 @@ function NavbarFront() {
   const toggleProfileDropdown = () => {
     setShowProfileDropdown(!showProfileDropdown);
   };
+  
 
   return (
     <header>

@@ -14,6 +14,8 @@ import {
   Textarea,
 } from '@chakra-ui/react';
 import { GlobalContext } from '../../../context/GlobalWrapper';
+import { AiFillRobot } from 'react-icons/ai';
+
 import { FaInfoCircle } from 'react-icons/fa'; // Utiliser une icône pour "Details"
 import NavbarFront from '../../NavbarFront';
 import TicketModal from '../../ticketPrediction';
@@ -77,7 +79,16 @@ function ListTicketFront() {
   const handleSelectTicket = (ticket) => {
     setSelectedTicket(ticket);
   };
-  
+
+  const buttonStyle = {
+    background: 'linear-gradient(45deg, #FFC0CB, #FF69B4)', // Gradient de rose
+    color: 'white',
+    border: 'none',
+    _hover: {
+      background: 'linear-gradient(45deg, #FFC0CB, #FF69B4)', // Maintenir le gradient au survol
+    },
+};
+
 
   const bg = useColorModeValue("white", "gray.700");
 
@@ -109,14 +120,24 @@ function ListTicketFront() {
   return (
     <>
       <NavbarFront />
-      <Button colorScheme="blue" onClick={() => setIsModalOpen(true)}>
-        Create Ticket
-      </Button>
+     
       <TicketModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onSave={handleSaveTicket} />
       {/* Autres éléments de votre interface */}
   
       <Box mt="100px" padding="4" minH="calc(100vh - 200px)">
         <Flex justifyContent="center" alignItems="flex-start">
+
+
+        <Button
+        leftIcon={<AiFillRobot />}
+        style={buttonStyle} // Appliquez les styles en ligne au bouton
+        onClick={() => setIsModalOpen(true)}
+      >
+        Create Ticket
+      </Button>
+
+
+
           <VStack spacing={4} width="40%">
             {currentTickets.map((ticket) => (
               <Flex
@@ -143,7 +164,10 @@ function ListTicketFront() {
                 >
                   Details
                 </Button>
+               
               </Flex>
+
+              
             ))}
           </VStack>
           {selectedTicket && (
@@ -215,6 +239,7 @@ function ListTicketFront() {
                 <i className="mdi mdi-file-check btn-icon-prepend"></i>
                 Save Changes
               </button>
+             
             </Box>
           )}
         </Flex>
