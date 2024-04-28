@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Chart from 'chart.js/auto';
 import axios from 'axios';
+import { Box, Text } from "@chakra-ui/react";
 
 const UserRolesChart = () => {
   const [userData, setUserData] = useState([]);
@@ -74,10 +75,11 @@ const UserRolesChart = () => {
   };
 
   return (
-    <div style={{ maxWidth: '400px', margin: '0 auto' }}>
-      <h2 style={{ textAlign: 'center', fontSize: '1.8rem', marginBottom: '20px', color: '#333' }}>User Roles Chart</h2>
-      <canvas id="userRolesChart" width="400" height="200" style={{ margin: '0 auto' }}></canvas>
-    </div>
+<Box p="4" style={{ width: "600px", height: "400px", margin: "0 auto" }}> {/* Définir la taille du conteneur */}
+            <Text fontSize="xl" fontWeight="bold" mb="4">
+                User Roles 
+            </Text>
+            <canvas id="userRolesChart" width="400" height="200" style={{ marginLeft: '-50px' }}></canvas>        </Box>
   );
 };
 

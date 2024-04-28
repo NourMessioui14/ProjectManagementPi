@@ -1,24 +1,24 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { Box, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, Text, Input, Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
 import { AiOutlinePlus, AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
-import { GlobalContext } from '../../../context/GlobalWrapperSprint';
-import RowTicketBySprint from './RowTicketBySprint';
+import { GlobalContext } from '../../../context/GlobalWrapper';
+import RowTicketByProject from './RowTicketByProject';
 import { Flex, Center } from '@chakra-ui/react';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { DownloadIcon } from '@chakra-ui/icons'
 
-function TicketsBySprint({ isOpen, onClose, id }) { // Prend sprintId comme prop
-  const { fetchTicketsBySprintId, tickets, FetchTickets } = useContext(GlobalContext);
+function TicketsByProject({ isOpen, onClose, id }) { // Prend projectId comme prop
+  const { fetchTicketsByProjectId, tickets, FetchTickets } = useContext(GlobalContext);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [ticketsPerPage] = useState(4);
 
   useEffect(() => {
-    if (isOpen && id) { // Si le modal est ouvert et sprintId est défini
-      fetchTicketsBySprintId(id); // Fetch les tickets pour le sprint spécifié
+    if (isOpen && id) { 
+      fetchTicketsByProjectId(id); 
     }
-  }, [isOpen, id]); // Réagit aux changements de isOpen et sprintId
+  }, [isOpen, id]); 
 
   // Logique de pagination et de filtrage
   const filteredTickets = tickets.filter(ticket =>
@@ -69,8 +69,8 @@ const generatePDF = () => {
               </Tr>
             </Thead>
             <Tbody>
-              {currentTickets.map(({ _id, project, sprint, typeOfticket, etat, description, responsable }) => (
-                <RowTicketBySprint
+              {currentTickets.map(({ _id, typeOfticket, etat, description, responsable }) => (
+                <RowTicketByProject
                   key={_id}
                   id={_id}
                   typeOfticket={typeOfticket}
@@ -95,4 +95,4 @@ const generatePDF = () => {
   );
 }
 
-export default TicketsBySprint;
+export default TicketsByProject;

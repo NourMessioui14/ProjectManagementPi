@@ -18,9 +18,10 @@ function SelectTicket({ isOpen, onClose, setBoard,id }) {
     
     // Créer de nouvelles cartes à partir des tickets sélectionnés
     const newCards = selectedTickets.map(ticket => ({
-        id: uuidv4(), // Utilisation de uuidv4() pour générer l'ID unique
-        title: ticket.description, // Utilisez la description du ticket comme titre de la carte
-      description: ticket.description, // Utilisez également la description du ticket comme description de la carte
+      id: uuidv4(), // Utilisation de uuidv4() pour générer l'ID unique
+      title: `${ticket.description} - ${ticket.responsable.name}`, // Concaténation de la description et du nom du responsable
+      description: ticket.description, // Utilisez la description du ticket comme description de la carte
+      owner: ticket.responsable.name, // Sauvegarde du nom du responsable
       fromSelection: true // Indique que la carte provient de la sélection de ticket
     }));
     
@@ -64,12 +65,12 @@ function SelectTicket({ isOpen, onClose, setBoard,id }) {
                 {tickets.map(ticket => (
   <div key={ticket._id}>
     <Checkbox
-      value={ticket.description}
+      value={ticket.description} 
       {...register("tickets")}
       isInvalid={errors && errors.tickets}
       onChange={() => setSelectedTicket(ticket)}
     >
-      {ticket.description} - Owner: {ticket.responsable.name} - state : {ticket.etat}{/* Assurez-vous que "name" est la propriété que vous souhaitez afficher */}
+      {ticket.description} - Owner: {ticket.responsable.name}
     </Checkbox>
   </div>
 ))}

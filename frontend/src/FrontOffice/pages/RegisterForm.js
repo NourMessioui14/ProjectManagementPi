@@ -1,17 +1,37 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Alert, AlertIcon } from '@chakra-ui/react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useHistory } from 'react-router-dom';
+import { GlobalContext } from '../../context/GlobalWrapperChat';
+import UserList from '../../Backoffice/pages/UserList';
+import {MDBIcon } from 'mdb-react-ui-kit';
+
 
 const RegisterForm = () => {
+
+
+
+
+
+
+ const{getUserIDByToken} = useContext(GlobalContext);
+
+
+ const [loginData, setLoginData] = useState({}); // État pour stocker les données de connexion des utilisateurs
+
+
+
+
   const navigate = useNavigate(); 
+
 
   const [loginForm, setLoginForm] = useState({
     email: '',
     password: '',
   });
+
 
   const [registerForm, setRegisterForm] = useState({
     name: '',
@@ -33,31 +53,38 @@ const RegisterForm = () => {
     });
   };
 
+
   const [showPassword, setShowPassword] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [isSignUpSuccess, setIsSignUpSuccess] = useState(false);
+
 
   useEffect(() => {
     const sign_in_btn = document.querySelector("#sign-in-btn");
     const sign_up_btn = document.querySelector("#sign-up-btn");
     const container_sig = document.querySelector(".container_sig");
 
+
     const handleSignUpClick = () => {
       container_sig.classList.add("sign-up-mode");
     };
+
 
     const handleSignInClick = () => {
       container_sig.classList.remove("sign-up-mode");
     };
 
+
     sign_up_btn.addEventListener("click", handleSignUpClick);
     sign_in_btn.addEventListener("click", handleSignInClick);
+
 
     return () => {
       sign_up_btn.removeEventListener("click", handleSignUpClick);
       sign_in_btn.removeEventListener("click", handleSignInClick);
     };
   }, []); 
+
 
   const handleSignUp = async (values) => {
     try {
@@ -103,6 +130,20 @@ const RegisterForm = () => {
         const responseData = await response.json();
         console.log('Login successful! Received token:', responseData.token);
         console.log('Role:', responseData.role);
+
+
+        setLoginData(prevData => ({
+          ...prevData,
+          [values.email]: (prevData[values.email] || 0) + 1,
+        }));
+        console.log('Login Data:', loginData); // Afficher les données de connexion de l'utilisateur
+
+
+
+
+
+
+       getUserIDByToken(responseData.token);
   
         localStorage.setItem('token', responseData.token);
   
@@ -120,6 +161,7 @@ const RegisterForm = () => {
     }
   };
   
+
 
   return (
     <div className="container_sig">
@@ -170,8 +212,14 @@ const RegisterForm = () => {
                     {(msg) => <div className="error-message">{msg}</div>}
                   </ErrorMessage>
                 </div>
-                <button type="submit" className="btn solid">Login</button>
-                <a href="/forgetPassword" className="forgot-password-link">Forgot password?</a>
+                <button type="submit" className="btn btn-primary buttonSH" style={{ width: '125px', height: '30px' }}>
+  <span class="buttonSH-content" style={{ width: '100%', height: '60%' }}>
+    <MDBIcon icon="user-edit" className="me-2" />
+   Login
+  </span>
+</button>
+
+                <a href="/forgetPassword" className="forgot-password-link">Forgot password?</a> 
                 <p className="social-text">Or Sign in with social platforms</p>
                 <div className="social-media">
                   <a href="#" className="social-icon">
@@ -190,6 +238,7 @@ const RegisterForm = () => {
               </Form>
             )}
           </Formik>
+
 
           {/* Sign up Form */}
           <Formik
@@ -308,6 +357,7 @@ const RegisterForm = () => {
             )}
           </Formik>
 
+
           {isSignUpSuccess && (
             <Alert status='success' variant='solid'>
               <AlertIcon />
@@ -337,5 +387,6 @@ const RegisterForm = () => {
     </div>
   );
 };
+
 
 export default RegisterForm;

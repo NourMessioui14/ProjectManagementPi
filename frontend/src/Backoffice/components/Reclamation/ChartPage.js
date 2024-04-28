@@ -20,15 +20,17 @@ function ChartPage() {
     reclamation.reponses.some(response => response.toLowerCase().includes(searchTerm.toLowerCase()))
 );
     return <Box mt="5" rounded={'lg'} boxShadow="base">
-         
-
     <Box display="flex">
-
-    <Sidebar position="fixed" />
-    <ChartRecComponent reclamations={filteredReclamations} />
-   <UserRolesChart />  
+      <Sidebar position="fixed" />
+      <div style={{ marginLeft: '250px' }}> {/* Ajoutez une marge à gauche */}
+        <ChartRecComponent reclamations={filteredReclamations} />
+        <div style={{ marginTop: '50px' }}> {/* Ajoutez un espace entre les deux composants */}
+          <UserRolesChart />
+        </div>
+      </div>
     </Box>
-            </Box>
+  </Box>
+  
     
 }
 

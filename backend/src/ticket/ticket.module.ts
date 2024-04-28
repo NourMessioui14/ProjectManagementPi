@@ -11,6 +11,7 @@ import { User, UserSchema } from 'src/auth/schemas/user.schema'; // Import UserM
 import { SprintModule } from 'src/sprint/sprint.module';
 import { SprintService } from 'src/sprint/sprint.service';
 import { Sprint, SprintSchema } from 'src/models/sprint.models';
+import { EmailSpService } from 'src/sprint/email-sp.service';
 
 
 @Module({
@@ -18,7 +19,7 @@ import { Sprint, SprintSchema } from 'src/models/sprint.models';
                                         ,{ name: User.name, schema: UserSchema },
                                         { name: Sprint.name, schema: SprintSchema }]),AuthModule,ProjectModule],
   controllers: [TicketController],
-  providers: [TicketService,EmailService,ProjectService,SprintService ],
+  providers: [TicketService,EmailService,ProjectService,SprintService,EmailSpService ],
   exports: [TicketService, MongooseModule]
 })
 export class TicketModule {}

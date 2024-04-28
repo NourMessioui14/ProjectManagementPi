@@ -29,10 +29,11 @@ import NavbarFront from '../../NavbarFront';
 import { Text } from '@chakra-ui/react';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import TicketsByProject from '../Ticket/TicketsByProject';
 
 
 
-function DetailsProject() {
+function DetailsProject(id) {
   const { projectId } = useParams();
   const navigate = useNavigate();
   const toast = useToast();
@@ -46,6 +47,17 @@ function DetailsProject() {
   });
   const [tickets, setTickets] = useState([]);
   const [selectedTicket, setSelectedTicket] = useState(null);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedProjectId, setSelectedProjectId] = useState(null); // État pour stocker l'ID du sprint sélectionné
+
+  const openModal = () => { 
+    setIsModalOpen(true); 
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   useEffect(() => {
     const fetchProjectDetails = async () => {
@@ -146,10 +158,10 @@ const generatePDF = () => {
         </Button>
     
       {/* Ticket section */}
-      {tickets.length > 0 ? (
+      {/* {tickets.length > 0 ? (
         tickets.map((ticket) => (
           <div key={ticket._id} p={5} shadow="md" borderWidth="1px"  >
-          <Flex justifyContent="flex-end"> {/* Wrap the button in Flex */}
+          <Flex justifyContent="flex-end">
             <Button   marginTop="30px" marginBottom="20px" onClick={() => handleOpenTicketDetails(ticket)} size="sm" colorScheme="teal">
               View Details of ticket
             </Button>
@@ -165,13 +177,21 @@ const generatePDF = () => {
           </AlertDescription>
           
         </Alert>
-      )}
-      <Box p={5} shadow="md" borderWidth="1px" mb={4}>
+      )} */}
+      <Box p={1} shadow="md" borderWidth="1px" mb={4}>
             <Flex justifyContent="flex-end"> 
-            <Button onClick={() => navigate(`/SprintFront/${projectId}`)}>Show Sprints</Button>
+            <Button marginTop="30px" marginBottom="20px" colorScheme="teal" onClick={() => navigate(`/SprintFront/${projectId}`)}>Show Sprints</Button>
 
             </Flex>
           </Box>
+
+          <Box p={1} shadow="md" borderWidth="1px" mb={4}>
+            <Flex justifyContent="flex-end"> 
+            <Button marginTop="30px" marginBottom="20px" colorScheme="teal" onClick={() => openModal()}>Show Tickets</Button>
+            <TicketsByProject isOpen={isModalOpen} onClose={closeModal} id={projectId} /> 
+            </Flex>
+          </Box>
+
     </div>
     <Box bg="white" p={8} borderRadius="lg" boxShadow="lg" width="full">
     <form onSubmit={handleSubmit}>

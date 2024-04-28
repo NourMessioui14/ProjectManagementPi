@@ -100,7 +100,7 @@ export default function DrawerFormSprint() {
                 />
                 <FormErrorMessage>{errors?.sprintname}</FormErrorMessage>
               </FormControl>
-              <FormControl isInvalid={errors?.project}>
+              <FormControl isRequired isInvalid={errors?.project}>
                 <FormLabel>Project</FormLabel>
                 <Select name="project" onChange={onChangeHandler} value={form?.project?._id || ''}>
                   {projects.map(project => (
@@ -109,12 +109,12 @@ export default function DrawerFormSprint() {
                 </Select>
                 <FormErrorMessage>{errors?.project}</FormErrorMessage>
               </FormControl>
-              <FormControl isInvalid={errors?.description}>
+              <FormControl isRequired isInvalid={errors?.description}>
                 <FormLabel>Description</FormLabel>
                 <Textarea name="description" onChange={onChangeHandler} value={form?.description || ''} />
                 <FormErrorMessage>{errors?.description}</FormErrorMessage>
               </FormControl>
-              <FormControl isInvalid={errors?.startdate || errors?.enddate}>
+              <FormControl isRequired isInvalid={errors?.startdate || errors?.enddate}>
                 <FormLabel>Start Date</FormLabel>
                 <Input type="date" name="startdate" onChange={onChangeHandler} value={form?.startdate || ''} />
                 <FormErrorMessage>{errors?.startdate}</FormErrorMessage>
