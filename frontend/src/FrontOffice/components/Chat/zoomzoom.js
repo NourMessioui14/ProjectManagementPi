@@ -3,6 +3,7 @@ import micimage from './mic.png';
 import cameraimage from './camera.png';
 import phoneimage from './phone.png';
 import { Link } from 'react-router-dom';
+import { WebsocketContext } from '../../../context/websocketContext';
 
 class Zoomzoom extends Component {
     constructor(props) {
@@ -15,7 +16,10 @@ class Zoomzoom extends Component {
             micBtnActive: true,
         };
         this.peerConnection = new RTCPeerConnection();
+        
     }
+
+    
 
     componentDidMount() {
         this.init();
@@ -25,10 +29,12 @@ class Zoomzoom extends Component {
     }
 
     componentWillUnmount() {
-        if (this.peerConnection) {
-            this.peerConnection.close();
-        }
-    }
+      if (this.peerConnection) {
+          this.peerConnection.close();
+          // Détachement de l'écouteur d'événements onicecandidate
+          this.peerConnection.onicecandidate = null;
+      }
+  }
 
     init = async () => {
         const { firstCamera } = this.state;
@@ -50,7 +56,7 @@ class Zoomzoom extends Component {
         this.setState({ localStream, remoteStream });
     };
 
-    toggleCamera = async () => {
+    /*toggleCamera = async () => {
         const { localStream, cameraBtnActive } = this.state;
         let videoTrack = localStream.getTracks().find(track => track.kind === 'video');
 
@@ -76,24 +82,36 @@ class Zoomzoom extends Component {
             document.getElementById('mic-btn').style.backgroundColor = 'rgb(179, 102, 249, .9)';
         }
         this.setState({ micBtnActive: !micBtnActive });
-    };
+    };    */
 
 
     //////
 
 
     createOffer = async () => {
-      const { peerConnection } = this;
-      peerConnection.onicecandidate = async (event) => {
+        const { peerConnection } = this;
+      
+        // Check if an offer has already been created
+        if (peerConnection.localDescription) {
+          console.log('An offer has already been created.');
+          return;
+        }
+      
+        // Attach the event listener for onicecandidate
+        peerConnection.onicecandidate = async (event) => {
           if (event.candidate) {
-              document.getElementById('offer-sdp').value = JSON.stringify(peerConnection.localDescription);
+            // Send the offer to the server via Socket.io
+            this.context.emit('offer', JSON.stringify(peerConnection.localDescription));
           }
+        };
+      
+        // Create the offer
+        const offer = await peerConnection.createOffer();
+        console.log('Created offer:', offer); // Log the offer object
+        await peerConnection.setLocalDescription(offer);
       };
-
-      const offer = await peerConnection.createOffer();
-      await peerConnection.setLocalDescription(offer);
-  };
-
+  
+/*
   createAnswer = async () => {
       const { peerConnection } = this;
       let offer = JSON.parse(document.getElementById('offer-sdp').value);
@@ -106,6 +124,7 @@ class Zoomzoom extends Component {
       };
 
       await peerConnection.setRemoteDescription(offer);
+      console.log('Remote description set with offer:', offer);
 
       let answer = await peerConnection.createAnswer();
       await peerConnection.setLocalDescription(answer);
@@ -117,7 +136,7 @@ class Zoomzoom extends Component {
       if (!this.peerConnection.currentRemoteDescription) {
           this.peerConnection.setRemoteDescription(answer);
       }
-  };
+  };    */
 
     render() {
         const { localStream, remoteStream } = this.state;
@@ -142,13 +161,13 @@ class Zoomzoom extends Component {
                 <div>
 
                 <button id="create-offer" style={styles.button} onClick={this.createOffer}>
-                        Create Offer
+                        Create Offer /call
                     </button>
                     <button id="create-answer" style={styles.button} onClick={this.createAnswer}>
-                        Create Answer
+                        Create Answer / repondre
                     </button>
                     <button id="add-answer" style={styles.button} onClick={this.addAnswer}>
-                        Add Answer
+                        Add Answer /ouvrir
                     </button>
 
                     <div style={styles.textareaContainer}>
@@ -167,6 +186,8 @@ class Zoomzoom extends Component {
         );
     }
 }
+
+Zoomzoom.contextType = WebsocketContext;
 
 const styles = {
     container: {
@@ -214,3 +235,4 @@ const styles = {
 };
 
 export default Zoomzoom;
+
