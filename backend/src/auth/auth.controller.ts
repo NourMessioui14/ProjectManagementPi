@@ -200,24 +200,24 @@ export class AuthController {
       },
     }),
   }))
-  async uploadFile(@UploadedFile() file: Express.Multer.File) {
-    try {
+ // async uploadFile(@UploadedFile() file: Express.Multer.File) {
+   // try {
       // Vérifier si un fichier a été téléchargé
-      if (!file) {
-        throw new Error('Aucun fichier téléchargé');
-      }
+     // if (!file) {
+       // throw new Error('Aucun fichier téléchargé');
+     // }
 
       // Logguer les informations sur le fichier
-      console.log('Fichier téléchargé:', file);
+    //  console.log('Fichier téléchargé:', file);
 
       // Renvoyer une réponse réussie
-      return { success: true, message: 'Fichier téléchargé avec succès' };
-    } catch (error) {
+     // return { success: true, message: 'Fichier téléchargé avec succès' };
+   // } catch (error) {
       // En cas d'erreur, renvoyer un message d'erreur
-      console.error('Erreur lors du téléchargement du fichier:', error);
-      return { success: false, message: 'Une erreur s\'est produite lors du téléchargement du fichier' };
-    }
-  }
+     // console.error('Erreur lors du téléchargement du fichier:', error);
+    //  return { success: false, message: 'Une erreur s\'est produite lors du téléchargement du fichier' };
+   // }
+  //}
 
   @Get('/getFile')
   getFile(@Res() res : Response , @Body() file : FileParams)
