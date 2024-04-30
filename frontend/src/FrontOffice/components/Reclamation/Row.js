@@ -6,11 +6,9 @@ import { GlobalContext } from '../../../context/GlobalWrapperRec';
 import { AiOutlineInfoCircle } from 'react-icons/ai';
 import ReclamationDetails from './ReclamationDetails';
 
-const Row = ({ id, Category, Subject, Description , reponses , fullDescription }) => {
+const Row = ({ id, Category, Subject, Description , reponses , fullDescription ,Status}) => {
   const { Delete, onOpen, isOpen, onClose, FindOne } = useContext(GlobalContext);
   const [showDetailsModal, setShowDetailsModal] = React.useState(false);
- 
- 
  
 
   const handleDelete = () => {
@@ -22,17 +20,28 @@ const Row = ({ id, Category, Subject, Description , reponses , fullDescription }
 
 
 
+  let statusColor = '';
+  if (Status === 'In Progress') {
+    statusColor = 'orange';
+  } else if (Status === 'Pending') {
+    statusColor = 'red';
+  } else {
+    statusColor = 'green';
+  }
+
 
   return (
     <Tr>
       <Td>{Category}</Td>
       <Td>{Subject}</Td>
+     
       
       <Td>
         <Box>
           {Description.length > 25 ? Description.substring(0, 25) + "..." : Description}
         </Box>
       </Td>
+      <Td><Box style={{ fontSize: '12px' }} color={statusColor}>{Status}</Box></Td>
       <Td>
         <Box display="flex" gap="1">
           <Button colorScheme='blue'>
@@ -53,10 +62,9 @@ const Row = ({ id, Category, Subject, Description , reponses , fullDescription }
         
         </Box>
       </Td>
-      <ReclamationDetails isOpen={showDetailsModal} onClose={() => setShowDetailsModal(false)} reclamation={{ Category, Subject, Description, reponses}} />
+      <ReclamationDetails isOpen={showDetailsModal} onClose={() => setShowDetailsModal(false)} reclamation={{ Category, Subject, Description, reponses ,Status}} />
    
     </Tr>
   );
 };
-
 export default Row;

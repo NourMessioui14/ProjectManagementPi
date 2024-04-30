@@ -1,11 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Alert, AlertIcon } from '@chakra-ui/react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useHistory } from 'react-router-dom';
+import { GlobalContext } from '../../context/GlobalWrapperChat';
+import UserList from '../../Backoffice/pages/UserList';
 
 const RegisterForm = () => {
+
+
+
+ const{getUserIDByToken} = useContext(GlobalContext);
+
+ const [loginData, setLoginData] = useState({}); // État pour stocker les données de connexion des utilisateurs
+
+
   const navigate = useNavigate(); 
 
   const [loginForm, setLoginForm] = useState({
@@ -103,6 +113,16 @@ const RegisterForm = () => {
         const responseData = await response.json();
         console.log('Login successful! Received token:', responseData.token);
         console.log('Role:', responseData.role);
+
+        setLoginData(prevData => ({
+          ...prevData,
+          [values.email]: (prevData[values.email] || 0) + 1,
+        }));
+        console.log('Login Data:', loginData); // Afficher les données de connexion de l'utilisateur
+
+
+
+       getUserIDByToken(responseData.token);
   
         localStorage.setItem('token', responseData.token);
   
@@ -171,7 +191,7 @@ const RegisterForm = () => {
                   </ErrorMessage>
                 </div>
                 <button type="submit" className="btn solid">Login</button>
-                <a href="/forgetPassword" className="forgot-password-link">Forgot password?</a>
+                <a href="/forgetPassword" className="forgot-password-link">Forgot password?</a> 
                 <p className="social-text">Or Sign in with social platforms</p>
                 <div className="social-media">
                   <a href="#" className="social-icon">

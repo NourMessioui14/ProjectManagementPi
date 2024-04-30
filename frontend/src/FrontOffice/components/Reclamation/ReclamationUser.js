@@ -8,6 +8,7 @@ import AddReclamation from './AddReclamation';
 import { GlobalContext } from '../../../context/GlobalWrapperRec';
 import NavbarFront from '../../NavbarFront';
 
+
 function ReclamationUser() {
   const { FetchReclamationsUser, Reclamations, isOpen, onOpen, onClose, setClaims } = useContext(GlobalContext);
   const [loading, setLoading] = useState(true);
@@ -38,24 +39,33 @@ function ReclamationUser() {
                 List of claims
               </Text>
             </Box>
-            <TableContainer>
-              <Table variant='simple' className="striped-table">
-                <Thead>
-                  <Tr>
-                    <Th>Category</Th>
-                    <Th>Subject</Th>
-                    <Th>Description</Th>
-                    <Th>Actions</Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                {Reclamations?.map(({ _id, Category, Subject, Description, reponses }) => (
-    <Row key={_id} id={_id} Category={Category} Subject={Subject} Description={Description}  reponses={reponses}  fullDescription={Description} />
-))}
-
-                </Tbody>
-              </Table>
-            </TableContainer>
+            {Reclamations && Reclamations.length > 0 ? (
+              <TableContainer>
+                <Table variant='simple' className="striped-table">
+                  <Thead>
+                    <Tr>
+                      <Th>Category</Th>
+                      <Th>Subject</Th>
+                      <Th>Description</Th>
+                      <Th>Status</Th>
+                      <Th>Actions</Th>
+                    </Tr>
+                  </Thead>
+                  <Tbody>
+                    {Reclamations.map(({ _id, Category, Subject, Description, reponses , Status }) => (
+                      <Row key={_id} id={_id} Category={Category} Subject={Subject} Description={Description} reponses={reponses} fullDescription={Description} Status={Status}/>
+                    ))}
+                  </Tbody>
+                </Table>
+              </TableContainer>
+            ) : (
+              <Box textAlign="center" mt="4">
+               <Text fontSize="xl" fontWeight="bold" mb="4">No claims found</Text>
+              <Box maxWidth="300px" margin="auto">
+              <img src="templateFront/images/aucun.png" alt="No claims found" />
+            </Box>
+            </Box>
+            )}
           </Box>
           <AddReclamation />
         </Container>

@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsOptional, IsEnum } from "class-validator";
 import { User } from "src/auth/schemas/user.schema";
-import { ReclamationCategory } from "src/models/reclamations.model";
+import { ReclamationCategory, ReclamationStatus } from "src/models/reclamations.model";
 
 export class ReclamationDto {
   @IsNotEmpty()
@@ -18,4 +18,8 @@ export class ReclamationDto {
 
   @IsOptional()
   reponses: any[];
+
+  @IsOptional()
+ 
+  Status: ReclamationStatus;
 }

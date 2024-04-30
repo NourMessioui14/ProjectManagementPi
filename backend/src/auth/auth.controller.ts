@@ -1,8 +1,3 @@
-import { EditProfileDto } from './dto/EditProfile.dto';
-import { BadRequestException, Body, Controller, Delete, ForbiddenException, Get, HttpException, HttpStatus, NotFoundException, Param, Patch, Post, Put, Query, Req, Session, UnauthorizedException, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { LoginDto } from './dto/login.dto';
-import { SignUpDto, UserRole } from './dto/signup.dto'; // Import UserRole correctly
 import { Roles } from 'src/roles/roles.decorator';
 import { RolesGuard } from 'src/roles/roles.guard';
 import session from 'express-session';
@@ -16,10 +11,25 @@ import { JwtAuthGuard } from './guard/JwtAuthGuard';
 import { CurrentUser } from './utils/CurrentUser';
 import { getUser } from './decorator/get-user.decorator';
 import { changePassDto } from './dto/changePass.dto';
+import { diskStorage } from 'multer';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { Response } from 'express';
+import * as path from 'path';
+import { extname } from 'path';
+import { BadRequestException, Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Patch, Post, Put, Res, Session, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { AuthService } from './auth.service';
+import { SignUpDto } from './dto/signup.dto';
+import { LoginDto } from './dto/login.dto';
+import { EditProfileDto } from './dto/EditProfile.dto';
 
+interface FileParams {
+  fileName : string;
+}
 
 @Controller('auth')
 export class AuthController {
+
+  
   constructor(private authService: AuthService  ,  private jwtService: JwtService, // Injecter JwtService
   ) {}
 
@@ -28,7 +38,6 @@ export class AuthController {
     return this.authService.signUp(signUpDto);
   }
 
-  @UseGuards(LocalAuthGuard)
   @Post('/login')
   async login(@Body() loginDto: LoginDto, @Session() session: Record<string, any>): Promise<{ token: string }> {
       const user = await this.authService.login(loginDto);
@@ -37,7 +46,8 @@ export class AuthController {
   
       return user;
   }
-    
+
+
   @Get("/users")
   findAll(){
      return this.authService.findAll();
@@ -176,6 +186,44 @@ export class AuthController {
   async updateUserValue(@Param('id') id: string, @Body() updatedFields: Record<string, any>): Promise<User> {
     return this.authService.updateUserValue(id, updatedFields);
   }
+
+
+  
+  @Post('/upload')
+  @UseInterceptors(FileInterceptor('file', {
+    storage: diskStorage({
+      destination: './uploads',
+      filename: (req, file, cb) => {
+        const randomName = Array(32).fill(null).map(() => (Math.round(Math.random() * 16)).toString(16)).join('');
+        return cb(null, `${randomName}${extname(file.originalname)}`);
+      },
+    }),
+  }))
+  async uploadFile(@UploadedFile() file: Express.Multer.File) {
+    try {
+      // Vérifier si un fichier a été téléchargé
+      if (!file) {
+        throw new Error('Aucun fichier téléchargé');
+      }
+
+      // Logguer les informations sur le fichier
+      console.log('Fichier téléchargé:', file);
+
+      // Renvoyer une réponse réussie
+      return { success: true, message: 'Fichier téléchargé avec succès' };
+    } catch (error) {
+      // En cas d'erreur, renvoyer un message d'erreur
+      console.error('Erreur lors du téléchargement du fichier:', error);
+      return { success: false, message: 'Une erreur s\'est produite lors du téléchargement du fichier' };
+    }
+  }
+
+  @Get('/getFile')
+  getFile(@Res() res : Response , @Body() file : FileParams)
+  {
+    res.sendFile(path.join(__dirname , "../../uploads/" + file.fileName));
+  }
+
   
   
   }
@@ -191,3 +239,4 @@ export class AuthController {
 
 
     
+

@@ -7,7 +7,7 @@ import { TicketService } from 'src/ticket/ticket.service';
 
 @Injectable()
 export class SprintService {
-
+z
     constructor(
         @InjectModel(Sprint.name) private readonly sprintModel: Model<SprintDocument>,
         private ticketService: TicketService) {}

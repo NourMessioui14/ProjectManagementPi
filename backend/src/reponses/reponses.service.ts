@@ -5,6 +5,7 @@ import { ReponseDto } from 'src/dto/reponse.dto';
 import { Reclamation, ReclamationDocument } from 'src/models/reclamations.model';
 import { Reponse, ReponseDocument } from 'src/models/response.models';
 import { EmailServiceReponse } from './EmailReponse.service';
+import { AppGateway } from 'src/app.gateway';
 
 @Injectable()
 export class ReponsesService {
@@ -18,7 +19,8 @@ export class ReponsesService {
         @InjectModel(Reclamation.name) private ReclamationModel: Model<ReclamationDocument>,
         
 
-        private emailService: EmailServiceReponse
+        private emailService: EmailServiceReponse,
+        private  appGateway: AppGateway,
 
       ) {}
 
@@ -47,8 +49,18 @@ export class ReponsesService {
     }
 
 
-    Delete(id: string){
-        return this.ReponseModel.deleteOne({ _id: id });
+    async Delete(id: string) {
+        // Supprimer la réponse
+        const deletedResponse = await this.ReponseModel.deleteOne({ _id: id });
+    
+        // Mettre à jour la réclamation associée
+        const reclamation = await this.ReclamationModel.findOne({ reponses: id });
+        if (reclamation) {
+            reclamation.reponses = reclamation.reponses.filter(responseId => responseId.toString() !== id);
+            await reclamation.save();
+        }
+    
+        return deletedResponse;
     }
 
 
@@ -56,59 +68,26 @@ export class ReponsesService {
         return 'search claim'
     }
 
-    
-    // async addReponseToReclamation(reclamationId: string, reponseDto: ReponseDto): Promise<Reponse> {
-    //     // Récupérer la réclamation à laquelle ajouter la réponse
-    //     const reclamation = await this.ReclamationModel.findById(reclamationId);
-    
-    //     // Vérifier si la réclamation existe
-    //     if (!reclamation) {
-    //         throw new NotFoundException('Réclamation non trouvée');
-    //     }
-    
-    //     // Créer la réponse
-    //     const createdReponse = await this.ReponseModel.create(reponseDto);
-    
-    //     // Ajouter la réponse à la réclamation
-    //     reclamation.reponses.push(createdReponse);
-    //     await reclamation.save();
-
-   
-    
-    //     return createdReponse;
-    // }
-
-
+  
     
     async addReponseToReclamation(reclamationId: string, reponseDto: ReponseDto): Promise<Reponse> {
-        // Récupérer la réclamation à laquelle ajouter la réponse
-        const reclamation = await this.ReclamationModel.findById(reclamationId).populate('user'); // Populer l'utilisateur associé à la réclamation
-    
-        // Vérifier si la réclamation existe
+        const reclamation = await this.ReclamationModel.findById(reclamationId).populate('user');
         if (!reclamation) {
             throw new NotFoundException('Réclamation non trouvée');
         }
-    
-        // Créer la réponse
+        
         const createdReponse = await this.ReponseModel.create(reponseDto);
-    
-        // Ajouter la réponse à la réclamation
         reclamation.reponses.push(createdReponse);
         await reclamation.save();
-    
-        // Récupérer l'e-mail de l'utilisateur associé à la réclamation
+
         const userEmail = reclamation.user.email;
-    
-        // Envoi d'un e-mail à l'utilisateur
-        await this.emailService.sendEmail(
-            userEmail,
-            'Votre réclamation a reçu une réponse',
-            'Votre réclamation a reçu une réponse. Consultez le site pour plus de détails.',
-        );
-    
+        await this.emailService.sendEmail(userEmail, 'Votre réclamation a reçu une réponse', 'Votre réclamation a reçu une réponse. Consultez le site pour plus de détails.');
+
+        // Émettre un événement WebSocket pour notifier l'utilisateur
+        this.appGateway.server.to(reclamation.user._id).emit('notification', 'Une nouvelle réponse a été ajoutée à votre réclamation.');
+
         return createdReponse;
     }
-    
 
 
 
