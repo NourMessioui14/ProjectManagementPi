@@ -14,10 +14,10 @@ import {
   Textarea,
 } from '@chakra-ui/react';
 import { GlobalContext } from '../../../context/GlobalWrapper';
-import { AiFillRobot } from 'react-icons/ai';
-
-import { FaInfoCircle } from 'react-icons/fa'; // Utiliser une icône pour "Details"
+import { AiFillRobot, AiOutlineClose } from 'react-icons/ai';
+import { FaInfoCircle } from 'react-icons/fa';
 import NavbarFront from '../../NavbarFront';
+import axios from 'axios';
 import TicketModal from '../../ticketPrediction';
 
 const getBadgeColor = (etat) => {
@@ -36,6 +36,9 @@ const getBadgeColor = (etat) => {
 function ListTicketFront() {
   const { FetchTickets, tickets, UpdateTicket, projects, sprints } = useContext(GlobalContext);
   const [selectedTicket, setSelectedTicket] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
     project: '',
@@ -45,9 +48,6 @@ function ListTicketFront() {
     etat: '',
     responsable: '',
   });
-  const [currentPage, setCurrentPage] = useState(1);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
 
   useEffect(() => {
     FetchTickets();
@@ -72,74 +72,99 @@ function ListTicketFront() {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = () => {
-    UpdateTicket(formData, setFormData, selectedTicket._id);
-  };
-
   const handleSelectTicket = (ticket) => {
     setSelectedTicket(ticket);
   };
 
-  const buttonStyle = {
-    background: 'linear-gradient(45deg, #FFC0CB, #FF69B4)', // Gradient de rose
-    color: 'white',
-    border: 'none',
-    _hover: {
-      background: 'linear-gradient(45deg, #FFC0CB, #FF69B4)', // Maintenir le gradient au survol
-    },
-};
+  const handleRefreshTicketList = async () => {
+    try {
+      await FetchTickets();
+    } catch (error) {
+      // Gérer les erreurs ici
+    }
+  };
 
+  const handleSubmit = async () => {
+    if (selectedTicket) {
+      UpdateTicket(formData, setFormData, selectedTicket._id);
+    } else {
+      try {
+        const newTicket = await createTicketFromDescription(formData.description);
+        setFormData({
+          project: newTicket.project.projectname,
+          sprint: newTicket.sprint.sprintname,
+          description: newTicket.description,
+          typeOfticket: newTicket.typeOfticket,
+          etat: newTicket.etat,
+          responsable: newTicket.responsable.name,
+        });
+        handleRefreshTicketList();
+      } catch (error) {
+        // Gérer les erreurs ici
+      }
+    }
+  };
 
   const bg = useColorModeValue("white", "gray.700");
-
-  // Pagination
-  const ticketsPerPage = 8;
-  const indexOfLastTicket = currentPage * ticketsPerPage;
-  const indexOfFirstTicket = indexOfLastTicket - ticketsPerPage;
-  const currentTickets = tickets.slice(indexOfFirstTicket, indexOfLastTicket);
-
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
-  // Fonction handleSaveTicket mise à jour pour supprimer l'appel à createTicket
-  const handleSaveTicket = (description) => {
-    // Analyse de la description et extraction des informations pertinentes
-    const keywords = ['projectname', 'sprintname', 'typeOfticket', 'etat', 'responsable'];
-    const ticketData = {};
-  
-    keywords.forEach((keyword) => {
-      const regex = new RegExp(`${keyword}\\s*:\\s*(.*)`, 'i');
-      const match = description.match(regex);
-      if (match && match[1]) {
-        ticketData[keyword.toLowerCase()] = match[1].trim();
-      }
-    });
-    // Vous pouvez traiter les données du ticket ici ou les transmettre à une autre fonction
+  const itemsPerPage = 8;
+  const indexOfLastTicketFirstPage = currentPage * itemsPerPage;
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
   };
-  
+
+  const createTicketFromDescription = async (description) => {
+    try {
+      const response = await axios.post('/ticket/create-from-description', { description });
+      return response.data;
+    } catch (error) {
+      console.error('Error creating ticket:', error.response.data);
+      throw error;
+    }
+  };
+
+  const [filteredTickets, setFilteredTickets] = useState([]);
+  useEffect(() => {
+    const lowercasedFilter = searchTerm.toLowerCase();
+    const filteredData = tickets.filter((ticket) => {
+      return (
+        typeof ticket.project === 'string' && ticket.project.toLowerCase().includes(lowercasedFilter) ||
+        typeof ticket.sprint === 'string' && ticket.sprint.toLowerCase().includes(lowercasedFilter) ||
+        typeof ticket.description === 'string' && ticket.description.toLowerCase().includes(lowercasedFilter)
+      );
+    });
+    setFilteredTickets(filteredData);
+  }, [searchTerm, tickets]);
 
   return (
     <>
       <NavbarFront />
-     
-      <TicketModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onSave={handleSaveTicket} />
-      {/* Autres éléments de votre interface */}
-  
+      <TicketModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onSave={handleRefreshTicketList} />
       <Box mt="100px" padding="4" minH="calc(100vh - 200px)">
-        <Flex justifyContent="center" alignItems="flex-start">
-
-
-        <Button
-        leftIcon={<AiFillRobot />}
-        style={buttonStyle} // Appliquez les styles en ligne au bouton
-        onClick={() => setIsModalOpen(true)}
-      >
-        Create Ticket
-      </Button>
-
-
-
-          <VStack spacing={4} width="40%">
-            {currentTickets.map((ticket) => (
+        <Flex justifyContent="flex-start" alignItems="flex-start" mb={4}>
+          <Button
+            leftIcon={<AiFillRobot />}
+            bgGradient="linear-gradient(45deg, #FFC0CB, #FF69B4)"
+            color="white"
+            onClick={() => setIsModalOpen(true)}
+            marginTop={1}
+          >
+            Create Ticket IA
+          </Button>
+        </Flex>
+        <Input
+          size="sm"
+          variant="filled"
+          borderRadius="full"
+          placeholder="Search tickets..."
+          width={600}
+          marginTop={50}
+          marginLeft={400}
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        <Flex justifyContent="center" alignItems="flex-start" mt={4} width="100%">
+          <VStack width="100%">
+            {filteredTickets.slice(indexOfLastTicketFirstPage - itemsPerPage, indexOfLastTicketFirstPage).map((ticket) => (
               <Flex
                 key={ticket._id}
                 p={4}
@@ -150,6 +175,7 @@ function ListTicketFront() {
                 justifyContent="space-between"
                 width="100%"
                 borderRadius="md"
+                marginBottom={4} // Ajoutez cet espace entre chaque carte
               >
                 <Badge colorScheme={getBadgeColor(ticket.etat)}>{ticket.etat}</Badge>
                 <Text flex={1} textAlign="left" ml={2}>
@@ -159,19 +185,16 @@ function ListTicketFront() {
                   onClick={() => handleSelectTicket(ticket)}
                   size="sm"
                   variant="outline"
-                  leftIcon={<FaInfoCircle />} // Utiliser une icône pour "Details"
-                  colorScheme="pink" // Changer la couleur du bouton en bleu
+                  leftIcon={<FaInfoCircle />}
+                  colorScheme="pink"
                 >
                   Details
                 </Button>
-               
               </Flex>
-
-              
             ))}
           </VStack>
           {selectedTicket && (
-            <Box width="30%" bg="white" p={4} shadow="md" ml={4} borderRadius="md">
+            <Box width="30%" bg="white" p={4} shadow="md" ml={4} borderRadius="md" position="relative">
               <FormControl mb={2}>
                 <FormLabel>Project</FormLabel>
                 <Input
@@ -235,19 +258,22 @@ function ListTicketFront() {
                   onChange={handleChange}
                 />
               </FormControl>
-              <button onClick={handleSubmit}  type="button" className="btn btn-gradient-primary btn-icon-text">
-                <i className="mdi mdi-file-check btn-icon-prepend"></i>
-                Save Changes
-              </button>
-             
+              <Flex justifyContent="flex-end">
+                <Button onClick={() => setSelectedTicket(null)} colorScheme="red" mr={2}>
+                  <AiOutlineClose /> Close
+                </Button>
+                <Button onClick={handleSubmit} colorScheme="blue">
+                  Save Changes
+                </Button>
+              </Flex>
             </Box>
           )}
         </Flex>
-        {/* Pagination */}
+        {/* Boutons de pagination */}
         <Box mt={4} display="flex" justifyContent="center">
-          {[...Array(Math.ceil(tickets.length / ticketsPerPage)).keys()].map((number) => (
-            <Button key={number + 1} onClick={() => paginate(number + 1)} ml={2}>
-              {number + 1}
+          {Array.from({ length: Math.ceil(filteredTickets.length / itemsPerPage) }).map((_, index) => (
+            <Button key={index + 1} onClick={() => paginate(index + 1)} ml={2}>
+              {index + 1}
             </Button>
           ))}
         </Box>

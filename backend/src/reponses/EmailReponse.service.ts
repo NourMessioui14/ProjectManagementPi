@@ -9,9 +9,7 @@ export class EmailServiceReponse {
     this.transporter = nodemailer.createTransport({
       // configurez votre transporteur ici, par exemple SMTP, SendGrid, etc.
       service: 'gmail',
-      host:"smtp.gmail.com",
-      port : 587 ,
-      secure : false ,
+     
       auth: {
         user: 'ibtihelkadhraoui1@gmail.com',
         pass: 'zanc njbz cnpe nxnx',

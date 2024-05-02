@@ -62,7 +62,7 @@ export class TicketService {
     
         console.log('Ticket data:', ticketData); // Log ticket data
     
-        if (!ticketData.project || !ticketData.typeOfticket || !ticketData.etat || !ticketData.description || !ticketData.responsable) {
+        if (!ticketData.project || !ticketData.sprint || !ticketData.typeOfticket || !ticketData.etat || !ticketData.description || !ticketData.responsable) {
             console.error('Missing required ticket fields:', ticketData);
             throw new NotFoundException('Missing required ticket fields.');
         }

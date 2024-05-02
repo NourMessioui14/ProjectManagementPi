@@ -12,6 +12,7 @@ import { ReponsesModule } from './reponses/reponses.module';
 import { MessageModule } from './message/message.module';
 import { ChatroomModule } from './chatroom/chatroom.module';
 import { VideocallModule } from './videocall/videocall.module';
+import { AppGateway } from './app.gateway';
 
 @Module({
   imports: [
@@ -31,6 +32,6 @@ import { VideocallModule } from './videocall/videocall.module';
     VideocallModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, AppGateway],
 })
 export class AppModule {}
