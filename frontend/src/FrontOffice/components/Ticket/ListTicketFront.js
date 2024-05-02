@@ -14,7 +14,7 @@ import {
   Textarea,
 } from '@chakra-ui/react';
 import { GlobalContext } from '../../../context/GlobalWrapper';
-import { AiFillRobot, AiOutlineClose } from 'react-icons/ai';
+import { AiFillRobot, AiOutlineClose, AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai'; // Import des icônes de flèches
 import { FaInfoCircle } from 'react-icons/fa';
 import NavbarFront from '../../NavbarFront';
 import axios from 'axios';
@@ -269,13 +269,28 @@ function ListTicketFront() {
             </Box>
           )}
         </Flex>
-        {/* Boutons de pagination */}
+        {/* Boutons de pagination avec des flèches */}
         <Box mt={4} display="flex" justifyContent="center">
-          {Array.from({ length: Math.ceil(filteredTickets.length / itemsPerPage) }).map((_, index) => (
-            <Button key={index + 1} onClick={() => paginate(index + 1)} ml={2}>
-              {index + 1}
-            </Button>
-          ))}
+          <Button
+            onClick={() => paginate(currentPage - 1)}
+            ml={2}
+            disabled={currentPage === 1}
+            leftIcon={<AiOutlineArrowLeft />}
+            variant="ghost"
+            colorScheme="pink" // Modifier la couleur du bouton Previous en rose
+          >
+            Previous
+          </Button>
+          <Button
+            onClick={() => paginate(currentPage + 1)}
+            ml={2}
+            disabled={currentPage === Math.ceil(filteredTickets.length / itemsPerPage)}
+            rightIcon={<AiOutlineArrowRight />}
+            variant="ghost"
+            colorScheme="pink" // Modifier la couleur du bouton Next en rose
+          >
+            Next
+          </Button>
         </Box>
       </Box>
     </>

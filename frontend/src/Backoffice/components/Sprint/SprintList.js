@@ -56,87 +56,84 @@ function SprintList() {
       
      
       <Box mt="5" rounded={'lg'} boxShadow="base">
-      <Box display="flex"> 
-        <Sidebar/>
-        <Box flexGrow={1}>
-          <Box>
-          <Navbar/>
+        <Box display="flex">
+          <Sidebar/>
+          <Box flexGrow={1}>
+            <Navbar/>
+            <Box p="4" display={'flex'} justifyContent="space-between" alignItems="center">
+              <Text fontSize="xl" fontWeight="bold">
+                List of Sprints
+              </Text>
+              <Button
+                colorScheme="teal"
+                variant="outline"
+                maxW={'300px'}
+                minW="150px"
+                leftIcon={<AiOutlinePlus fontSize={'20px'} />}
+                onClick={onOpen}
+              >
+                Add New Sprint
+              </Button>
+            </Box>
 
-        <Text fontSize="xl" fontWeight="bold">
-          List of Sprints
-        </Text>
-
-        </Box>
-        <Box display="flex" alignItems="center" justifyContent="space-between">
-        <Box>
-        <InputGroup>
-          <Input
-            placeholder="Search Sprint"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <InputRightElement>
-            <AiOutlineSearch color="gray.500" />
-          </InputRightElement>
-        </InputGroup>
-        </Box>
-        
-        <Box>
-        <Button
-          colorScheme="teal"
-          maxW={'300px'}
-          minW="150px"
-          leftIcon={<AiOutlinePlus fontSize={'20px'} />}
-          onClick={onOpen}
-        >
-          Add New Sprint
-        </Button>
-        </Box>
-        </Box>
-        <Box>
-      <TableContainer>
-        <Table variant="simple">
-          <Thead>
-            <Tr>
-              <Th>sprint Name</Th>
-              <Th>Project</Th>
-              <Th>Description</Th>
-              <Th>start date</Th>
-              <Th>end date</Th>
-              <Th>Actions</Th>
-            </Tr>
-          </Thead>
-
-          <Tbody>
-            {currentSprints.map(({ _id, sprintname,project, description, startdate, enddate }) => (
-                <RowSprint
-                  key={_id}
-                  id={_id}
-                  sprintname={sprintname}
-                  project={project ? project.projectname : 'Unknown'}
-                  description={description}
-                  startdate={startdate}
-                  enddate={enddate}
+            {/* Champ de recherche */}
+            <Box p="4">
+              <InputGroup>
+                <Input
+                  placeholder="Search Sprint"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                 />
-              ))}
-          </Tbody>
-        </Table>
-      </TableContainer>
-      </Box>
-      <Flex justifyContent="center" alignItems="center" mt="4">
-            <Button onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1} leftIcon={<AiOutlineArrowLeft />} mr="2"></Button>
-            <Center bg='teal.500' color="white" borderRadius="md" w="30px" h="30px">
-              {currentPage}
-            </Center>            
-            <Button onClick={() => paginate(currentPage + 1)} disabled={indexOfLastSprint >= filteredSprints.length} rightIcon={<AiOutlineArrowRight />}ml="2"></Button>
-      </Flex>
+                <InputRightElement>
+                  <AiOutlineSearch color="gray.500" />
+                </InputRightElement>
+              </InputGroup>
+            </Box>
 
+            {/* Tableau des sprints */}
+            <Box>
+              <TableContainer>
+                <Table variant="simple">
+                  <Thead>
+                    <Tr>
+                      <Th>sprint Name</Th>
+                      <Th>Project</Th>
+                      <Th>Description</Th>
+                      <Th>start date</Th>
+                      <Th>end date</Th>
+                      <Th>Actions</Th>
+                    </Tr>
+                  </Thead>
 
-      <DrawerFormSprint />
-      </Box>
+                  <Tbody>
+                    {currentSprints.map(({ _id, sprintname,project, description, startdate, enddate }) => (
+                      <RowSprint
+                        key={_id}
+                        id={_id}
+                        sprintname={sprintname}
+                        project={project ? project.projectname : 'Unknown'}
+                        description={description}
+                        startdate={startdate}
+                        enddate={enddate}
+                      />
+                    ))}
+                  </Tbody>
+                </Table>
+              </TableContainer>
+            </Box>
 
+            {/* Pagination */}
+            <Flex justifyContent="center" alignItems="center" mt="4">
+              <Button onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1} leftIcon={<AiOutlineArrowLeft />} mr="2"></Button>
+              <Center bg='teal.500' color="white" borderRadius="md" w="30px" h="30px">
+                {currentPage}
+              </Center>            
+              <Button onClick={() => paginate(currentPage + 1)} disabled={indexOfLastSprint >= filteredSprints.length} rightIcon={<AiOutlineArrowRight />}ml="2"></Button>
+            </Flex>
+          </Box>
+        </Box>
+        <DrawerFormSprint />
       </Box>
-    </Box>
     </div>
   );
 }

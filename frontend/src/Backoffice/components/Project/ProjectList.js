@@ -96,7 +96,7 @@ function ProjectList() {
           <Flex justifyContent="center" alignItems="center" mt="4">
             <Button onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1} leftIcon={<AiOutlineArrowLeft />}>
             </Button>
-            <Box mx="2" p="2" borderRadius="md" bgColor="teal" color="white">Page {currentPage}</Box>
+            <Box mx="2" p="2" borderRadius="md" bgColor="teal" color="white"> {currentPage}</Box>
             <Button onClick={() => paginate(currentPage + 1)} disabled={indexOfLastProject >= filteredProjects.length} rightIcon={<AiOutlineArrowRight />}>
             </Button>
           </Flex>

@@ -29,10 +29,10 @@ export class SprintController {
     }
   
 
-   //// @Delete('/:id')
-   // Delete(@Param('id') id:String){
-      //  return this.service.Deletesprint(id);
-   // }
+    @Delete('/:id')
+ Delete(@Param('id') id:string){
+        return this.service.Deletesprint(id);
+    }
 
 
     @Get('/byproject/:projectId')

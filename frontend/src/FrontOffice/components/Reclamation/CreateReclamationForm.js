@@ -4,7 +4,7 @@ import axios from 'axios';
 import { GlobalContext } from '../../../context/GlobalWrapper';
 import NavbarFront from '../../NavbarFront';
 
-const forbiddenWords = ['stupid', 'fuck', 'bad'];
+const forbiddenWords = ['stupid', 'bad'];
 
 function AddReclamation() {
     const { onOpen, isOpen, onClose, Add, Update, errors, setErrors, Reclamation  } = useContext(GlobalContext);

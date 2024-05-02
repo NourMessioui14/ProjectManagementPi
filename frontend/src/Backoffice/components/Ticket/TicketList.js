@@ -100,13 +100,13 @@ function TicketList() {
           </TableContainer>
           <Flex justifyContent="center" alignItems="center" mt="4">
             <Button onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1} leftIcon={<AiOutlineArrowLeft />} mr="2">
-              Previous
+              
             </Button>
             <Center bg="teal" color="white" borderRadius="md" w="30px" h="30px">
               {currentPage}
             </Center>
             <Button onClick={() => paginate(currentPage + 1)} disabled={indexOfLastTicket >= filteredTickets.length} rightIcon={<AiOutlineArrowRight />} ml="2">
-              Next
+              
             </Button>
           </Flex>
         </Box>
