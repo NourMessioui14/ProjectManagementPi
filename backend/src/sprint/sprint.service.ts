@@ -8,17 +8,10 @@ import { EmailSpService } from './email-sp.service';
 
 @Injectable()
 export class SprintService {
-<<<<<<< HEAD
-
 
     private readonly logger = new Logger(SprintService.name);
 
 
-=======
-
-    private readonly logger = new Logger(SprintService.name);
-
->>>>>>> 8a35807c2985afbacaf556379a845f0988798152
     constructor(
         @InjectModel(Sprint.name) private readonly sprintModel: Model<SprintDocument>,
         private ticketService: TicketService, 

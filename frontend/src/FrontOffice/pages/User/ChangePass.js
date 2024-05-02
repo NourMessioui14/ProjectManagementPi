@@ -3,6 +3,7 @@ import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { Box, Text, Input, Button, Alert, AlertIcon, Image } from '@chakra-ui/react';
 import NavbarFront from '../../NavbarFront';
+import LogoutAlert from './LogoutAlert';
 
 const ChangePass = () => {
   const [formData, setFormData] = useState({
@@ -47,6 +48,7 @@ const ChangePass = () => {
 
   return (
     <div className='row'>
+      <LogoutAlert />
       <NavbarFront  />
       <Image src="/logos/newpass.png" alt="New Pass Image" position="absolute" top="170" right="10px" width="500px" height="500px" />
 

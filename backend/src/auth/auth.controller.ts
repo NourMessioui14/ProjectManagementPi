@@ -1,14 +1,10 @@
-<<<<<<< HEAD
 
-
-
-=======
 import { EditProfileDto } from './dto/EditProfile.dto';
 import { BadRequestException, Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Patch, Post, Put, Res, Session, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignUpDto } from './dto/signup.dto';
 import { LoginDto } from './dto/login.dto';
->>>>>>> 8a35807c2985afbacaf556379a845f0988798152
+
 import { Roles } from 'src/roles/roles.decorator';
 import { RolesGuard } from 'src/roles/roles.guard';
 import session from 'express-session';
@@ -27,16 +23,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { Response } from 'express';
 import * as path from 'path';
 import { extname } from 'path';
-<<<<<<< HEAD
 
-import { BadRequestException, Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Patch, Post, Put, Res, Session, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { SignUpDto } from './dto/signup.dto';
-import { LoginDto } from './dto/login.dto';
-import { EditProfileDto } from './dto/EditProfile.dto';
-
-=======
->>>>>>> 8a35807c2985afbacaf556379a845f0988798152
 
 interface FileParams {
   fileName: string;
@@ -171,7 +158,7 @@ export class AuthController {
     return this.authService.updateUserValue(id, updatedFields);
   }
 
-<<<<<<< HEAD
+
 
   @Post('/upload')
   @UseInterceptors(FileInterceptor('file', {
@@ -206,8 +193,7 @@ export class AuthController {
 
 
   
-=======
->>>>>>> 8a35807c2985afbacaf556379a845f0988798152
+
   @Post('/upload')
   @UseInterceptors(FileInterceptor('file', {
     storage: diskStorage({
@@ -235,9 +221,6 @@ export class AuthController {
   getFile(@Res() res: Response, @Body() file: FileParams) {
     res.sendFile(path.join(__dirname, "../../uploads/" + file.fileName));
   }
-<<<<<<< HEAD
-
-
 
 
 
@@ -255,6 +238,6 @@ export class AuthController {
   
   }
 
-=======
-}
->>>>>>> 8a35807c2985afbacaf556379a845f0988798152
+
+
+

@@ -9,6 +9,7 @@ import ReclamationDetails from './ReclamationDetails';
 const Row = ({ id, Category, Subject, Description, reponses, fullDescription, Status }) => {
   const { Delete, onOpen, isOpen, onClose, FindOne } = useContext(GlobalContext);
   const [showDetailsModal, setShowDetailsModal] = React.useState(false);
+  const [badWords] = useState(['stupid', 'bad', 'badword3']); // Liste de mots interdits
 
   const handleDelete = () => {
     const confirmDelete = window.confirm("Voulez-vous effacer cette réclamation ?");
@@ -27,6 +28,22 @@ const Row = ({ id, Category, Subject, Description, reponses, fullDescription, St
   }
 
   const isPending = Status === 'Pending';
+
+  const validateDescription = () => {
+    for (const word of badWords) {
+      if (Description.toLowerCase().includes(word.toLowerCase())) {
+        alert("La réclamation contient un mot interdit. Veuillez modifier la description.");
+        return false;
+      }
+    }
+    return true;
+  };
+
+  const handleShowDetails = () => {
+    if (validateDescription()) {
+      setShowDetailsModal(true);
+    }
+  };
 
   return (
     <Tr>
@@ -55,7 +72,7 @@ const Row = ({ id, Category, Subject, Description, reponses, fullDescription, St
           <Button colorScheme='pink' disabled={!isPending} onClick={handleDelete}>
             <MdDelete />
           </Button>
-          <Button colorScheme='gray' onClick={() => setShowDetailsModal(true)}>
+          <Button colorScheme='gray' onClick={handleShowDetails}>
             <AiOutlineInfoCircle />
           </Button>
         </Box>
