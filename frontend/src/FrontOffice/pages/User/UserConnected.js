@@ -2,17 +2,15 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { MDBContainer, MDBRow, MDBCol, MDBCard, MDBCardBody, MDBCardImage, MDBCardText, MDBTypography, MDBIcon } from 'mdb-react-ui-kit';
 import { jwtDecode } from 'jwt-decode';
-import NavbarFront from '../../NavbarFront';
 import { Link } from 'react-router-dom';
 import {LockIcon, EditIcon } from '@chakra-ui/icons'
 import { Box ,Button,Flex } from '@chakra-ui/react';
-
+import NavbarFront from '../../NavbarFront';
 const UserConnected = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [photoPreview, setPhotoPreview] = useState(null);
-
 
   useEffect(() => {
     const fetchUserDetails = async () => {

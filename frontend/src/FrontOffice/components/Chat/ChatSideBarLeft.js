@@ -59,8 +59,10 @@ const ChatSideBarLeft = ({ onSelectChatroom, onchatroomname }) => {
   const sortedChatrooms = [...chatrooms].sort(compareLastMessageDates);
 
   return (
-    <div className='py-2' style={{ height: '100vh', width: '250px', padding: '15px', overflowY: 'auto', color: '#333', backgroundColor: '#9575cd', borderRadius: '10px' }}>
-      <h3 style={{ textAlign: 'center', marginBottom: '15px', fontSize: '18px', color: '#fff' }}>
+     
+   <div className='py-2' style={{ height: '100vh', width: '250px', padding: '15px', overflowY: 'auto', color: '#333', backgroundColor: '#9575cd', borderRadius: '10px', }}>
+  
+ <h3 style={{ textAlign: 'center', marginBottom: '15px', fontSize: '18px', color: '#fff' }}>
         My last messages
       </h3>
       <div className='mb-2' style={{ display: 'flex', flexDirection: 'column' }}>
@@ -95,10 +97,13 @@ const ChatSideBarLeft = ({ onSelectChatroom, onchatroomname }) => {
                 </div>
               </div>
             </div>
+            
           </React.Fragment>
         ))}
       </div>
     </div>
+    
+   
   );
 };
 

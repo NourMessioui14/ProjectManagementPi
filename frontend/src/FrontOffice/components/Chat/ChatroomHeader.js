@@ -9,6 +9,7 @@ const styles = {
     justifyContent: 'space-between',
     backgroundColor: '#9575cd', // Changed background color to violet
     color: '#fff', // Changed text color to white
+    marginTop:'125px'
   },
   roomName: {
     fontSize: '18px',

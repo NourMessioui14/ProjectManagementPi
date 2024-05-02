@@ -3,6 +3,8 @@ import { useToast, FormControl, FormLabel, Input, Textarea, Button, Select } fro
 import axios from 'axios'; 
 import { GlobalContext } from '../../../context/GlobalWrapper';
 import NavbarFront from '../../NavbarFront';
+import { IoAdd } from 'react-icons/io5';
+import { Navigate } from 'react-router-dom';
 
 const forbiddenWords = ['stupid', 'bad'];
 
@@ -89,9 +91,12 @@ function AddReclamation() {
     return (
         <div className="col-12 grid-margin stretch-card" style={{ marginTop: '125px' }}>
             <NavbarFront />
+           
             <div className="card">
                 <div className="card-body">
+               
                     <h4 className="card-title">Add New Reclamation</h4>
+
                     <form className="forms-sample" onSubmit={handleSubmit}>
                         <FormControl id="category" isRequired>
                             <FormLabel>Category</FormLabel>

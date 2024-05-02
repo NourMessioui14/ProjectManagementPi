@@ -1,44 +1,69 @@
 import React, { useState } from 'react';
 import { useContext, useEffect } from "react";
-import { Box, Button, Container, Input, Table, TableCaption, TableContainer, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react";
+import { Box, Button, Container, Flex, Input, Table, TableCaption, TableContainer, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react";
 import { FormControl } from '@chakra-ui/react';
 import { IoSearchSharp, IoAdd } from "react-icons/io5";
 import Row from './Row';
 import AddReclamation from './AddReclamation';
 import { GlobalContext } from '../../../context/GlobalWrapperRec';
 import NavbarFront from '../../NavbarFront';
+import { Navigate } from 'react-router-dom';
+import { Stack } from 'react-bootstrap';
 
 
 function ReclamationUser() {
   const { FetchReclamationsUser, Reclamations, isOpen, onOpen, onClose, setClaims } = useContext(GlobalContext);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+ 
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+};
 
   useEffect(() => {
     FetchReclamationsUser();
   }, []);
 
+
+
   return (
     <div style={{ marginTop: '140px' }}>
       <NavbarFront />
       <div className="App">
+
         <Container maxW={'full'} p="4" fontSize={'18px'}>
           <Box rounded="lg" boxShadow="base " p="4">
-            <Box mt="2" gap={'2'} mb="4" display={'flex'}>
-              <FormControl>
-                <Input type='text' />
-              </FormControl>
-              <Button leftIcon={<IoSearchSharp fontSize={'20px'} />} colorScheme='teal' variant='outline' maxW="300" minW="150px">
-                Search
-              </Button>
-            </Box>
+          
           </Box>
           <Box mt="5" rounded={'lg'} boxShadow="base ">
             <Box p="4" display={'flex'} justifyContent="space-between">
+
               <Text fontSize="xl" fontWeight="bold">
                 List of claims
               </Text>
+              <Input maxW="300px"
+                    minW="300px"
+                    borderRadius="20px"
+                    fontSize="14"
+                    type="text"
+                    placeholder="Search"
+                    value={searchTerm}
+                   
+                    bg="white"
+                    borderColor="gray.200"
+                    background="#f2f2f7"
+                    marginRight ="10px"
+                  />
+              
+
             </Box>
+
+
+           
+
+
+
             {Reclamations && Reclamations.length > 0 ? (
               <TableContainer>
                 <Table variant='simple' className="striped-table">
@@ -52,19 +77,19 @@ function ReclamationUser() {
                     </Tr>
                   </Thead>
                   <Tbody>
-                    {Reclamations.map(({ _id, Category, Subject, Description, reponses , Status }) => (
-                      <Row key={_id} id={_id} Category={Category} Subject={Subject} Description={Description} reponses={reponses} fullDescription={Description} Status={Status}/>
+                    {Reclamations.map(({ _id, Category, Subject, Description, reponses, Status }) => (
+                      <Row key={_id} id={_id} Category={Category} Subject={Subject} Description={Description} reponses={reponses} fullDescription={Description} Status={Status} />
                     ))}
                   </Tbody>
                 </Table>
               </TableContainer>
             ) : (
               <Box textAlign="center" mt="4">
-               <Text fontSize="xl" fontWeight="bold" mb="4">No claims found</Text>
-              <Box maxWidth="300px" margin="auto">
-              <img src="templateFront/images/aucun.png" alt="No claims found" />
-            </Box>
-            </Box>
+                <Text fontSize="xl" fontWeight="bold" mb="4">No claims found</Text>
+                <Box maxWidth="300px" margin="auto">
+                  <img src="templateFront/images/aucun.png" alt="No claims found" />
+                </Box>
+              </Box>
             )}
           </Box>
           <AddReclamation />

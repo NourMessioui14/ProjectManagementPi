@@ -7,6 +7,9 @@ import ChatroomHeader from './ChatroomHeader';
 import ChatroomBody from './ChatroomBody';
 import Sidebar from '../../../Backoffice/components/Sidebar';
 import NavbarFront from '../../NavbarFront'; // Import NavbarFront component
+import { useNavigate } from 'react-router-dom';
+import { Button } from '@chakra-ui/react';
+import { ArrowBackIcon } from '@chakra-ui/icons';
 
 const ChatPage = () => {
   const { getMessagesByChatroomId, getChatroomsByUserId } = useContext(GlobalContext);
@@ -14,6 +17,7 @@ const ChatPage = () => {
   const [currentMessages, setCurrentMessages] = useState([]);
   const [currentRoomName, setCurrentRoomName] = useState("");
   const [currentUserId, setCurrentUserId] = useState(""); 
+  const navigate = useNavigate();
 
   const handleSelectUserId = (userId) => {
     setCurrentUserId(userId);
@@ -49,11 +53,14 @@ const ChatPage = () => {
   };
 
   return (
+    <div className="col-12 grid-margin stretch-card" style={{ marginTop: '125px' }}>
+      <NavbarFront /> 
     <div style={{ marginTop: '140px' }}>
- 
+ <Button colorScheme='blackAlpha'  leftIcon={<ArrowBackIcon fontSize={'16px'} />}
+  onClick={() => navigate(-1)} ml={4} size='sm'>Go Back</Button>
      
        {/* Add the NavbarFront component here */}
-      <div className="chat-page" style={{ display: 'flex', flexDirection: 'row', height: '100vh', overflow: 'hidden' }}>
+      <div className="chat-page" style={{ display: 'flex', flexDirection: 'row', height: '100vh', overflow: 'hidden', }}>
         <ChatSideBarLeft onSelectChatroom={handleSelectChatroom} onchatroomname={handleSelectChatroomName} onSelectUserId={handleSelectUserId} />
         <div className="chat-page-center w-full p-2" style={{ flex: '1', display: 'flex', flexDirection: 'column', width: '100%', overflowY: 'auto' }}>
           <ChatroomHeader roomName={`Chatroom ${currentRoomName}`} />
@@ -63,6 +70,7 @@ const ChatPage = () => {
         <ChatSideBarRight onSelectChatroom={handleSelectChatroom} />
       </div>
   
+    </div>
     </div>
   );
 };

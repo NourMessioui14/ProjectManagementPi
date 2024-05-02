@@ -190,8 +190,11 @@ function NavbarFront() {
                       <div className="">
                         {/* Ajoutez ici les liens ou le contenu pour les tâches */}
                          <a onClick={handleTaskClick} style={{ fontSize: '10px' }}>Create Task</a>
+<<<<<<< HEAD
                          <Link to="/listTicket" style={{ fontSize: '9px' }}> listTicket</Link>
 
+=======
+>>>>>>> 9968311e8f986073ec89318106f535244b1ac4a1
                         {/* Ajoutez d'autres liens ou contenu ici si nécessaire */}
                       </div>
                     )}
@@ -281,7 +284,14 @@ function NavbarFront() {
                             textAlign: "center",
                             transition: "background-color 0.3s ease",
                           }}
+<<<<<<< HEAD
                           onClick={handleRead}
+=======
+                          onClick={handleRead
+                          }
+                          
+                         
+>>>>>>> 9968311e8f986073ec89318106f535244b1ac4a1
                           onMouseOver={(e) => { e.target.style.backgroundColor = "#cc99ff"; }}
                           onMouseOut={(e) => { e.target.style.backgroundColor = "#ff66cc"; }}
                         >

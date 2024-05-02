@@ -150,7 +150,7 @@ const RegisterForm = () => {
         // Ajoutez des conditions pour chaque type de rôle ici
         if (responseData.role === 'admin') {
           localStorage.setItem('role', responseData.role); 
-          navigate('/Sidebar');
+          navigate('/backoffice');
         } else {
           // Rediriger les utilisateurs simple_user vers /home
           navigate('/cardproject'); 

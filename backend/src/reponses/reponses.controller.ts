@@ -5,6 +5,11 @@ import { ReponseDto } from 'src/dto/reponse.dto';
 @Controller('reponses')
 export class ReponsesController {
     constructor(private readonly service : ReponsesService) {};
+    
+    @Delete('/all')
+    DeleteAll() {
+        return this.service.DeleteAll();
+    }
      
     @Post()
     Add( @Body() Body: ReponseDto) {

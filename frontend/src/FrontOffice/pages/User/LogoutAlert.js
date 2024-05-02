@@ -12,7 +12,7 @@ function LogoutAlert() {
       clearTimeout(timeoutId);
       timeoutId = setTimeout(() => {
         setShowAlert(true);
-      }, 30000);
+      }, 10000);
     };
 
     window.addEventListener('mousemove', handleMouseMove);

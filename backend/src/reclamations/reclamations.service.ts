@@ -135,6 +135,21 @@ export class ReclamationsService {
         return 'search claim'
     }
 
+    async updateAllToPending(): Promise<Reclamation[]> {
+      const reclamations = await this.RecamationModel.find();
+      const updatedReclamations = [];
+
+      for (const reclamation of reclamations) {
+          if (reclamation.Status !== ReclamationStatus.PENDING) {
+              reclamation.Status = ReclamationStatus.PENDING;
+              await reclamation.save();
+              updatedReclamations.push(reclamation);
+          }
+      }
+
+      return updatedReclamations;
+  }
+
 
     
 
