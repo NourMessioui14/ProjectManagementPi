@@ -178,17 +178,14 @@ const generatePDF = () => {
           
         </Alert>
       )} */}
-      <Box p={1} shadow="md" borderWidth="1px" mb={4}>
-            <Flex justifyContent="flex-end"> 
-            <Button marginTop="30px" marginBottom="20px" colorScheme="teal" onClick={() => navigate(`/SprintFront/${projectId}`)}>Show Sprints</Button>
-
-            </Flex>
-          </Box>
+      
 
           <Box p={1} shadow="md" borderWidth="1px" mb={4}>
             <Flex justifyContent="flex-end"> 
-            <Button marginTop="30px" marginBottom="20px" colorScheme="teal" onClick={() => openModal()}>Show Tickets</Button>
+            <Button marginTop="30px" marginBottom="20px" marginRight="10px" colorScheme="purple" onClick={() => openModal()}>Backlog</Button>
             <TicketsByProject isOpen={isModalOpen} onClose={closeModal} id={projectId} /> 
+            <Button marginTop="30px" marginBottom="20px"  colorScheme="purple" onClick={() => navigate(`/SprintFront/${projectId}`)}>Show Sprints</Button>
+
             </Flex>
           </Box>
 
@@ -218,7 +215,7 @@ const generatePDF = () => {
             <FormLabel>End Date</FormLabel>
             <Input name="enddate" type="date" value={project.enddate} onChange={handleChange} size="lg" />
           </FormControl>
-          <Button colorScheme="teal" type="submit" width="full" size="lg">
+          <Button colorScheme="purple" type="submit" width="full" size="lg">
             Save Changes
           </Button>
         </VStack>

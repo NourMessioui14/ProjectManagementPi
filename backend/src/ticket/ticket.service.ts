@@ -144,5 +144,22 @@ export class TicketService {
         return tickets;
     }
   
+    async updateTicketEtat(id: string, newEtat: string): Promise<Ticket> {
+        try {
+            const ticket = await this.ticketModel.findByIdAndUpdate(
+                id,
+                { etat: newEtat },
+                { new: true }
+            ).exec();
+
+            if (!ticket) {
+                throw new NotFoundException('Ticket introuvable');
+            }
+
+            return ticket;
+        } catch (error) {
+            throw new Error('Erreur lors de la mise à jour de l\'état du ticket');
+        }
+    }
 
 }

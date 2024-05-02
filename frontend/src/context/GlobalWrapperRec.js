@@ -286,11 +286,6 @@ const FetchReclamationsUser = async () => {
 };
   
 
-
-
-
-
-
   
     return (
         <GlobalContext.Provider value={{ reponses, getReponseById , FetchReclamationsUser,  Delete , Update,FindOne ,Add,UpdateRecalamation, FindOneRecalamation,AddRecalamation,DeleteRecalamation, FetchReclamations,Reclamations , setClaims ,Reclamation, SetReclamation,  isOpen, onOpen, onClose, errors, setErrors

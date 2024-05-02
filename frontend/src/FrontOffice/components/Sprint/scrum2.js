@@ -1,16 +1,17 @@
 import React, { useState, useEffect,useContext } from "react";
 import { Header } from "./Header";
 import Draggable from 'react-draggable';
-
+import TaskModal from '../../../Backoffice/components/Ticket/TaskModal';
 import { useLocation,useParams } from "react-router-dom"; // Importing useLocation from react-router-dom
-import {Button,Text,Menu, MenuButton, MenuList, MenuItem,Textarea,Heading,IconButton,Badge,Tooltip} from '@chakra-ui/react';
+import {Button,Text,Menu, MenuButton, MenuList, MenuItem,Textarea,Heading,IconButton,Badge} from '@chakra-ui/react';
 import { GlobalContext } from '../../../context/GlobalWrapperSprint';
 import SelectTicket from './SelectTicket'; // Importez SelectTicket
 import NavbarFront from '../../NavbarFront';
 import { MdDelete } from "react-icons/md";
 import { SketchPicker } from 'react-color';
 import {ChevronDownIcon,EditIcon } from '@chakra-ui/icons'
-import { MdMoreVert , } from "react-icons/md";
+import { MdMoreVert } from "react-icons/md";
+import axios from "axios";
 
 export default function ScrumList() {
   const [board, setBoard] = useState([]);
@@ -19,6 +20,12 @@ export default function ScrumList() {
   const sprintName = searchParams.get("name");
   const description = searchParams.get("description");
   const sprintId = searchParams.get("id");
+  const { fetchTicketsBySprintId, tickets,ticket,UpdateTicket,setTicket } = useContext(GlobalContext);
+  useEffect(() => {
+    if (sprintId) {
+      fetchTicketsBySprintId(sprintId);
+    }
+  }, [sprintId, fetchTicketsBySprintId]);
 
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -69,37 +76,107 @@ export default function ScrumList() {
     });
   }, [cardColors]);
 
+  const [showCreateTaskModal, setShowCreateTaskModal] = useState(false);
+  const handleTaskClick = () => {
+    setShowCreateTaskModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowCreateTaskModal(false);
+  };
   
   useEffect(() => {
-    let data = window.localStorage.getItem("data");
-    if (data) {
-      setBoard(JSON.parse(data));
-    } else {
-      setBoard([
-        {
-          id: 1,
-          title: 'To do',
-          cards: []
-        },
-        {
-          id: 2,
-          title: 'In progress',
-          cards: []
-        },
-        {
-          id: 3,
-          title: 'Done',
-          cards: []
-        },
-        {
-          id: 4,
-          title: 'Fourth List', // Titre de la quatrième liste
-          cards: [] // Aucune carte initialement
-        }
-      ]);
+    if (tickets.length > 0) {
+        const newBoard = [
+            {
+                id: 1,
+                title: 'To do',
+                cards: tickets.filter(ticket => ticket.etat === 'To do')
+            },
+            {
+                id: 2,
+                title: 'In progress',
+                cards: tickets.filter(ticket => ticket.etat === 'In progress')
+            },
+            {
+                id: 3,
+                title: 'Done',
+                cards: tickets.filter(ticket => ticket.etat === 'Done')
+            },
+            {
+                id: 4,
+                title: 'Fourth List', // Titre de la quatrième liste
+                cards: [] // Aucune carte initialement
+            }
+        ];
+        setBoard(newBoard);
     }
-  }, []);
-  
+}, [tickets]);
+
+const getColumnTitleById = (columnId) => {
+  // Logique pour obtenir le titre de la colonne en fonction de l'ID
+  switch (columnId) {
+    case 1:
+      return 'To do';
+    case 2:
+      return 'In progress';
+    case 3:
+      return 'Done';
+    default:
+      return '';
+  }
+};
+
+
+const updateTicketEtat = async (ticketId, newEtat) => {
+  try {
+    // Envoyer une requête PUT au backend pour mettre à jour l'état du ticket
+    await axios.put(`/ticket/${ticketId}/etat`, { etat: newEtat });
+    console.log(`Ticket ${ticketId} état mis à jour avec succès.`);
+  } catch (error) {
+    console.error('Erreur lors de la mise à jour de l\'état du ticket :', error);
+  }
+};
+
+
+
+const handleCardDrop = async (cardId, columnId) => {
+  try {
+    const oldColumnId = board.find(list => list.cards.some(card => card._id === cardId)).id;
+    // Récupérer le ticket correspondant à l'ID
+    const cardToUpdate = tickets.find(ticket => ticket._id === cardId);
+
+    // Vérifier si le ticket existe
+    if (!cardToUpdate) {
+      console.log(`Le ticket ${cardId} n'a pas été trouvé.`);
+      return;
+    }
+
+    // Mettre à jour l'état du ticket dans le backend
+    await updateTicketEtat(cardId, getColumnTitleById(columnId));
+
+    // Mettre à jour l'affichage
+    const updatedBoard = board.map(list => {
+      if (list.id === columnId) {
+        return {
+          ...list,
+          cards: [...list.cards, cardToUpdate] // Ajouter la carte déplacée à la nouvelle colonne
+        };
+      } else if (list.id === oldColumnId) {
+        return {
+          ...list,
+          cards: list.cards.filter(card => card._id !== cardId) // Retirer la carte de la colonne d'origine
+        };
+      }
+      return list;
+    });
+    setBoard(updatedBoard);
+
+    console.log(`Ticket ${cardId} déplacé avec succès vers la colonne ${getColumnTitleById(columnId)}.`);
+  } catch (error) {
+    console.error('Erreur lors de la mise à jour de l\'état du ticket :', error);
+  }
+};
 
   useEffect(() => {
     const storedColor = localStorage.getItem('selectedColor');
@@ -124,7 +201,6 @@ export default function ScrumList() {
     });
     setBoard(updatedBoard);
   };
-  // const { onOpen } = useContext(GlobalContext);
   const [isOpen, setIsOpen] = useState(false); // Variable d'état pour contrôler l'ouverture du tiroir
 
   const handleNewCardClick = () => {
@@ -189,7 +265,7 @@ export default function ScrumList() {
         <div>
       <div style={styles.boardContainer}>
         {board.map((list) => {
-            console.log("ID de la liste :", list.id); // Ajout du console.log pour déboguer
+            // console.log("ID de la liste :", list.id); // Ajout du console.log pour déboguer
 
           return (
 <div id={`list_${list.id}`} key={list.id} className="list-container" style={{ ...styles.listContainer, backgroundColor: selectedColor }}>
@@ -211,8 +287,6 @@ export default function ScrumList() {
               )}
               </h2>
               {list.id > 3 && ( 
-                                          <Tooltip hasArrow label='Delete Column' bg='red.600' placement='right'>
-
               <Button
               colorScheme='blackAlpha' 
     variant='link'          
@@ -221,7 +295,6 @@ export default function ScrumList() {
               >
                 <MdDelete />
               </Button>
-              </Tooltip>
                 )}
             </div>
                   {list.id === 1 && ( // Condition pour afficher le bouton "New Card" uniquement pour la première liste
@@ -230,14 +303,17 @@ export default function ScrumList() {
           colorScheme='blackAlpha'
           borderRadius='2xl'
             style={styles.newCard}
-            onClick={handleNewCardClick}
+            onClick={handleTaskClick}
           >+ New Ticket</Button>
           )}
               {list.cards.map((card) => {
+                  console.log("Owner du ticket :", card.responsable); // Vérifier si la propriété owner est correctement récupérée
+
                 return (
                   <Draggable
                   key={card.id} // Utilisez une clé unique en combinant l'ID de la liste et l'ID de la carte
                   onStop={(e,) => {
+                    handleCardDrop(card._id, list.id);
                       let allLists = document.querySelectorAll('.list-container');
                       let final_list_id = null;
                       let final_card_id = card.id;
@@ -302,34 +378,23 @@ export default function ScrumList() {
                           
                         >{card.description}</span>
                         
-          <Badge style={{ position: 'absolute', top: '10px', right: '10px' }}>{card.owner}</Badge>
+          <Badge style={{ position: 'absolute', top: '10px', right: '10px' }}>{card.responsable.name}</Badge>
           
 
-                        <div style={{ position: 'absolute', bottom: '10px', right: '10px' }}>
-
-
-                        
+                        {/* <div style={{ position: 'absolute', bottom: '10px', right: '10px' }}>
 
                         <Menu>
-                        <Tooltip hasArrow label='Click to show more options' bg='red.600' placement='right'>
-
-                          <MenuButton size='sm' colorScheme='blackAlpha' as={IconButton} aria-label="Options" icon={<MdMoreVert />} /></Tooltip>
+                          <MenuButton size='sm' colorScheme='blackAlpha' as={IconButton} aria-label="Options" icon={<MdMoreVert />} />
                           <MenuList minWidth='20px' >
-                          <Tooltip hasArrow label='Delete Card' bg='red.600' placement='right'>
                             <MenuItem  onClick={() => handleDeleteCard(list.id, card.id)}> 
                               <MdDelete />
                             </MenuItem>
-                            </Tooltip>
-                            <Tooltip hasArrow label='Choose Card Color' bg='blue.600' placement='right'>
-
                             <MenuItem onClick={() => {
                               const nextColorPickerState = isColorCardPickerOpen === card.id ? null : card.id;
                               setIsColorCardPickerOpen(nextColorPickerState);
                             }} >  
                               <EditIcon/>
                             </MenuItem>
-                            </Tooltip>
-
                           
                           </MenuList>
                         </Menu>
@@ -340,7 +405,7 @@ export default function ScrumList() {
                           onChange={(color) => handleCardColorChange(card.id, color.hex)} 
 
                       />
-                      )}
+                      )} */}
    
                       </div>
                     </div>
@@ -355,7 +420,7 @@ export default function ScrumList() {
 
       </div>
       
-            <SelectTicket isOpen={isOpen} onClose={() => setIsOpen(false)} setBoard={setBoard} id={sprintId} /> 
+      <TaskModal isOpen={showCreateTaskModal} onClose={handleCloseModal} />
 
       </div>
   );

@@ -28,12 +28,13 @@ function TicketDetailsByProject({ isOpen, onClose, ticket }) {
             <Grid templateColumns="150px 1fr" gap={4}> 
           <Text fontSize="lg" fontWeight="bold">Type Of Ticket:</Text>
           <Text>{ticket.typeOfticket}</Text>
-          <Text fontSize="lg" fontWeight="bold">State:</Text>
-          <Text>{ticket.etat}</Text>
           <Text fontSize="lg" fontWeight="bold">Description:</Text>
           <Text>{ticket.description}</Text>
           <Text fontSize="lg" fontWeight="bold">Owner:</Text>
           <Text>{ticket.responsable}</Text>
+          <Text fontSize="lg" fontWeight="bold">State:</Text>
+          <Text>{ticket.etat}</Text>
+          
             </Grid>
           </VStack>
       </ModalBody>

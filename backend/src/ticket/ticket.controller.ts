@@ -54,6 +54,16 @@ async createTicketFromDescription(@Body('description') description: string): Pro
     }
 }
 
+@Put('/:id/etat')
+    async updateTicketEtat(@Param('id') id: string, @Body('etat') newEtat: string): Promise<Ticket> {
+        try {
+            const updatedTicket: Ticket = await this.service.updateTicketEtat(id, newEtat);
+            return updatedTicket;
+        } catch (error) {
+            throw error;
+        }
+    }
+
 
 
 }
