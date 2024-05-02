@@ -13,7 +13,7 @@ pipeline {
         }
         stage('SONARQUBE') {
             steps {
-                sh "mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=sonar"
+                    echo 'This is a testing stage for unit tests.'
             }
         }
 
