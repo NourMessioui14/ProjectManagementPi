@@ -1,4 +1,3 @@
-
 import React, { useContext, useEffect, useState } from 'react'
 import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, Button, Text, Checkbox,Input } from '@chakra-ui/react';
 import { useForm } from "react-hook-form";
@@ -14,6 +13,7 @@ function SelectTicket({ isOpen, onClose, setBoard,id }) {
 
   const onSubmit = (data) => {
     onClose(); // Ferme le drawer après la soumission
+    
     const selectedTickets = tickets.filter(ticket => data.tickets.includes(ticket.description));
     
     // Créer de nouvelles cartes à partir des tickets sélectionnés
@@ -24,22 +24,24 @@ function SelectTicket({ isOpen, onClose, setBoard,id }) {
       owner: ticket.responsable.name, // Sauvegarde du nom du responsable
       fromSelection: true // Indique que la carte provient de la sélection de ticket
     }));
-    
-    // Mettre à jour le tableau Scrum en ajoutant les nouvelles cartes à la colonne "To Do"
+  
+    // Mettre à jour le tableau Scrum en ajoutant les nouvelles cartes à la colonne appropriée
     setBoard(prevBoard => {
       const updatedBoard = prevBoard.map(column => {
-        if (column.title === 'To Do') {
-          return {
-            ...column,
-            cards: [...column.cards, ...newCards]
-          };
-        }
-        return column;
+        const cardsToAdd = newCards.filter(card => {
+          const ticketState = selectedTickets.find(ticket => ticket.description === card.description)?.etat;
+          return ticketState === column.title;
+        });
+  
+        return {
+          ...column,
+          cards: [...column.cards, ...cardsToAdd]
+        };
       });
       return updatedBoard;
     });
-    
   };
+  
 
 
   useEffect(() => {

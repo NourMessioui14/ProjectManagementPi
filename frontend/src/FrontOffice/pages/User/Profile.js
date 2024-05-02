@@ -2,18 +2,22 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
 import { ChakraProvider, Container, FormControl, FormLabel, Input, Button } from '@chakra-ui/react';
-import NavbarFront from '../../NavbarFront';
 import { Link as ChakraLink } from '@chakra-ui/react';
+
+// Import du composant NavbarFront
+import NavbarFront from '../../NavbarFront';
+
 // CSS Styles
 const styles = `
 body {
     margin: 0;
-    padding-top: 40px;
+    padding-top: 120px; /* Ajustez cette valeur pour donner de l'espace au Navbar */
     color: #2e323c;
     background: #f5f6fa;
     position: relative;
     height: 100%;
 }
+
 .account-settings .user-profile {
     margin: 0 0 1rem 0;
     padding-bottom: 1rem;
@@ -122,7 +126,8 @@ function Profile() {
 
   return (
     <div>
-            <NavbarFront />
+      {/* NavbarFront placé en haut de la page avec classe navbar-fixed */}
+      <NavbarFront className="navbar-fixed" />
 
       <style>{styles}</style> {/* Include CSS Styles */}
 
@@ -187,8 +192,8 @@ function Profile() {
                   <div className='col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12'>
                     <Button colorScheme="blue" onClick={handleSubmit}>Update</Button>
                     <ChakraLink as={Link} to="/userconnected" color="teal.500" _hover={{ color: 'teal.700', textDecoration: 'underline' }}>
-  Retour
-</ChakraLink>
+                      Retour
+                    </ChakraLink>
                   </div>
                 </div>
               </div>
