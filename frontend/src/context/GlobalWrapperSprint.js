@@ -245,7 +245,7 @@ export default function WrapperS({ children }) {
         const sprintTickets = response.data;
     
         // Récupérer les propriétaires des tickets
-        const ticketOwners = sprintTickets.map(ticket => ticket.responsable);
+        const ticketOwners = sprintTickets.map(ticket => ticket.responsable.name);
         console.log('Ticket Owners:', ticketOwners);
         // Récupérer le nom du sprint
         const sprint = await axios.get(`/sprint/${id}`);
