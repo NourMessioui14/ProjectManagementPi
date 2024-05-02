@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { TicketService } from './ticket.service';
 import { TicketDto } from 'src/dto/ticket.dto';
+import { Ticket } from 'src/models/ticket.models';
 
 @Controller('ticket')
 export class TicketController{
@@ -43,6 +44,16 @@ async getTicketsByProjectId(@Param('projectId') projectId: string) {
 async getTicketsBySprintId(@Param('sprintId') sprintId: string) {
     return await this.service.findAllTicketsBySprintId(sprintId);
 }
+@Post('/create-from-description')
+async createTicketFromDescription(@Body('description') description: string): Promise<Ticket> {
+    try {
+        const newTicket: Ticket = await this.service.createTicketFromDescription(description); // Utiliser le type Ticket
+        return newTicket; // Retourner le ticket créé
+    } catch (error) {
+        throw error;
+    }
+}
+
 
 
 }

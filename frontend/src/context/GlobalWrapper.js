@@ -186,6 +186,18 @@ export default function Wrapper({ children }) {
         console.error('Error:', error.message);
       }
     };
+
+
+    const fetchTicketsByProjectId = async (projectId) => {
+      try {
+        const response = await axios.get(`/ticket/byproject/${projectId}`);
+        console.log("Tickets retrieved by projectId:", response.data); // Ajouter ce log pour vérifier les tickets récupérés
+    
+        setTickets(response.data);
+      } catch (error) {
+        console.error('Error fetching tickets:', error);
+      }
+    };
   
     return (
         <GlobalContext.Provider value={{ 
@@ -210,7 +222,8 @@ export default function Wrapper({ children }) {
             setProject,
             setTicket,
             Update,
-            fetchUsers
+            fetchUsers,
+            fetchTicketsByProjectId
 
   
         }}>

@@ -2,12 +2,13 @@
   margin-bottom: 20px;
   width: 250px;
   height: 241px;
-  border-radius: 15px;
+  border-radius: 10px;
   background: rgba(105, 13, 197, 0.103);
   display: flex;
   flex-direction: column;
   position: relative;
   overflow: hidden;
+  /* box-shadow: 0em 1em 3em #afacb064; */
 }
 
 .cards::before {
@@ -230,8 +231,8 @@
 
 .input__container--variant {
   background: linear-gradient(to bottom, #fdf3ff, #F3FFF9);
-  border-radius: 1.5em;
-  max-width: 14em;
-  padding: 1em;
+  border-radius: 1em;
+  max-width: 20em;
+  padding: 0.5em;
   box-shadow: 0em 1em 3em #dfbeec64;
 }

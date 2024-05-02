@@ -62,39 +62,51 @@ export class TicketService {
     
         console.log('Ticket data:', ticketData); // Log ticket data
     
-        if (!ticketData.project || !ticketData.typeOfticket ||  !ticketData.etat || !ticketData.description || !ticketData.responsable) {
+        if (!ticketData.project || !ticketData.sprint || !ticketData.typeOfticket || !ticketData.etat || !ticketData.description || !ticketData.responsable) {
             console.error('Missing required ticket fields:', ticketData);
             throw new NotFoundException('Missing required ticket fields.');
         }
     
         console.log('Ticket data after validation:', ticketData); // Log ticket data after validation
     
-const project = await this.projectModel.findById(ticketData.project).exec();             if (!project) {
-            console.log("Project search error:", `Project with ID '${ticketData.project}' not found.`);
-            throw new NotFoundException(`Project with ID '${ticketData.project}' not found.`);
+        // Fetch the project using the project name
+        const project = await this.projectModel.findOne({ projectname: ticketData.project }).exec();
+        if (!project) {
+            console.log("Project search error:", `Project with name '${ticketData.project}' not found.`);
+            throw new NotFoundException(`Project with name '${ticketData.project}' not found.`);
         }
-        console.log('Project:', project); // Log project
     
-        const sprint = await this.sprintModel.findOne({ sprintname: { $regex: new RegExp(ticketData.sprint, 'i') } }).exec();
+        // Assign the retrieved project name to the ticketData
+        ticketData.project = project.projectname; // Use the project name instead of ID
+    
+        // Fetch the sprint using the sprint name
+        const sprint = await this.sprintModel.findOne({ sprintname: ticketData.sprint }).exec();
         if (!sprint) {
             console.log("Sprint search error:", `Sprint with name '${ticketData.sprint}' not found.`);
             throw new NotFoundException(`Sprint with name '${ticketData.sprint}' not found.`);
         }
     
-        console.log('Sprint:', sprint); // Log sprint
+        // Assign the retrieved sprint to the ticketData
+        ticketData.sprint = sprint.sprintname;
     
-        const user = await this.userModel.findOne({ name: { $regex: new RegExp(ticketData.responsable, 'i') } }).exec();
+        // Fetch the user using the user name
+        const user = await this.userModel.findOne({ name: ticketData.responsable }).exec();
         if (!user) {
             console.log("User search error:", `User with name '${ticketData.responsable}' not found.`);
             throw new NotFoundException(`User with name '${ticketData.responsable}' not found.`);
         }
     
-        console.log('User:', user); // Log user
+        // Assign the retrieved user to the ticketData
+        ticketData.responsable = user.name;
     
-        const newTicket = await this.ticketModel.create(ticketData as TicketDto);
+        // Create the ticket with the processed data
+        const newTicket = await this.ticketModel.create(ticketData as unknown as Ticket);
         console.log("Ticket created successfully!", newTicket);
+    
         return newTicket;
     }
+    
+    
     
 
     FindAllticket(){

@@ -6,6 +6,8 @@ import RowTicketBySprint from './RowTicketBySprint';
 import { Flex, Center } from '@chakra-ui/react';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { DownloadIcon } from '@chakra-ui/icons'
+
 function TicketsBySprint({ isOpen, onClose, id }) { // Prend sprintId comme prop
   const { fetchTicketsBySprintId, tickets, FetchTickets } = useContext(GlobalContext);
   const [searchTerm, setSearchTerm] = useState('');
@@ -83,7 +85,8 @@ const generatePDF = () => {
           
         </ModalBody>
         <ModalFooter>
-        <Button colorScheme="gray" variant='outline' mr={3} onClick={(generatePDF) => window.print()}>Print tickets details</Button>
+        <Button colorScheme="gray" variant='outline' mr={3} onClick={(generatePDF) => window.print()}   leftIcon={<DownloadIcon fontSize={'20px'} />}
+>Print tickets details</Button>
 
           <Button colorScheme="blue" mr={3} onClick={onClose}>Close</Button>
         </ModalFooter>
