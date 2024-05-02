@@ -31,6 +31,13 @@ pipeline {
             }
         }
 
+           stage('SONARQUBE') {
+            steps {
+                     script {
+                       echo 'sonarqube'
+                }            }
+        }
+
         stage('Build application') {
             steps {
                 script {

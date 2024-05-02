@@ -149,9 +149,10 @@ const generatePDF = () => {
   
 
   return (
-    <>
+    <div className="col-12 grid-margin stretch-card" style={{ marginTop: '125px' }}>
 
     <NavbarFront/>
+    <div className="App">
       <div bg="white" p={10} borderRadius="lg" boxShadow="lg" width="full" mt={6}> {/* Ajoutez un mt={6} pour déplacer les boutons plus bas */}
         <Button marginTop="50px" onClick={() => navigate('/ProjectListFront')} colorScheme="teal" variant="outline" size="sm" ml={2}>
           Back to Projects
@@ -258,8 +259,8 @@ const generatePDF = () => {
         </ModalFooter>
       </ModalContent>
     </Modal>
-    
-    </>
+    </div>
+    </div>
   );
 }
 

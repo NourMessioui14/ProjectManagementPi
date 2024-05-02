@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Table, TableCaption, Thead, Tbody, Tr, Th, Td, Box, Button, Alert, AlertIcon, TableContainer, Tfoot, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter } from '@chakra-ui/react';
-import { Link } from 'react-router-dom';
+import { Table, TableCaption, Thead, Tbody, Tr, Th, Td, Box, Button, Alert, AlertIcon, TableContainer, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, Flex } from '@chakra-ui/react';
 import { Profiler } from 'react';
+import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
+import { AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai'; // Importer les icônes de flèche
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
-  const [deleteConfirmation, setDeleteConfirmation] = useState(false); 
-  const [userToDelete, setUserToDelete] = useState(null); 
+  const [deleteConfirmation, setDeleteConfirmation] = useState(false);
+  const [userToDelete, setUserToDelete] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1); // État pour suivre le numéro de la page actuelle
+  const usersPerPage = 4; // Nombre d'utilisateurs à afficher par page
 
   useEffect(() => {
     fetchUsers();
@@ -84,12 +87,22 @@ const UserList = () => {
     setDeleteConfirmation(false);
   };
 
+  // Calcule l'index du premier et du dernier utilisateur sur la page actuelle
+  const indexOfLastUser = currentPage * usersPerPage;
+  const indexOfFirstUser = indexOfLastUser - usersPerPage;
+
+  // Utilise la méthode slice pour extraire les utilisateurs à afficher sur la page actuelle
+  const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
+
+  // Change de page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   return (
     <Profiler id='RegisterForm' onRender={logTimes}>
       <Box p={6} borderRadius="lg" boxShadow="md" bg="white">
         <h2>User List</h2>
         <TableContainer>
-          <Table variant='striped' colorScheme='teal'>
+          <Table>
             <TableCaption>Users</TableCaption>
             <Thead>
               <Tr>
@@ -102,7 +115,7 @@ const UserList = () => {
               </Tr>
             </Thead>
             <Tbody>
-              {users.map((user) => (
+              {currentUsers.map((user) => (
                 <Tr key={user._id}>
                   <Td>{user.name}</Td>
                   <Td>{user.email}</Td>
@@ -118,12 +131,14 @@ const UserList = () => {
             </Tbody>
           </Table>
         </TableContainer>
+        {/* Affiche l'alerte si showAlert est true */}
         {showAlert && (
           <Alert status="success" variant="solid">
             <AlertIcon />
             User deleted successfully
           </Alert>
         )}
+        {/* Affiche la modal de détails si showDetailsModal est true */}
         {selectedUser && (
           <Modal isOpen={showDetailsModal} onClose={handleCloseDetailsModal}>
             <ModalOverlay />
@@ -143,6 +158,7 @@ const UserList = () => {
             </ModalContent>
           </Modal>
         )}
+        {/* Modalité de confirmation pour la suppression d'utilisateur */}
         <Modal isOpen={deleteConfirmation} onClose={handleCancelDelete}>
           <ModalOverlay />
           <ModalContent>
@@ -157,6 +173,14 @@ const UserList = () => {
             </ModalFooter>
           </ModalContent>
         </Modal>
+        {/* Pagination */}
+        <Flex justifyContent="center" alignItems="center" mt="4">
+          <Button onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1} leftIcon={<AiOutlineArrowLeft />} mx={1}>
+          </Button>
+          <Box mx="2" p="2" borderRadius="md" bgColor="teal" color="white">Page {currentPage}</Box>
+          <Button onClick={() => paginate(currentPage + 1)} disabled={indexOfLastUser >= users.length} rightIcon={<AiOutlineArrowRight />} mx={1}>
+          </Button>
+        </Flex>
       </Box>
     </Profiler>
   );

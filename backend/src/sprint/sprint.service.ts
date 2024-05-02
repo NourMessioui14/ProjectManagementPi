@@ -11,6 +11,7 @@ export class SprintService {
 
     private readonly logger = new Logger(SprintService.name);
 
+
     constructor(
         @InjectModel(Sprint.name) private readonly sprintModel: Model<SprintDocument>,
         private ticketService: TicketService, 
