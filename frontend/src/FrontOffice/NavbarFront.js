@@ -3,9 +3,14 @@ import { Link } from 'react-router-dom';
 import TaskModal from '../Backoffice/components/Ticket/TaskModal';
 import { FaCog } from 'react-icons/fa'; // Import de l'icône de paramètre
 import LogoutButton from '../Backoffice/components/LogoutButton';
-import { io } from 'socket.io-client';
-import axios from 'axios';
+import { IoNotificationsOutline } from 'react-icons/io5';
 import { FcApproval } from 'react-icons/fc';
+import axios from 'axios';
+import { IoMdLogOut } from "react-icons/io";
+import { io } from 'socket.io-client';
+import { Box } from '@chakra-ui/react';
+
+
 function NavbarFront() {
   const [showCreateTaskModal, setShowCreateTaskModal] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -117,6 +122,7 @@ const handleRead = async () => {
   const toggleProfileDropdown = () => {
     setShowProfileDropdown(!showProfileDropdown);
   };
+  
 
 
 
@@ -130,56 +136,143 @@ const handleRead = async () => {
 
 
   return (
-    <header className="header-area header-sticky">
-      <div className="container">
-        <div className="row">
-          <div className="col-12">
-            <nav className="main-nav">
-              {/* Logo */}
-              <Link to="/home" className="logo" style={{ width: '250px', marginTop: '9px', marginLeft: '30px' }}>
-                <img src="templateFront/images/logo.png" alt="Softy Pinko" />
-              </Link>
-              {/* Liens de navigation */}
-              <ul className="nav">
-                <li><Link to="/home">Home</Link></li>
-                <li><Link to="/cardproject">Your Job </Link></li>
-                <li><Link to="/ProjectListFront">Project  </Link></li>
-                <li><Link to="/messenger">Chatroom</Link></li>
-                <li><Link to="/myvideocalls">videoCalls</Link></li>
+    <header>
+      <header className="header-area header-sticky">
+        <div className="container">
+          <div className="row">
+            <div className="col-12">
+              <nav className="main-nav">
+                {/* Logo */}
+                <Link to="/home" className="logo" style={{ width: '250px', marginTop: '9px', marginLeft: '30px' }}>
+                  <img src="templateFront/images/logo.png" alt="Softy Pinko" />
+                </Link>
+                {/* Liens de navigation */}
+                <ul className="nav">
+                  <li ><Link to="/home" style={{ fontSize: '11px' }}>Home</Link></li>
+                  <li><Link to="/cardproject" style={{ fontSize: '11px' }}>Your Job </Link></li>
+                  <li><Link to="/ProjectListFront" style={{ fontSize: '11px' }} >Project  </Link></li>
+                  <li><Link to="/messenger" style={{ fontSize: '11px' }}>Chatroom</Link></li>
+                  <li><Link to="/myvideocalls" style={{ fontSize: '11px' }}>videoCalls</Link></li>
+                 
 
-                {/* Dropdown Réclamations */}
-                <li className="dropdown" onClick={toggleDropdown}>
-                  <button className="active">Claims <i className="fa fa-caret-down"></i></button>
-                  {showDropdown && (
-                    <div className="">
-                      <Link to="/reclamationsFront" style={{ fontSize: '9px' }}> My Claims</Link>
-                      <Link to="/addReclamation" style={{ fontSize: '9px' }}>Add a Claim</Link>
+
+                  {/* ****************************************** */}
+
+
+
+                  {/* ************************************ */}
+                 
+
+
+                  {/* Dropdown Réclamations */}
+                  <li className="dropdown" onClick={toggleDropdown}>
+                    <button className="active" style={{ fontSize: '11px' }}>Claims <i className="fa fa-caret-down"></i></button>
+                    {showDropdown && (
+                      <div className="">
+                        <Link to="/reclamationsFront" style={{ fontSize: '9px' }}> My Claims</Link>
+                        <Link to="/addReclamation" style={{ fontSize: '9px' }}>Add a Claim</Link>
+                      </div>
+                    )}
+                  </li>
+                  {/* Dropdown Tâches */}
+                  <li className="nav-item dropdown">
+                    <button className="dropbtn" style={{ fontSize: '11px' }}>Tasks <i className="fa fa-caret-down"></i></button>
+                    <div className="dropdown-content">
+                      <a onClick={handleTaskClick} style={{ fontSize: '11px' }}>Create Task</a>
                     </div>
-                  )}
-                </li>
-                {/* Dropdown Tâches */}
-                <li className="nav-item dropdown">
-                  <button className="dropbtn">Tasks <i className="fa fa-caret-down"></i></button>
-                  <div className="dropdown-content">
-                    <a onClick={handleTaskClick}>Create Task</a>
-                  </div>
-                </li>
-                {/* Icône de profil avec dropdown */}
-                <li>
-                  <Link to="/userconnected" className="dropdown-item">
-                    <i className="fas fa-user"></i> Profile
-                  </Link>
-                </li>
+                  </li>
 
-                <LogoutButton>
-                  <i className="fas fa-door-open"></i>
-                </LogoutButton>
-              </ul>
-              {/* Bouton de menu pour appareils mobiles */}
-            </nav>
+
+
+                  {/* ******************************************* */}
+
+
+
+                  {/* Icône de profil avec dropdown */}
+                  <li>
+                    <Link to="/userconnected" className="dropdown-item">
+                      <i className="fas fa-user"></i> Profile
+                    </Link>
+                  </li>
+
+                  {/* ***************notification*********************** */}
+
+
+                  <li onClick={handleLogout} style={{ cursor: 'pointer' }}>
+                    <IoMdLogOut size={16} />
+                  </li>
+
+
+                  
+                  <li style={{ paddingTop: 0 }}>
+  <IoNotificationsOutline size={20} onClick={() => setOpen(!open)} />
+  {unreadNotifications > 0 && (
+    <div style={{
+      width: "15px",
+      color: "white",
+      backgroundColor: "#FF0000",
+      borderRadius: "50%",
+      marginTop: "35px",
+      fontSize: "10px",
+      display: "flex",
+      justifyContent: "center",
+      position: "absolute",
+      top: "-40px",
+      right: "-5px"
+    }}>{unreadNotifications}</div>
+  )}
+
+  {console.log("Nombre de notifications non lues:", unreadNotifications)}
+
+  {open && (
+    <div style={{
+      position: "absolute",
+      top: "50px",
+      width: "300px",
+      right: "0",
+      height: "200px", // Set a fixed height for the container
+      overflow: "auto", // Add scrollbar when content overflows
+      borderRadius: "5%",
+      backgroundColor: "#EEEEEE",
+      color: "black",
+      fontWeight: 300,
+      display: "flex",
+      flexDirection: "column",
+      padding: "10px",
+      marginTop: "0px",
+      marginLeft: "300"
+    }}>
+      {notifications.length > 0 && notifications.map((n) => displayNotification(n))}
+      <button
+        className="btn btn-sm"
+        style={{
+          width: "50%",
+          backgroundColor: "pink",
+          padding: "5px",
+          marginLeft: "65px",
+          textAlign: "center",
+          transition: "background-color 0.3s ease",
+        }}
+        onClick={handleRead}
+        onMouseOver={(e) => { e.target.style.backgroundColor = "blue"; }}
+        onMouseOut={(e) => { e.target.style.backgroundColor = "orange"; }}
+      >
+        Mark as read
+      </button>
+    </div>
+  )}
+</li>
+
+
+
+                </ul>
+                {/* Bouton de menu pour appareils mobiles */}
+
+              </nav>
+            </div>
           </div>
         </div>
-      </div>
+      </header>
       {/* Modal pour créer une tâche */}
       <TaskModal isOpen={showCreateTaskModal} onClose={handleCloseModal} />
     </header>

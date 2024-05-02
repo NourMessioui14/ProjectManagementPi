@@ -1,5 +1,9 @@
 
-
+import { EditProfileDto } from './dto/EditProfile.dto';
+import { BadRequestException, Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Patch, Post, Put, Res, Session, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { AuthService } from './auth.service';
+import { SignUpDto } from './dto/signup.dto';
+import { LoginDto } from './dto/login.dto';
 
 import { Roles } from 'src/roles/roles.decorator';
 import { RolesGuard } from 'src/roles/roles.guard';
@@ -19,12 +23,6 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { Response } from 'express';
 import * as path from 'path';
 import { extname } from 'path';
-
-import { BadRequestException, Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Patch, Post, Put, Res, Session, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { SignUpDto } from './dto/signup.dto';
-import { LoginDto } from './dto/login.dto';
-import { EditProfileDto } from './dto/EditProfile.dto';
 
 
 interface FileParams {
@@ -231,12 +229,13 @@ export class AuthController {
 
 
 
-
-
     
 
 
   
   
   }
+
+
+
 
