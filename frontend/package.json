@@ -26,14 +26,19 @@
     "nodemailer": "^6.9.13",
     "react": "^18.2.0",
     "react-beautiful-dnd": "^13.1.1",
+<<<<<<< HEAD
     "react-chartjs-2": "^5.2.0",
+=======
+>>>>>>> 0864f2bfb3a45079dd9de1d4f671b003a45f3a72
     "react-color": "^2.19.3",
     "react-datepicker": "^6.6.0",
     "react-dom": "^18.2.0",
     "react-draggable": "^4.4.6",
+    "react-google-calendar-api": "^2.3.0",
     "react-hook-form": "^7.51.2",
     "react-icons": "^5.1.0",
     "react-pro-sidebar": "^1.1.0",
+    "react-push-notification": "^1.5.4",
     "react-router-dom": "^6.22.3",
     "react-scripts": "5.0.1",
     "react-select": "^5.8.0",

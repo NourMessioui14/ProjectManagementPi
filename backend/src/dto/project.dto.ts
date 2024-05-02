@@ -18,14 +18,5 @@ export class ProjectDto{
 
     @IsNotEmpty()
     description: string;
-/* 
-    startDay: number;
-    startMonth: number;
-    startYear: number;
-
-    endDay: number;
-    endMonth: number;
-    endYear: number;;
- */
 
 }

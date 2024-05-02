@@ -5,7 +5,7 @@ import FooterFront from '../../FooterFront';
 
 function HomePage() {
   const [typeEffect] = useTypewriter({
-    words: ['  Scrum Managment ', '  Project  Managment ', '  Software devoloper'],
+    words: ['  Scrum Manager ', '  Project  Manager ', '  Software developer'],
     loop: {},
     typeSpeed: 100,
     delaySpeed: 40
@@ -68,6 +68,28 @@ function HomePage() {
       </div>
     </div>
       <div className="row">
+        {/* Testimonial Item 1 */}
+        <div className="col-lg-4 col-md-6 col-sm-12">
+          <div className="team-item">
+            <div className="team-content">
+              <i>
+                <img src="assets/images/testimonial-icon.png" alt="" />
+              </i>
+              <p>
+              Streamline project management tasks, 
+              improve collaboration, and 
+              efficiently achieve your project goals.
+              </p>
+              <div className="user-image">
+                <img src="/templateFront/images/project.png" />
+              </div>
+              <div className="team-info">
+                <h3 className="user-name">Project Management </h3>
+                <span>Software developer</span>
+              </div>
+            </div>
+          </div>
+        </div>
         {/* Testimonial Items */}
         <div className="col-lg-4 col-md-6 col-sm-12">
           <div className="team-item">
@@ -76,38 +98,15 @@ function HomePage() {
                 <img src="assets/images/testimonial-icon.png" alt="" />
               </i>
               <p>
-                Integer molestie aliquam gravida. Nullam nec arcu finibus,
-                imperdiet nulla vitae, placerat nibh. Cras maximus venenatis
-                molestie.
+              Supercharge your agile project with our 
+              sprint management app. Plan, track, and 
+              execute sprints seamlessly for maximum productivity.
               </p>
               <div className="user-image">
                 <img src="/templateFront/images/ss.jpg" />
               </div>
               <div className="team-info">
-                <h3 className="user-name">Sprint Managment </h3>
-                <span>Software developer</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Testimonial Item 2 */}
-        <div className="col-lg-4 col-md-6 col-sm-12">
-          <div className="team-item">
-            <div className="team-content">
-              <i>
-                <img src="assets/images/testimonial-icon.png" alt="" />
-              </i>
-              <p>
-                Integer molestie aliquam gravida. Nullam nec arcu finibus,
-                imperdiet nulla vitae, placerat nibh. Cras maximus venenatis
-                molestie.
-              </p>
-              <div className="user-image">
-                <img src="/templateFront/images/scrumm.png" />
-              </div>
-              <div className="team-info">
-                <h3 className="user-name">Scrum Managment </h3>
+                <h3 className="user-name">Sprint Management </h3>
                 <span>Software developer</span>
               </div>
             </div>
@@ -122,20 +121,22 @@ function HomePage() {
                 <img src="assets/images/testimonial-icon.png" alt="" />
               </i>
               <p>
-                Integer molestie aliquam gravida. Nullam nec arcu finibus,
-                imperdiet nulla vitae, placerat nibh. Cras maximus venenatis
-                molestie.
+              Elevate your Scrum management to new heights with 
+              our application. Effortlessly plan, execute, and monitor 
+              Scrum projects with enhanced visibility and efficiency.
               </p>
               <div className="user-image">
-                <img src="/templateFront/images/project.png" />
+                <img src="/templateFront/images/scrumm.png" />
               </div>
               <div className="team-info">
-                <h3 className="user-name">Project Managment </h3>
+                <h3 className="user-name">Scrum Management </h3>
                 <span>Software developer</span>
               </div>
             </div>
           </div>
         </div>
+
+        
       </div>
 
       {/* About Us Section */}
