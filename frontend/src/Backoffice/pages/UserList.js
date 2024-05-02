@@ -3,7 +3,6 @@ import { Table, TableCaption, Thead, Tbody, Tr, Th, Td, Box, Button, Alert, Aler
 import { Link } from 'react-router-dom';
 import { Profiler } from 'react';
 
-
 const UserList = () => {
   const [users, setUsers] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
@@ -12,16 +11,13 @@ const UserList = () => {
   const [deleteConfirmation, setDeleteConfirmation] = useState(false); // Nouvel état pour la modalité de confirmation
   const [userToDelete, setUserToDelete] = useState(null); // Nouvel état pour stocker l'ID de l'utilisateur à supprimer
 
-
   useEffect(() => {
     fetchUsers();
   }, []);
 
-
   const logTimes = (id, phase, actualDuration, baseDuration, startTime, commitTime) => {
     console.table({ id, phase, actualDuration, baseDuration, startTime, commitTime });
   };
-
 
   const fetchUsers = async () => {
     try {
@@ -36,7 +32,6 @@ const UserList = () => {
     }
   };
 
-
   const handleDeleteUser = async (_id) => {
     try {
       if (!_id) {
@@ -44,24 +39,19 @@ const UserList = () => {
         return;
       }
 
-
       const response = await fetch(`http://localhost:5001/auth/users/${_id}`, {
         method: 'DELETE',
       });
-
 
       if (!response.ok) {
         throw new Error('Error deleting user');
       }
 
-
       setShowAlert(true);
-
 
       setTimeout(() => {
         setShowAlert(false);
       }, 5000); 
-
 
       await fetchUsers();
     } catch (error) {
@@ -69,40 +59,33 @@ const UserList = () => {
     }
   };
 
-
   const handleShowDetails = (user) => {
     setSelectedUser(user);
     setShowDetailsModal(true);
   };
-
 
   const handleCloseDetailsModal = () => {
     setShowDetailsModal(false);
     setSelectedUser(null);
   };
 
-
   const handleDeleteConfirmation = (_id) => {
     setUserToDelete(_id); // Stocker l'ID de l'utilisateur à supprimer
     setDeleteConfirmation(true); // Afficher la modalité de confirmation
   };
-
 
   const handleConfirmDelete = async () => {
     await handleDeleteUser(userToDelete); // Supprimer l'utilisateur
     setDeleteConfirmation(false); // Cacher la modalité de confirmation
   };
 
-
   const handleCancelDelete = () => {
     setUserToDelete(null); // Réinitialiser l'ID de l'utilisateur à supprimer
     setDeleteConfirmation(false); // Cacher la modalité de confirmation
   };
 
-
   return (
     <Profiler id='RegisterForm' onRender={logTimes}>
-
 
     <Box p={6} borderRadius="lg" boxShadow="md" bg="white">
       <h2>User List</h2>
@@ -182,6 +165,5 @@ const UserList = () => {
     </Profiler>
   );
 };
-
 
 export default UserList;

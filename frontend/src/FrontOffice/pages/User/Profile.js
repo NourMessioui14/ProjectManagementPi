@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, Link } from 'react-router-dom'; // Importer Link depuis react-router-dom
-import { ChakraProvider, Container, FormControl, FormLabel, Input, Button, VStack ,Link as ChakraLink} from '@chakra-ui/react';
+import { ChakraProvider, Container, FormControl, FormLabel, Input, Button, VStack,Image ,Link as ChakraLink} from '@chakra-ui/react';
 import NavbarFront from '../../NavbarFront';
 
 function Profile() {
@@ -46,8 +46,10 @@ function Profile() {
 
   return (
     
-    <div className='profile'>
+    <div className='row'>
     <NavbarFront/>
+    <Image src="/logos/edit.png" alt="New Pass Image" position="absolute" top="170" left="150px" width="300px" height="300px" />
+
     <ChakraProvider>
       
       <Container maxW="xl" centerContent marginTop="160px"> {/* Augmentez la valeur de marginTop pour déplacer le formulaire plus bas */}
@@ -79,7 +81,7 @@ function Profile() {
             </FormControl>
 
             <Button mt={4} colorScheme="teal" type="submit">
-              Submit
+              Update
             </Button>
             <ChakraLink as={Link} to="/userconnected" color="teal.500" _hover={{ color: 'teal.700', textDecoration: 'underline' }}>
               Retour

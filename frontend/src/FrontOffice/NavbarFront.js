@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import TaskModal from '../Backoffice/components/Ticket/TaskModal';
 import { FaCog } from 'react-icons/fa'; // Import de l'icône de paramètre
 import LogoutButton from '../Backoffice/components/LogoutButton';
+
 function NavbarFront() {
   const [showCreateTaskModal, setShowCreateTaskModal] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -23,66 +24,58 @@ function NavbarFront() {
   const toggleProfileDropdown = () => {
     setShowProfileDropdown(!showProfileDropdown);
   };
-  
 
   return (
-    <header>
-      <header className="header-area header-sticky">
-        <div className="container">
-          <div className="row">
-            <div className="col-12">
-              <nav className="main-nav">
-                {/* Logo */}
-                <Link to="/home" className="logo" style={{ width: '250px', marginTop: '9px', marginLeft: '30px' }}>
-                  <img src="templateFront/images/logo.png" alt="Softy Pinko" />
-                </Link>
-                {/* Liens de navigation */}
-                <ul className="nav">
-                  <li><Link to="/home" >Home</Link></li>
-                  <li><Link to="/cardproject" >Your Job </Link></li>
-                  <li><Link to="/ProjectListFront" >Project  </Link></li>
-                  <li><Link to="/messenger" >Chatroom</Link></li>
-                  <li><Link to="/myvideocalls" >videoCalls</Link></li>
-                  
-                  {/* Dropdown Réclamations */}
-                  <li className="dropdown"  onClick={toggleDropdown}>
-                    <button className="active">Claims <i className="fa fa-caret-down"></i></button>
-                    {showDropdown && (
-                      <div className="">
-                        <Link to="/reclamationsFront"  style={{ fontSize: '9px' }}> My Claims</Link>
-                        <Link to="/addReclamation"  style={{ fontSize: '9px' }}>Add a Claim</Link>
-                      </div>
-                    )}
-                  </li>
-                  {/* Dropdown Tâches */}
-                  <li className="nav-item dropdown">
-                    <button className="dropbtn">Tasks <i className="fa fa-caret-down"></i></button>
-                    <div className="dropdown-content">
-                      <a onClick={handleTaskClick}>Create Task</a>
+    <header className="header-area header-sticky">
+      <div className="container">
+        <div className="row">
+          <div className="col-12">
+            <nav className="main-nav">
+              {/* Logo */}
+              <Link to="/home" className="logo" style={{ width: '250px', marginTop: '9px', marginLeft: '30px' }}>
+                <img src="templateFront/images/logo.png" alt="Softy Pinko" />
+              </Link>
+              {/* Liens de navigation */}
+              <ul className="nav">
+                <li><Link to="/home">Home</Link></li>
+                <li><Link to="/cardproject">Your Job </Link></li>
+                <li><Link to="/ProjectListFront">Project  </Link></li>
+                <li><Link to="/messenger">Chatroom</Link></li>
+                <li><Link to="/myvideocalls">videoCalls</Link></li>
+
+                {/* Dropdown Réclamations */}
+                <li className="dropdown" onClick={toggleDropdown}>
+                  <button className="active">Claims <i className="fa fa-caret-down"></i></button>
+                  {showDropdown && (
+                    <div className="">
+                      <Link to="/reclamationsFront" style={{ fontSize: '9px' }}> My Claims</Link>
+                      <Link to="/addReclamation" style={{ fontSize: '9px' }}>Add a Claim</Link>
                     </div>
-                  </li>
-                  {/* Icône de profil avec dropdown */}
-                  <li>
-  <Link to="/userconnected" className="dropdown-item">
-    <i className="fas fa-user"></i> Profile
-  </Link>
-</li>
+                  )}
+                </li>
+                {/* Dropdown Tâches */}
+                <li className="nav-item dropdown">
+                  <button className="dropbtn">Tasks <i className="fa fa-caret-down"></i></button>
+                  <div className="dropdown-content">
+                    <a onClick={handleTaskClick}>Create Task</a>
+                  </div>
+                </li>
+                {/* Icône de profil avec dropdown */}
+                <li>
+                  <Link to="/userconnected" className="dropdown-item">
+                    <i className="fas fa-user"></i> Profile
+                  </Link>
+                </li>
 
-<LogoutButton>
-  <i className="fas fa-door-open"></i>
-</LogoutButton>
-
-
-
-
-                </ul>
-                {/* Bouton de menu pour appareils mobiles */}
-              
-              </nav>
-            </div>
+                <LogoutButton>
+                  <i className="fas fa-door-open"></i>
+                </LogoutButton>
+              </ul>
+              {/* Bouton de menu pour appareils mobiles */}
+            </nav>
           </div>
         </div>
-      </header>
+      </div>
       {/* Modal pour créer une tâche */}
       <TaskModal isOpen={showCreateTaskModal} onClose={handleCloseModal} />
     </header>
