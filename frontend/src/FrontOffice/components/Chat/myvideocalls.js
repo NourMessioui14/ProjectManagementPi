@@ -1,10 +1,33 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
+import { Link } from "react-router-dom";
 import { GlobalContext } from '../../../context/GlobalWrapperChat'; // Import du contexte global
-import NavbarFront from '../../NavbarFront'; // Import NavbarFront component
+import NavbarFront from '../../NavbarFront'; // Import du composant NavbarFront
+//import { navigate } from '@reach/router';
+
 
 const MyVideocalls = () => {
-  const userId = "660df613bf77d98a5616eef3"; // Définition de la valeur constante userId
+  const { getUserIdFromToken } = useContext(GlobalContext); // Utilisation du contexte global
+  const [userId, setUserId] = useState(""); // State to store the user ID
+
+  useEffect(() => {
+    // Function to fetch user ID from token
+    const fetchUserId = async () => {
+      try {
+        const storedToken = localStorage.getItem('token');
+        console.log("Token from localStorage:", storedToken);
+        const userIdFromToken = await getUserIdFromToken(storedToken);
+        const userIdString = userIdFromToken.userId.toString();
+        console.log("User ID from token:", userIdFromToken);
+        setUserId(userIdString); // Set the user ID state
+      } catch (error) {
+        console.error('Error getting user ID from token:', error);
+      }
+    };
+
+    fetchUserId(); // Call the function to fetch user ID
+  }, [getUserIdFromToken]);
+
   const { getvideocallsByUserId } = useContext(GlobalContext); // Utilisation du contexte global
 
   const [videocalls, setVideocalls] = useState([]);
@@ -32,11 +55,9 @@ const MyVideocalls = () => {
   };
 
   const handleJoinMeeting = (videocallId) => {
-    //const { history } = this.props;
     // Logic to join the meeting
     console.log(`Joining meeting ${videocallId}`);
-    window.location.href = '/zoomjdid';
-    //this.props.history.push('/zoomjdid');
+    //navigate('/zoomjdid');
     
   };
 
@@ -45,6 +66,46 @@ const MyVideocalls = () => {
     const meetingTimeObj = new Date(meetingTime);
     const differenceInMinutes = Math.abs(meetingTimeObj - systemTime) / (1000 * 60);
     return differenceInMinutes <= 15;
+  };
+
+  // Styles
+  const tableHeaderStyle = {
+    backgroundColor: '#f2f2f2',
+    border: '1px solid #ddd',
+    padding: '8px',
+    textAlign: 'left',
+  };
+
+  const tableCellStyle = {
+    border: '1px solid #ddd',
+    padding: '8px',
+    textAlign: 'left',
+  };
+
+  const grayButtonStyle = {
+    backgroundColor: '#ccc',
+    border: 'none',
+    color: 'white',
+    padding: '8px 16px',
+    textAlign: 'center',
+    textDecoration: 'none',
+    display: 'inline-block',
+    fontSize: '16px',
+    margin: '4px 2px',
+    cursor: 'not-allowed',
+  };
+
+  const blueButtonStyle = {
+    backgroundColor: '#007bff',
+    border: 'none',
+    color: 'white',
+    padding: '8px 16px',
+    textAlign: 'center',
+    textDecoration: 'none',
+    display: 'inline-block',
+    fontSize: '16px',
+    margin: '4px 2px',
+    cursor: 'pointer',
   };
 
   return (
@@ -59,7 +120,6 @@ const MyVideocalls = () => {
             <th style={tableHeaderStyle}>Creator</th>
             <th style={tableHeaderStyle}>Subject</th>
             <th style={tableHeaderStyle}>Duration (minutes)</th>
-            
             <th style={tableHeaderStyle}>Date</th>
             <th style={tableHeaderStyle}>Time</th>
             <th style={tableHeaderStyle}>Actions</th>
@@ -77,18 +137,16 @@ const MyVideocalls = () => {
                 <td style={tableCellStyle}>{call.videocallCreator}</td>
                 <td style={tableCellStyle}>{call.subject}</td>
                 <td style={tableCellStyle}>{call.estimatedDurationMinutes}</td>
-                
                 <td style={tableCellStyle}>{call.date}</td>
                 <td style={tableCellStyle}>{call.time}</td>
                 <td style={tableCellStyle}>
-                <a
-                    href="/zoomjdid"
+                  <Link to="/zoomjdid"
                     style={buttonStyle}
                     onClick={() => handleJoinMeeting(call.videocallId)}
                     disabled={disabled}
                   >
                     Join Meeting
-                  </a>
+                  </Link>
                 </td>
               </tr>
             );
@@ -97,46 +155,6 @@ const MyVideocalls = () => {
       </table>
     </div>
   );
-};
-
-// Styles
-const tableHeaderStyle = {
-  backgroundColor: '#f2f2f2',
-  border: '1px solid #ddd',
-  padding: '8px',
-  textAlign: 'left',
-};
-
-const tableCellStyle = {
-  border: '1px solid #ddd',
-  padding: '8px',
-  textAlign: 'left',
-};
-
-const grayButtonStyle = {
-  backgroundColor: '#ccc',
-  border: 'none',
-  color: 'white',
-  padding: '8px 16px',
-  textAlign: 'center',
-  textDecoration: 'none',
-  display: 'inline-block',
-  fontSize: '16px',
-  margin: '4px 2px',
-  cursor: 'not-allowed',
-};
-
-const blueButtonStyle = {
-  backgroundColor: '#007bff',
-  border: 'none',
-  color: 'white',
-  padding: '8px 16px',
-  textAlign: 'center',
-  textDecoration: 'none',
-  display: 'inline-block',
-  fontSize: '16px',
-  margin: '4px 2px',
-  cursor: 'pointer',
 };
 
 export default MyVideocalls;

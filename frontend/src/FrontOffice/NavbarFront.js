@@ -4,27 +4,103 @@ import TaskModal from '../Backoffice/components/Ticket/TaskModal';
 import { FaCog } from 'react-icons/fa'; // Import de l'icône de paramètre
 import LogoutButton from '../Backoffice/components/LogoutButton';
 import { io } from 'socket.io-client';
+import axios from 'axios';
+import { FcApproval } from 'react-icons/fc';
 function NavbarFront() {
   const [showCreateTaskModal, setShowCreateTaskModal] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const [showProfileDropdown, setShowProfileDropdown] = useState(false); // État pour afficher ou masquer le dropdown de profil
+ 
+  //const [notification, setNotification] = useState('');
+
   const [notifications, setNotifications] = useState([]);
   const [open, setOpen] = useState(false);
   const [socket, setSocket] = useState(null);
-  const [notification, setNotification] = useState('');
-
 
   useEffect(() => {
-    const socket = io('http://localhost:5001'); // Assurez-vous de remplacer l'URL par celle de votre serveur
+    const newSocket = io("http://localhost:5001");
+    setSocket(newSocket);
+}, []);
 
-    socket.on('notification', (data) => {
-      setNotification(data.message);
-    });
+const fetchData = async () => {
+  try {
+    const notifsResponse = await axios.get('/notifications');
+    setNotifications(notifsResponse.data);
 
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
+    // Compter le nombre de notifications non lues
+    const unreadCount = notifsResponse.data.filter(notification => !notification.read).length;
+    setUnreadNotifications(unreadCount); // Mettre à jour le nombre de notifications non lues
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+};
+
+//const unreadNotifications = notifications.filter(notification => !notification.read);
+  
+useEffect(() => {
+  if (!socket) return;
+  console.log("socket");
+  console.log(socket);
+  fetchData();
+
+
+  const handleNotification = (data) => {
+    const notificationString = JSON.stringify(data);
+    setNotifications(prevNotifications => [...prevNotifications, data]);
+    console.log("New notification received:", notificationString);
+    // Rafraîchir la liste des notifications
+    fetchData();
+    setUnreadNotifications(prevUnreadCount => prevUnreadCount + 1);
+  };
+  
+
+  
+  socket.on("getNotification", handleNotification);
+
+}, [socket]);
+//console.log("notification");
+console.log(notifications);
+
+const displayNotification = ({ senderName, description  }) => {
+  const truncatedDescription = description ? description.slice(0, 35) : ''; // Vérifier si description est défini
+  return (
+    <>
+      <span className="notification">
+        <FcApproval size={12} /> {`${senderName} replied to your claim: "${truncatedDescription}..."`}
+      </span>
+      <hr
+        style={{
+          width: "100%",
+          height: "1px",
+          backgroundColor: "black",
+          border: "none",
+          borderColor: "black",
+          margin: "5px 0",
+        }}
+      />
+    </> 
+  );
+};
+
+
+
+
+// Ajoutez ceci à votre code pour définir l'état unreadNotifications
+const [unreadNotifications, setUnreadNotifications] = useState([]);
+
+// Dans la fonction handleRead(), mettez à jour l'état unreadNotifications comme ceci :
+const handleRead = async () => {
+  try {
+    await axios.put(`/notifications/mark-all-as-read`, { read: true });
+    // Rafraîchir la liste des notifications
+    fetchData();
+    // Mettre à jour le compteur des notifications non lues
+    setUnreadNotifications(0); 
+  } catch (error) {
+    console.error('Error marking notifications as read:', error);
+  }
+};
+
 
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
@@ -44,97 +120,6 @@ function NavbarFront() {
 
 
 
-
-  // const fetchData = async () => {
-  //   try {
-  //     const notifsResponse = await axios.get('http://localhost:9090/api/order/notifs');
-  //     setNotifications(notifsResponse.data);
-
-  //   } catch (error) {
-  //     console.error('Error fetching data:', error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   // Se connecter au serveur WebSocket
-  //   const socket = io('http://localhost:5001');
-
-  //   // Écouter l'événement de notification du serveur
-  //   socket.on('notification', (notificationData) => {
-  //     // Ajouter la nouvelle notification à la liste des notifications
-  //     setNotifications((prevNotifications) => [...prevNotifications, notificationData]);
-
-  //     // Afficher la notification dans la console
-
-  //   });
-
-  //   // Nettoyer l'écouteur lors du démontage du composant
-  //   return () => {
-  //     socket.disconnect();
-  //   };
-  // }, []);
-
-  // const handleRead = () => {
-
-  //   const response = { read: "true" };
-  //   if (response.data) {
-  //     return response.data;
-  //   }
-  //   setNotifications([]);
-  //   setOpen(false);
-  // };
-
-  // ******************notification*****************//
-  /*useEffect(() => {
-    try {
-      const newSocket = io("http://localhost:5001");
-      setSocket(newSocket);
-      console.log('Socket connecté avec succès');
-
-      // Log pour vérifier la réception des notifications côté client
-      newSocket.on('getNotification', (notificationData) => {
-        console.log('Notification received:', notificationData);
-      });
-    } catch (error) {
-      console.log('Erreur lors de la connexion au socket:', error);
-    }
-  }, []);
-
-  const unreadNotifications = notifications.filter(notification => !notification.read);
-
-  useEffect(() => {
-    if (!socket) return;
-    console.log("socket");
-    console.log(socket);
-    const handleNotification = (data) => {
-      // Ajouter la nouvelle notification à la liste des notifications
-      setNotifications(prevNotifications => [...prevNotifications, data]);
-    };
-
-    socket.on("getNotification ", handleNotification);
-    
-
-  }, [socket]);
-
-  console.log("notification");
-  console.log(notifications);
-
-  const displayNotification = ({ senderName }) => {
-    return (
-      <>
-        <span className="notification"><FcApproval size={30} />{`  ${senderName} répond à votre réclamation`}</span>
-        <hr style={{
-          width: "100%", // Ajustez la largeur si nécessaire
-          height: "1px", // Ajustez la hauteur si nécessaire
-          backgroundColor: "black", // Ajustez la couleur si nécessaire
-          border: "none",
-          borderColor: "black", // Ajustez la couleur de la bordure si nécessaire
-          margin: "5px 0", // Ajustez les marges si nécessaire
-        }} />
-      </>
-    );
-  };
-*/
 
   const handleLogout = () => {
     localStorage.removeItem('token');

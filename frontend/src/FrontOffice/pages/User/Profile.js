@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useParams, Link } from 'react-router-dom';
 import { ChakraProvider, Container, FormControl, FormLabel, Input, Button } from '@chakra-ui/react';
 import NavbarFront from '../../NavbarFront';
-
+import { Link as ChakraLink } from '@chakra-ui/react';
 // CSS Styles
 const styles = `
 body {
@@ -122,7 +122,10 @@ function Profile() {
 
   return (
     <div>
+            <NavbarFront />
+
       <style>{styles}</style> {/* Include CSS Styles */}
+
       <div className='container'>
         <div className='row gutters'>
           <div className='col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 mx-auto text-center'> {/* Ajoutez la classe text-center et mx-auto */}
@@ -183,7 +186,9 @@ function Profile() {
                   </div>
                   <div className='col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12'>
                     <Button colorScheme="blue" onClick={handleSubmit}>Update</Button>
-                    <Button colorScheme="gray" onClick={handleCancel}>Cancel</Button>
+                    <ChakraLink as={Link} to="/userconnected" color="teal.500" _hover={{ color: 'teal.700', textDecoration: 'underline' }}>
+  Retour
+</ChakraLink>
                   </div>
                 </div>
               </div>

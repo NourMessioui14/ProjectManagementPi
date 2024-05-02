@@ -13,6 +13,8 @@ import { MessageModule } from './message/message.module';
 import { ChatroomModule } from './chatroom/chatroom.module';
 import { VideocallModule } from './videocall/videocall.module';
 import { AppGateway } from './app.gateway';
+import { NotificationsModule } from './notifications/notifications.module';
+import { SignalingGateway } from './signaling/signaling.gateway';
 
 @Module({
   imports: [
@@ -29,7 +31,9 @@ import { AppGateway } from './app.gateway';
     ReponsesModule,
     MessageModule,
     ChatroomModule,
-    VideocallModule
+    VideocallModule,
+    NotificationsModule,
+    SignalingGateway
   ],
   controllers: [AppController],
   providers: [AppService, AppGateway],
