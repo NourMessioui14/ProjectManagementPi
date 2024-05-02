@@ -68,7 +68,6 @@ const UserConnected = () => {
     formData.append('file', file);
 
 
-
     axios.post('http://localhost:5001/auth/upload', formData)
       .then(response => {
         console.log('Fichier téléchargé avec succès:', response.data);
@@ -124,14 +123,6 @@ const UserConnected = () => {
                         {user.age && <MDBCardText>Âge: {user.age}</MDBCardText>}
                         {user.role && <MDBCardText>Rôle: {user.role}</MDBCardText>}
                         <div className="d-flex justify-content-between">
-
-                          
-                        
-                        </div>
-                        <div className="mt-3">
-                         
-                          <input id="photoInput" type="file" accept="image/*" onChange={handleFileUpload} style={{ display: 'none' }} />
-
                           <div style={{ width: '150px', height: '50px' }}>
                             <Link to={`/profile/${user._id}`} className="btn btn-primary buttonSH" style={{ width: '100%', height: '100%' }}>
                               <span class="buttonSH-content" >

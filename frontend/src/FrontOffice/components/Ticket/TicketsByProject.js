@@ -62,10 +62,10 @@ const generatePDF = () => {
             <Thead>
               <Tr>
                 
-                <Th>Type Of Ticket</Th>
-                <Th>State</Th>
+                <Th>type Of ticket</Th>
                 <Th>Description</Th>
                 <Th>Owner</Th>
+                <Th>State</Th>
               </Tr>
             </Thead>
             <Tbody>
@@ -74,9 +74,9 @@ const generatePDF = () => {
                   key={_id}
                   id={_id}
                   typeOfticket={typeOfticket}
-                  etat={etat}
                   description={description}
                   responsable={responsable?.name || 'Unknown'}
+                  etat={etat}
                 />
               ))}
             </Tbody>
@@ -86,7 +86,7 @@ const generatePDF = () => {
         </ModalBody>
         <ModalFooter>
         <Button colorScheme="gray" variant='outline' mr={3} onClick={(generatePDF) => window.print()}   leftIcon={<DownloadIcon fontSize={'20px'} />}
->Print tickets details</Button>
+>Print Backlog</Button>
 
           <Button colorScheme="blue" mr={3} onClick={onClose}>Close</Button>
         </ModalFooter>

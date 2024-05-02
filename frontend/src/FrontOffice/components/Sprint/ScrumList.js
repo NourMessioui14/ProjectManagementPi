@@ -78,17 +78,17 @@ export default function ScrumList() {
       setBoard([
         {
           id: 1,
-          title: 'To Do',
+          title: 'To do',
           cards: []
         },
         {
           id: 2,
-          title: 'In Progress',
+          title: 'In progress',
           cards: []
         },
         {
           id: 3,
-          title: 'Completed',
+          title: 'Done',
           cards: []
         },
         {

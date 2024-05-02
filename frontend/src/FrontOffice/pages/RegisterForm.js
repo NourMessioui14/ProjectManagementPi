@@ -6,7 +6,6 @@ import * as Yup from 'yup';
 import { useHistory } from 'react-router-dom';
 import { GlobalContext } from '../../context/GlobalWrapperChat';
 import UserList from '../../Backoffice/pages/UserList';
-
 import {MDBIcon } from 'mdb-react-ui-kit';
 
 
@@ -17,14 +16,10 @@ const RegisterForm = () => {
 
 
 
-
-
-
  const{getUserIDByToken} = useContext(GlobalContext);
 
 
  const [loginData, setLoginData] = useState({}); // État pour stocker les données de connexion des utilisateurs
-
 
 
 
@@ -137,12 +132,13 @@ const RegisterForm = () => {
         console.log('Role:', responseData.role);
 
 
-
         setLoginData(prevData => ({
           ...prevData,
           [values.email]: (prevData[values.email] || 0) + 1,
         }));
         console.log('Login Data:', loginData); // Afficher les données de connexion de l'utilisateur
+
+
 
 
 
@@ -216,15 +212,12 @@ const RegisterForm = () => {
                     {(msg) => <div className="error-message">{msg}</div>}
                   </ErrorMessage>
                 </div>
-
-               
                 <button type="submit" className="btn btn-primary buttonSH" style={{ width: '125px', height: '30px' }}>
   <span class="buttonSH-content" style={{ width: '100%', height: '60%' }}>
     <MDBIcon icon="user-edit" className="me-2" />
    Login
   </span>
 </button>
-
 
                 <a href="/forgetPassword" className="forgot-password-link">Forgot password?</a> 
                 <p className="social-text">Or Sign in with social platforms</p>

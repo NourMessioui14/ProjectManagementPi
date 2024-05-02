@@ -1,6 +1,8 @@
 import React, { createContext, useState } from "react";
 import axios from "axios";
 import { useDisclosure, useToast } from '@chakra-ui/react';
+import addNotification from 'react-push-notification';
+import logo from './logo.png';
 
 export const GlobalContext = createContext();
 
@@ -103,7 +105,7 @@ export default function WrapperS({ children }) {
   const fetchTicketsBySprintId = async (sprintId) => {
     try {
       const response = await axios.get(`/ticket/bysprint/${sprintId}`);
-      console.log("Tickets retrieved by sprintId:", response.data); // Ajouter ce log pour vérifier les tickets récupérés
+      // console.log("Tickets retrieved by sprintId:", response.data); // Ajouter ce log pour vérifier les tickets récupérés
   
       setTickets(response.data);
     } catch (error) {
@@ -210,7 +212,7 @@ export default function WrapperS({ children }) {
     const fetchSprintsByProjectId = async (projectId) => {
       try {
           const response = await axios.get(`/sprint/byproject/${projectId}`);
-          console.log("sprints retrieved by projectId:", response.data); // Ajouter ce log pour vérifier les tickets récupérés
+          // console.log("sprints retrieved by projectId:", response.data); // Ajouter ce log pour vérifier les tickets récupérés
 
           setSprints(response.data);
       } catch (error) {
@@ -219,22 +221,68 @@ export default function WrapperS({ children }) {
   };
 
 
-    const DeleteSprint = (id) => {
-        axios
-          .delete(`/sprint/${id}`)
-          .then((res) => {
-            setSprints(sprints.filter((u) => u._id !== id));
-            toast({
-              title: 'Sprint Deleted',
-              status: 'success',
-              duration: 3000,
-              isClosable: true,
-            });
-          })
-          .catch((err) => {
-            console.log(err.response.data);
+    // const DeleteSprint = (id) => {
+    //     axios
+    //       .delete(`/sprint/${id}`)
+    //       .then((res) => {
+    //         setSprints(sprints.filter((u) => u._id !== id));
+    //         toast({
+    //           title: 'Sprint Deleted',
+    //           status: 'success',
+    //           duration: 3000,
+    //           isClosable: true,
+    //         });
+    //       })
+    //       .catch((err) => {
+    //         console.log(err.response.data);
+    //       });
+    // };
+
+    const DeleteSprint = async (id) => {
+      try {
+        // Récupérer les tickets associés au sprint à supprimer
+        const response = await axios.get(`/ticket/bysprint/${id}`);
+        const sprintTickets = response.data;
+    
+        // Récupérer les propriétaires des tickets
+        const ticketOwners = sprintTickets.map(ticket => ticket.responsable);
+        console.log('Ticket Owners:', ticketOwners);
+        // Récupérer le nom du sprint
+        const sprint = await axios.get(`/sprint/${id}`);
+        const sprintName = sprint.data.sprintname;
+        // Envoyer des notifications aux propriétaires des tickets
+        ticketOwners.forEach(owner => {
+          console.log(`Sending notification to ${owner}`);
+          addNotification({
+            title: 'Sprint Deleted',
+            message: `The sprint '${sprintName}' associated with your ticket has been deleted.`,
+            duration: 4000,
+            icon: logo,
+            native: true,
+            onClick: () => window.location="http://localhost:3000/home",
+
           });
+        });
+    
+        // Supprimer le sprint une fois les notifications envoyées
+        await axios.delete(`/sprint/${id}`);
+        console.log('Sprint deleted successfully');
+    
+        // Mettre à jour l'état local et afficher une notification de succès
+        setSprints(sprints.filter((u) => u._id !== id));
+        toast({
+          title: 'Sprint Deleted',
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+        });
+      } catch (error) {
+        console.error('Error deleting sprint:', error.response.data);
+      }
     };
+    
+  
+  
 
     const AddSprint = (form, setForm) => {
       axios
@@ -330,6 +378,7 @@ export default function WrapperS({ children }) {
             ticket,
             setProject,
             setTicket,
+            setTickets,
             Update,
             FetchSprints, 
             sprints, 
