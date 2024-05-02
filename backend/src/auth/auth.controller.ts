@@ -1,9 +1,8 @@
-
 import { EditProfileDto } from './dto/EditProfile.dto';
-import { BadRequestException, Body, Controller, Delete, ForbiddenException, Get, HttpException, HttpStatus, NotFoundException, Param, Patch, Post, Put, Query, Req, Res, Session, UnauthorizedException, UploadedFile, UseGuards, UseInterceptors, UsePipes, ValidationPipe } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Patch, Post, Put, Res, Session, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { AuthService } from './auth.service';
+import { SignUpDto } from './dto/signup.dto';
 import { LoginDto } from './dto/login.dto';
-import { SignUpDto, UserRole } from './dto/signup.dto'; // Import UserRole correctly
 import { Roles } from 'src/roles/roles.decorator';
 import { RolesGuard } from 'src/roles/roles.guard';
 import session from 'express-session';
@@ -24,14 +23,15 @@ import * as path from 'path';
 import { extname } from 'path';
 
 interface FileParams {
-  fileName : string;
+  fileName: string;
 }
 
 @Controller('auth')
 export class AuthController {
-
   
-  constructor(private authService: AuthService  ,  private jwtService: JwtService, // Injecter JwtService
+  constructor(
+    private authService: AuthService,
+    private jwtService: JwtService, // Injecter JwtService
   ) {}
 
   @Post('/signup')
@@ -41,75 +41,57 @@ export class AuthController {
 
   @Post('/login')
   async login(@Body() loginDto: LoginDto, @Session() session: Record<string, any>): Promise<{ token: string }> {
-      const user = await this.authService.login(loginDto);
-  
-      session.token = user.token;
-  
-      return user;
+    const user = await this.authService.login(loginDto);
+    session.token = user.token;
+    return user;
   }
-
 
   @Get("/users")
-  findAll(){
-     return this.authService.findAll();
+  findAll() {
+    return this.authService.findAll();
   }
 
-   @Get("users/:id")
-  findOne(@Param('id') id: string){
-         return this.authService.findOne(id);
-      } 
+  @Get("users/:id")
+  findOne(@Param('id') id: string) {
+    return this.authService.findOne(id);
+  }
 
+  @Put("put/:id")
+  update(@Param('id') id: string, @Body() body: SignUpDto) {
+    return this.authService.update(id, body);
+  }
 
+  @Delete("users/:id")
+  Delete(@Param('id') id: string) {
+    return this.authService.delete(id);
+  }
 
-    @Put("put/:id")
-      update(@Param('id') id: string, @Body() body: SignUpDto){
-         return this.authService.update(id, body);
-      }
+  @Get("/usermail/:email")
+  findEmail(@Param('email') email: string) {
+    return this.authService.findByEmail(email);
+  }
 
-      @Delete("users/:id")
-      Delete(@Param('id') id: string){
-         return this.authService.delete(id);
-      }
+  @Get('/backoffice')
+  @Roles('Admin')
+  @UseGuards(AuthenticatedGuard, RolesGuard)
+  async getProtectedResource(@Session() session: Record<string, any>) {
+    const adminData = await this.authService.getAdminData(session.userId);
+    return adminData;
+  }
 
-       @Get("/usermail/:email")
-      findEmail(@Param('email') email: string) {
-        return this.authService.findByEmail(email);
-      } 
-      
-      
-
-      @Get('/backoffice')
-      @Roles('Admin') 
-      @UseGuards(AuthenticatedGuard, RolesGuard) 
-      async getProtectedResource(@Session() session: Record<string, any>) {
-        const adminData = await this.authService.getAdminData(session.userId);
-        
-        return adminData;
-      }
-
-
-
-      @Get('user/:id') // Mettez à jour le chemin de la route avec l'ID
-      async getUserById(@Param('id') id: string) {
-        if (!id) {
-          throw new BadRequestException('ID is required');
-        }
-        return this.authService.findOneById(id);
-      }
-        
-      
-      
+  @Get('user/:id')
+  async getUserById(@Param('id') id: string) {
+    if (!id) {
+      throw new BadRequestException('ID is required');
+    }
+    return this.authService.findOneById(id);
+  }
 
   @Get()
   async getAuthSession(@Session() session: Record<string, any>) {
-    console.log(session);
-    console.log(session.userId);
     session.authenticated = true;
     return session;
-
   }
-  
-
 
   @UseGuards(AuthenticatedGuard)
   @Get('status')
@@ -126,11 +108,9 @@ export class AuthController {
     try {
       session.blacklistedTokens = session.blacklistedTokens || [];
       session.blacklistedTokens.push(session.token);
-
       session.token = null;
       session.userId = null;
       session.authenticated = false;
-
       return { message: 'Logout successful' };
     } catch (error) {
       console.error('Error during logout:', error);
@@ -147,28 +127,17 @@ export class AuthController {
     }
   }
 
-
-
-
   @UseGuards(JwtAuthGuard)
   @Get('/profile')
   getProfile(@getUser() user: User) {
-    console.log('Détails de l\'utilisateur :', user);
     return { user };
   }
-
-
 
   @UseGuards(AllowAllGuard)
   @Get('/userId')
   getUserId(@getUser() user: User) {
     return user._id;
   }
-  
-  
-
-
-  
 
   @UseGuards(JwtAuthGuard)
   @Patch('/changePass')
@@ -180,16 +149,12 @@ export class AuthController {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
   }
-    
-
 
   @Patch(':id')
   async updateUserValue(@Param('id') id: string, @Body() updatedFields: Record<string, any>): Promise<User> {
     return this.authService.updateUserValue(id, updatedFields);
   }
 
-
-  
   @Post('/upload')
   @UseInterceptors(FileInterceptor('file', {
     storage: diskStorage({
@@ -201,30 +166,20 @@ export class AuthController {
     }),
   }))
  // async uploadFile(@UploadedFile() file: Express.Multer.File) {
-   // try {
-      // Vérifier si un fichier a été téléchargé
-     // if (!file) {
+  //  try {
+    //  if (!file) {
        // throw new Error('Aucun fichier téléchargé');
      // }
-
-      // Logguer les informations sur le fichier
     //  console.log('Fichier téléchargé:', file);
-
-      // Renvoyer une réponse réussie
      // return { success: true, message: 'Fichier téléchargé avec succès' };
-   // } catch (error) {
-      // En cas d'erreur, renvoyer un message d'erreur
+    //} catch (error) {
      // console.error('Erreur lors du téléchargement du fichier:', error);
-    //  return { success: false, message: 'Une erreur s\'est produite lors du téléchargement du fichier' };
+     // return { success: false, message: 'Une erreur s\'est produite lors du téléchargement du fichier' };
    // }
   //}
 
   @Get('/getFile')
-  getFile(@Res() res : Response , @Body() file : FileParams)
-  {
-    res.sendFile(path.join(__dirname , "../../uploads/" + file.fileName));
+  getFile(@Res() res: Response, @Body() file: FileParams) {
+    res.sendFile(path.join(__dirname, "../../uploads/" + file.fileName));
   }
-
-  
-  
-  }
+}

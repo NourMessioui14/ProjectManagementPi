@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } fro
 import { ReclamationDto } from 'src/dto/reclamations.dto';
 import { ReclamationsService } from './reclamations.service';
 import { AuthGuard } from '@nestjs/passport';
-import { Reclamation, ReclamationCategory, ReclamationDocument } from 'src/models/reclamations.model';
+import { Reclamation, ReclamationCategory, ReclamationDocument, ReclamationStatus } from 'src/models/reclamations.model';
 
 import { User } from 'src/auth/schemas/user.schema';
 import { ReqUser } from 'src/auth/req-user.decorator';
@@ -15,7 +15,18 @@ export class ReclamationsController {
 
     constructor(private readonly service : ReclamationsService) {};
      
+   
+  @Put("/:id/updateStatus")
+  async updateReclamationStatus(
+    @Param('id') id: string,
+    @Body('newStatus') newStatus: ReclamationStatus
+  ) {
+    return this.service.updateStatus(id, newStatus);
+  }
 
+
+
+    
     @UseGuards(AuthGuard('jwt'))
     @Post('/addReclamation')
     async createReclamation(

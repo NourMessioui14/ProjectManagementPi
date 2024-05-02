@@ -13,6 +13,9 @@ export default function WrapperRec({ children }) {
 
 
     const [ Reclamations , setClaims] = useState([]);
+      const [tickets, setTickets] = useState([]);
+    const [ticket, setTicket] = useState({});
+
     //update 
     const [Reclamation, SetReclamation] = useState({});
     
@@ -249,6 +252,18 @@ const Update = (form, setForm, id) =>{
 
 };
 
+const FetchTickets = async () => {
+  try {
+    const response = await axios.get('/ticket');
+    if (response.data) {
+      setTickets(response.data);
+    } else {
+      throw new Error('No data received');
+    }
+  } catch (error) {
+    console.error('Error fetching tickets:', error);
+  }
+};
 
 
 const FetchReclamationsUser = async () => {
@@ -262,7 +277,7 @@ const FetchReclamationsUser = async () => {
       setLoading(false);
       return;
     }
-
+    
     const response = await axios.get('http://localhost:5001/reclamations/user-reclamations', {
       headers: {
         Authorization: `Bearer ${token}`, // Assurez-vous que le jeton est correctement formaté
@@ -293,7 +308,7 @@ const FetchReclamationsUser = async () => {
 
   
     return (
-        <GlobalContext.Provider value={{ reponses, getReponseById , FetchReclamationsUser,  Delete , Update,FindOne ,Add,UpdateRecalamation, FindOneRecalamation,AddRecalamation,DeleteRecalamation, FetchReclamations,Reclamations , setClaims ,Reclamation, SetReclamation,  isOpen, onOpen, onClose, errors, setErrors
+        <GlobalContext.Provider value={{ reponses, getReponseById , FetchReclamationsUser, FetchTickets,  Delete , Update,FindOne ,Add,UpdateRecalamation, FindOneRecalamation,AddRecalamation,DeleteRecalamation, FetchReclamations,Reclamations , setClaims ,Reclamation, SetReclamation,  isOpen, onOpen, onClose, errors, setErrors
           }}>
             {children}
         </GlobalContext.Provider>

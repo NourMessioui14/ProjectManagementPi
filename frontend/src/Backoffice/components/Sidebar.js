@@ -13,47 +13,91 @@ function Sidebar() {
         <ul className="sidebar-nav">
           <li className="sidebar-header">Pages</li>
 
-          <li className="sidebar-item active">
+          <Link to="/charts" className="sidebar-link">
+  <span className="align-middle" style={{ display: 'flex', alignItems: 'center' }}>
+    <img src={`${process.env.PUBLIC_URL}/templateFront/images/Dashbord.png`} style={{ width: '25px', height: '25px', marginRight: '8px' }} alt="" />
+    Dashboard
+  </span>
+</Link>
+
+
+          <li className="sidebar-item ">
             <Link className="sidebar-link" to="/projects">
-              <i className="align-middle" data-feather="sliders"></i> <span className="align-middle">Project Management</span>
+
+            <span className="align-middle" style={{ display: 'flex', alignItems: 'center' }}>
+            <img src={`${process.env.PUBLIC_URL}/templateFront/images/projectManagment.png`} style={{ width: '25px', height: '25px', marginRight: '5px' }} alt="" />
+   
+             Project Management
+            </span>
             </Link>
           </li>
+
+
+
           <li className="sidebar-item">
             <Link className="sidebar-link" to="/tickets">
-              <i className="align-middle" data-feather="sliders"></i> <span className="align-middle">Ticket Management</span>
-            </Link>
+            <span className="align-middle" style={{ display: 'flex', alignItems: 'center' }}>
+           <img src={`${process.env.PUBLIC_URL}/templateFront/images/TicketManagment.png`} style={{ width: '25px', height: '25px', marginRight: '5px' }} alt="" />
+           Ticket Managment
+         </span>
+         </Link>
+
+        
           </li>
-          <li className="sidebar-item active">
+          <li className="sidebar-item ">
             <Link className="sidebar-link" to="/sprints">
-              <i className="align-middle" data-feather="sliders"></i> <span className="align-middle">Sprint Management</span>
-            </Link>
+            <span className="align-middle" style={{ display: 'flex', alignItems: 'center' }}>
+           <img src={`${process.env.PUBLIC_URL}/templateFront/images/sprint3.png`} style={{ width: '25px', height: '25px', marginRight: '5px' }} alt="" />
+           Sprint Management
+            </span> </Link>
           </li>
-          <li className="sidebar-item active">
+
+
+
+
+          <li className="sidebar-item ">
             <Link className="sidebar-link" to="/chat">
-              <i className="align-middle" data-feather="sliders"></i> <span className="align-middle">Chatrooms</span>
-            </Link>
+            <span className="align-middle" style={{ display: 'flex', alignItems: 'center' }}>
+           <img src={`${process.env.PUBLIC_URL}/templateFront/images/chatroom2.png`} style={{ width: '30px', height: '30px', marginRight: '5px' }} alt="" />
+          Chatrooms
+            </span>  </Link>
           </li>
-          <li className="sidebar-item active">
+
+
+          
+          <li className="sidebar-item ">
             <Link className="sidebar-link" to="/videocall">
-              <i className="align-middle" data-feather="sliders"></i> <span className="align-middle">Video Call</span>
-            </Link>
+            <span className="align-middle" style={{ display: 'flex', alignItems: 'center' }}>
+           <img src={`${process.env.PUBLIC_URL}/templateFront/images/videocall.png`} style={{ width: '25px', height: '25px', marginRight: '5px' }} alt="" />
+          video calls 
+            </span>  </Link>
           </li>
-          <li className="sidebar-item active">
+
+
+
+          <li className="sidebar-item ">
             <Link className="sidebar-link" to="/reclamations">
-              <i className="align-middle" data-feather="sliders"></i> <span className="align-middle">Reclamation Management</span>
-            </Link>
+            <span className="align-middle" style={{ display: 'flex', alignItems: 'center' }}>
+           <img src={`${process.env.PUBLIC_URL}/templateFront/images/claim.png`} style={{ width: '25px', height: '25px', marginRight: '5px' }} alt="" />
+           Claim Managment
+            </span>  </Link>
           </li>
-          <li className="sidebar-item active">
+
+
+          <li className="sidebar-item ">
             <Link className="sidebar-link" to="/backoffice">
-              <i className="align-middle" data-feather="sliders"></i> <span className="align-middle">User Management</span>
-            </Link>
+            <span className="align-middle" style={{ display: 'flex', alignItems: 'center' }}>
+           <img src={`${process.env.PUBLIC_URL}/templateFront/images/user.png`} style={{ width: '30px', height: '30px', marginRight: '5px' }} alt="" />
+           User Managment
+            </span> 
+             </Link>
           </li>
+
+        
           
           <li className="sidebar-header">Plugins & Addons</li>
           
-          <Link to="/charts" className="sidebar-link">
-          <i className="align-middle" data-feather="bar-chart-2"></i> <span className="align-middle">Charts</span>
-</Link>
+
 
 
           
@@ -66,11 +110,21 @@ function Sidebar() {
           {/* Bouton de retour */}
           <li className="sidebar-item">
             <Link className="sidebar-link" to="/cardproject">
-              <i className="align-middle" data-feather="arrow-right-circle"></i> <span className="align-middle">Retour</span>
-            </Link>
+            <span className="align-middle" style={{ display: 'flex', alignItems: 'center' }}>
+           <img src={`${process.env.PUBLIC_URL}/templateFront/images/retour.png`} style={{ width: '30px', height: '30px', marginRight: '5px' }} alt="" />
+          Retour
+            </span> 
+              </Link>
           </li>
         </ul>
-        <LogoutButton />
+
+
+        <span className="align-middle" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+  <img src={`${process.env.PUBLIC_URL}/templateFront/images/logout.png`} style={{ width: '30px', height: '30px', marginRight: '5px' }} alt="" />
+  <LogoutButton />
+</span>
+
+        
       </div>
     </nav>
   );
