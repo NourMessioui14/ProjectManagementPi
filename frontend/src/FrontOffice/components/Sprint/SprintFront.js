@@ -10,7 +10,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import TicketsBySprint from './TicketsBySprint';
-import { DownloadIcon, WarningTwoIcon } from '@chakra-ui/icons'
+import { DownloadIcon, WarningTwoIcon,ArrowBackIcon } from '@chakra-ui/icons'
 
 function SprintCard({ id, sprintname,description, startdate, enddate }) {
   const { DeleteSprint, onOpen, FindOneSprint } = useContext(GlobalContext);
@@ -132,6 +132,7 @@ function SprintFront() {
   const filteredSprints = sprints.filter(sprint =>
     sprint.sprintname.toLowerCase().includes(searchTerm.toLowerCase())
   );
+  const navigate = useNavigate();
 
     
 const generatePDF = () => {
@@ -156,8 +157,11 @@ const generatePDF = () => {
       <Box p="4" display={'flex'} justifyContent="space-between">
         <Text fontSize="xl" fontWeight="bold"></Text>
       </Box>
-      <Box p="4"
-display={'flex'} justifyContent="space-between">
+      <Button colorScheme='blackAlpha'  leftIcon={<ArrowBackIcon fontSize={'16px'} />}
+  onClick={() => navigate(-1)} ml={4} size='sm'>Go Back</Button>
+      <Box p="4" display={'flex'} justifyContent="space-between">
+          
+
 <Button
   colorScheme='purple'
   borderRadius='md'

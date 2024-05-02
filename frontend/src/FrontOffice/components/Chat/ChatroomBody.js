@@ -14,6 +14,7 @@ const styles = {
     borderRadius: '10px',
     scrollbarWidth: 'thin',
     scrollbarColor: '#bbb #f3f3f3',
+    marginTop: '20px', // Ajoute une marge en haut du composant
   },
   message: {
     display: 'flex',
@@ -142,7 +143,7 @@ useEffect(() => {
   }, []);
 
   return (
-    <div style={styles.chatRoomBody}>
+    <div style={styles.chatRoomBody }   >
       {messages.map((message, index) => (
         <div key={message._id} style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start', marginBottom: '15px' }}>
           <div style={{ marginRight: '10px' }}>

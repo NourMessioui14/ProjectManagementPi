@@ -32,7 +32,15 @@ export class ReponsesService {
 
       ) {}
 
-   
+      async DeleteAll() {
+        // Delete all responses
+        const deletedResponses = await this.ReponseModel.deleteMany({});
+
+        // Update reclamations to remove references to deleted responses
+        await this.ReclamationModel.updateMany({}, { $set: { reponses: [] } });
+
+        return deletedResponses;
+    }
 
     Add(body: ReponseDto) {
         return this.ReponseModel.create(body);
@@ -97,7 +105,7 @@ export class ReponsesService {
       
         // Envoyer un email à l'utilisateur
         const userEmail = reclamation.user.email;
-        await this.emailService.sendEmail(userEmail, 'Votre réclamation a reçu une réponse', 'Votre réclamation a reçu une réponse. Consultez le site pour plus de détails.');
+        await this.emailService.sendEmail(userEmail, 'Your claim has received a response', 'Your claim has received a response. Check the website for more details.');
       
         // Émettre un événement WebSocket pour notifier l'utilisateur
         this.appGateway.server.to(reclamation.user._id).emit('notification', 'Une nouvelle réponse a été ajoutée à votre réclamation.');
