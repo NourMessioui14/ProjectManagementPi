@@ -20,6 +20,8 @@ import RowSprint from './RowSprint';
 import DrawerFormSprint from './DrawerFormSprint';
 import { GlobalContext } from '../../../context/GlobalWrapperSprint';
 import Sidebar from '../Sidebar';
+import Navbar from '../Navbar';
+
 
 function SprintList() {
   const { FetchSprints, sprints, onOpen} = useContext(GlobalContext);
@@ -58,9 +60,12 @@ function SprintList() {
         <Sidebar/>
         <Box flexGrow={1}>
           <Box>
+          <Navbar/>
+
         <Text fontSize="xl" fontWeight="bold">
           List of Sprints
         </Text>
+
         </Box>
         <Box display="flex" alignItems="center" justifyContent="space-between">
         <Box>

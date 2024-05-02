@@ -31,6 +31,12 @@ pipeline {
             }
         }
 
+           stage('SONARQUBE') {
+            steps {
+                sh "mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=sonar"
+            }
+        }
+
         stage('Build application') {
             steps {
                 script {

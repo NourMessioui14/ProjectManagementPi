@@ -11,6 +11,11 @@ pipeline {
                 checkout scm
             }
         }
+        stage('SONARQUBE') {
+            steps {
+                    echo 'This is a testing stage for unit tests.'
+            }
+        }
 
         stage('Install dependencies') {
             steps {
