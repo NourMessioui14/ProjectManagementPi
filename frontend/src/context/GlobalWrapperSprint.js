@@ -220,6 +220,17 @@ export default function WrapperS({ children }) {
       }
   };
 
+  const UpdateTicketEtat = async (ticketId, newEtat) => {
+    try {
+      const response = await axios.put(`/ticket/${ticketId}/etat`, { etat: newEtat });
+      // Mettre à jour l'état local des tickets ou effectuer d'autres actions nécessaires
+      console.log('Ticket state updated successfully:', response.data);
+    } catch (error) {
+      console.error('Error updating ticket state:', error);
+    }
+  };
+  
+
 
     // const DeleteSprint = (id) => {
     //     axios
@@ -392,7 +403,8 @@ export default function WrapperS({ children }) {
             AssignTicketsToSprint,
             FetchTicketsbyProject,
             fetchSprintsByProjectId,
-            fetchTicketsBySprintId
+            fetchTicketsBySprintId,
+            UpdateTicketEtat
 
   
         }}>

@@ -2,15 +2,15 @@ import React, { useState, useEffect,useContext } from "react";
 import { Header } from "./Header";
 import Draggable from 'react-draggable';
 
-import { useLocation,useParams } from "react-router-dom"; // Importing useLocation from react-router-dom
+import { useLocation,useNavigate } from "react-router-dom"; // Importing useLocation from react-router-dom
 import {Button,Text,Menu, MenuButton, MenuList, MenuItem,Textarea,Heading,IconButton,Badge,Tooltip} from '@chakra-ui/react';
 import { GlobalContext } from '../../../context/GlobalWrapperSprint';
 import SelectTicket from './SelectTicket'; // Importez SelectTicket
 import NavbarFront from '../../NavbarFront';
 import { MdDelete } from "react-icons/md";
 import { SketchPicker } from 'react-color';
-import {ChevronDownIcon,EditIcon } from '@chakra-ui/icons'
-import { MdMoreVert , } from "react-icons/md";
+import {ArrowBackIcon, ChevronDownIcon,EditIcon } from '@chakra-ui/icons'
+import { MdMoreVert } from "react-icons/md";
 
 export default function ScrumList() {
   const [board, setBoard] = useState([]);
@@ -19,6 +19,7 @@ export default function ScrumList() {
   const sprintName = searchParams.get("name");
   const description = searchParams.get("description");
   const sprintId = searchParams.get("id");
+  const navigate = useNavigate();
 
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -164,8 +165,13 @@ export default function ScrumList() {
   };
   
   return (
+    <div style={{ marginTop: '140px' }}>
+     
+      <NavbarFront/> 
     <div>
         <Header sprintName={sprintName} description={description} />
+        <Button colorScheme='blackAlpha' ml={4} size='sm' leftIcon={<ArrowBackIcon fontSize={'20px'} />} onClick={() => navigate(-1)}>Back to Sprints</Button>
+
         <Menu >
           <MenuButton colorScheme='blackAlpha'
                       borderRadius='2xl'
@@ -357,6 +363,7 @@ export default function ScrumList() {
       
             <SelectTicket isOpen={isOpen} onClose={() => setIsOpen(false)} setBoard={setBoard} id={sprintId} /> 
 
+      </div>
       </div>
   );
 }

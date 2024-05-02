@@ -38,6 +38,7 @@ import ChartPage from './Backoffice/components/Reclamation/ChartPage';
 import MyVideocalls from './FrontOffice/components/Chat/myvideocalls';
 import Zoomjdid from './FrontOffice/components/Chat/zoomjdid';
 import TicketStatistics from './Backoffice/components/Ticket/TicketStatistics';
+// import ScrumList2 from './FrontOffice/components/Sprint/scrum2';
 
 function App() {
   return (
@@ -74,7 +75,15 @@ function App() {
         <Route path="/tickets" element={<TicketList />} />
         <Route path="/sprints" element={<SprintList />} />
         <Route path="/sprintFront/:projectId" element={<SprintFront />} />
+        
+        
+        
         <Route path="/scrum" element={<ScrumList />} />
+        {/* <Route path="/scrum2" element={<ScrumList2 />} /> */}
+
+
+
+
         <Route path="/reclamations" element={<ReclamationsList />} />
         <Route path="/reclamationsFront" element={<ReclamationUser />} />
         <Route path="/chat" element={<Chatrooms />} />

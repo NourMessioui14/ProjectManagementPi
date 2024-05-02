@@ -4,8 +4,8 @@ import { MDBContainer, MDBRow, MDBCol, MDBCard, MDBCardBody, MDBCardImage, MDBCa
 import { jwtDecode } from 'jwt-decode';
 import NavbarFront from '../../NavbarFront';
 import { Link } from 'react-router-dom';
-import { LockIcon, EditIcon } from '@chakra-ui/icons'
-import { Box, Button, Flex } from '@chakra-ui/react';
+import {LockIcon, EditIcon } from '@chakra-ui/icons'
+import { Box ,Button,Flex } from '@chakra-ui/react';
 
 const UserConnected = () => {
   const [user, setUser] = useState(null);
@@ -13,12 +13,13 @@ const UserConnected = () => {
   const [error, setError] = useState(null);
   const [photoPreview, setPhotoPreview] = useState(null);
 
+
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
         const token = localStorage.getItem('token');
         console.log('Jeton récupéré:', token);
-
+  
         if (!token) {
           console.error('Aucun jeton trouvé. Veuillez vous connecter.');
           setError('Aucun jeton trouvé. Veuillez vous connecter.');
@@ -27,13 +28,13 @@ const UserConnected = () => {
         }
         const decodedToken = jwtDecode(token);
         console.log('Contenu du jeton:', decodedToken);
-
+  
         const response = await axios.get('http://localhost:5001/auth/profile', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-
+  
         if (response.data && response.data.user) {
           console.log('Réponse de l\'API:', response.data);
           setUser(response.data.user);
@@ -54,16 +55,18 @@ const UserConnected = () => {
         setLoading(false);
       }
     };
-
+  
     fetchUserDetails();
   }, []);
-
+  
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
     setPhotoPreview(URL.createObjectURL(file));
 
+
     const formData = new FormData();
     formData.append('file', file);
+
 
     axios.post('http://localhost:5001/auth/upload', formData)
       .then(response => {
@@ -76,13 +79,16 @@ const UserConnected = () => {
       });
   };
 
+
   if (loading) {
     return <p>Chargement...</p>;
   }
 
+
   if (error) {
     return <p>{error}</p>;
   }
+
 
   return (
     <section className="vh-100" style={{ backgroundColor: '#f4f5f7' }}>
@@ -117,23 +123,33 @@ const UserConnected = () => {
                         {user.age && <MDBCardText>Âge: {user.age}</MDBCardText>}
                         {user.role && <MDBCardText>Rôle: {user.role}</MDBCardText>}
                         <div className="d-flex justify-content-between">
-                          <div>
-                            <Link to={`/profile/${user._id}`} className="btn btn-primary">
-                              <MDBIcon icon="user-edit" className="me-2" />
-                              <span>Modifier le profil</span>
+                          <div style={{ width: '150px', height: '50px' }}>
+                            <Link to={`/profile/${user._id}`} className="btn btn-primary buttonSH" style={{ width: '100%', height: '100%' }}>
+                              <span class="buttonSH-content" >
+                                <MDBIcon icon="user-edit" className="me-2" />
+                                Modifier le profil
+                              </span>
                             </Link>
                           </div>
-                          <div>
-                            <Link to={`/changePass`} className="btn btn-primary">
-                              <MDBIcon icon="lock" className="me-2" />
-                              <span>Modifier le mot de passe</span>
+                          <div  style={{ width: '150px', height: '50px' }}>
+                            <Link to={`/changePass`} className="btn btn-primary buttonSH" style={{ width: '100%', height: '100%' }}>
+                              <span class="buttonSH-content">
+                                <MDBIcon icon="lock" className="me-2" />
+                                Modifier le mot de passe
+                              </span>
                             </Link>
                           </div>
                         </div>
-                        <div className="mt-3">
-                          <label htmlFor="photoInput" className="btn btn-primary">Ajouter une photo</label>
+
+                        <div className="mt-3"  style={{ width: '150px', height: '50px' }}>
+                          <label htmlFor="photoInput" className="btn btn-primary buttonSH" style={{ width: '100%', height: '100%' }}>
+                            <span class="buttonSH-content">
+                              Ajouter une photo
+                            </span>
+                          </label>
                           <input id="photoInput" type="file" accept="image/*" onChange={handleFileUpload} style={{ display: 'none' }} />
                         </div>
+
                       </MDBCardBody>
                     </MDBCol>
                   </>
@@ -146,5 +162,6 @@ const UserConnected = () => {
     </section>
   );
 };
+
 
 export default UserConnected;
