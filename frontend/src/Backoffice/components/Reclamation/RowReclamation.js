@@ -59,65 +59,73 @@ const Row = ({ id, user, Category, Subject, Description, reponses, createdAt, Re
     setResponseText(value);
     setIsResponseEmpty(value.trim() === '');
   };
-  const [socket, setSocket] =  useState('');
+  const [socket, setSocket] =   useState(null);
 
   useEffect(() => {
-    setSocket(io('http://localhost:5001'));
+    setSocket(io("http://localhost:5001"));
   }, []);
 
-  const handleAddResponse = () => {
-    if (responseText.trim() === '') {
-      toast({
-        title: 'Empty Response',
-        description: 'Please enter a response before submitting.',
-        status: 'error',
-        duration: 4000,
-        isClosable: true,
-      });
-      return;
-    }
 
-    axios.post(`/reponses/${id}`, { text: responseText })
-      .then((res) => {
-        console.log(res.data);
-        console.log("add response");
-        // Une fois que la réponse est ajoutée avec succès, mettez à jour le statut de la réclamation en "Resolved"
-        axios.put(`/reclamations/${id}/updateStatus`, { newStatus: "Resolved" })
-          .then(() => {
-            FetchReclamations();
-            setStatus("Resolved");
-            setStatusButtonColor('green'); // Changer la couleur du bouton en vert
-            // Enregistrer l'état du bouton mis à jour dans le stockage local
-            localStorage.setItem(`status_${id}`, 'Resolved');
-            handleNotification();
-            console.log('Notification emitted successfully:', 'Votre réclamation a été traitée.');
-            // ...
-            toast({
-              title: 'Response Added and Status Updated',
-              description: 'Your response has been added and the status of the claim has been updated to "Resolved".',
-              status: 'success',
-              duration: 4000,
-              isClosable: true,
-            });
-          })
-          .catch((error) => {
-            console.error(error);
-            toast({
-              title: 'Error',
-              description: 'An error occurred while updating the status.',
-              status: 'error',
-              duration: 4000,
-              isClosable: true,
-            });
-          });
+  
+const handleNotification = () => {
+  if (socket) {
+      console.log(socket);
+      const notificationData = {
+          senderName: "Admin",
+      };
+      socket.emit("sendNotification", notificationData);
+       console.log("Sending notification:", notificationData);  
+  }
+};
 
-        setResponseText('');
-        setIsResponseEmpty(true);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  };
+  const handleAddResponse = async () => {
+  if (responseText.trim() === '') {
+    toast({
+      title: 'Empty Response',
+      description: 'Please enter a response before submitting.',
+      status: 'error',
+      duration: 4000,
+      isClosable: true,
+    });
+    return;
+  }
+
+  try {
+    const response = await axios.post(`/reponses/${id}`, { text: responseText , senderName: "Admin", description: Description });
+    console.log(response.data);
+
+    console.log("add response");
+    // Une fois que la réponse est ajoutée avec succès, mettez à jour le statut de la réclamation en "Resolved"
+    const updateStatusResponse = await axios.put(`/reclamations/${id}/updateStatus`, { newStatus: "Resolved" });
+    FetchReclamations();
+    setStatus("Resolved");
+    setStatusButtonColor('green'); // Changer la couleur du bouton en vert
+    // Enregistrer l'état du bouton mis à jour dans le stockage local
+    localStorage.setItem(`status_${id}`, 'Resolved');
+    handleNotification();
+    console.log('Notification emitted successfully:', 'Votre réclamation a été traitée.');
+    // ...
+    toast({
+      title: 'Response Added and Status Updated',
+      description: 'Your response has been added and the status of the claim has been updated to "Resolved".',
+      status: 'success',
+      duration: 4000,
+      isClosable: true,
+    });
+  } catch (error) {
+    console.error(error);
+    toast({
+      title: 'Error',
+      description: 'An error occurred while updating the status.',
+      status: 'error',
+      duration: 4000,
+      isClosable: true,
+    });
+  }
+
+  setResponseText('');
+  setIsResponseEmpty(true);
+};
 
 
   const handleUpdateStatus = async () => {
@@ -187,16 +195,6 @@ const Row = ({ id, user, Category, Subject, Description, reponses, createdAt, Re
  
   
 
-const handleNotification = () => {
-  if (socket) {
-      console.log(socket);
-      const notificationData = {
-          senderName: "Admin",
-      };
-      socket.emit("notification", notificationData);
-      console.log("Sending notification:", notificationData); 
-  }
-};
   return (
     <Box borderWidth="1px" borderRadius="lg" p="4" mb="4" bg="AliceBlue" boxShadow="md">
       <Flex align="center" justifyContent="space-between">

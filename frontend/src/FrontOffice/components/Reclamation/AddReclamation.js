@@ -75,7 +75,7 @@ export default function AddReclamation() {
             <DrawerOverlay />
             <DrawerContent>
                 <DrawerCloseButton onClick={() => { onClose(); setErrors({}); setForm({}); }} />
-                <DrawerHeader>Create / Update Claim</DrawerHeader>
+                <DrawerHeader> Update Claim</DrawerHeader>
                 <DrawerBody>
                     <Stack spacing={"24px"}>
                         <InputsReclamations name="Category" onChangeHandler={onChangeHandler} value={form?.Category} errors={errors?.Category} />

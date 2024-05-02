@@ -29,30 +29,32 @@ export class AppGateway implements OnGatewayConnection, OnGatewayInit, OnGateway
         this.logger.log(`Client connected: ${client.id}`);
     }
 
-    handleDisconnect(client: Socket) {
-        this.logger.log(`Client disconnected: ${client.id}`);
-    }
+  
 
     afterInit() {
         this.logger.log('WebSocket gateway initialized');
     }
 
-    @SubscribeMessage('notification')
-    async handleSendNotification(@MessageBody() notificationData: any) {
+    @SubscribeMessage('sendNotification')
+    async handleSendNotification(socket: Socket, data: any) {
         try {
-            // Log message pour vérifier si le backend reçoit la notification de l'admin
-            this.logger.log(`Notification received from ${notificationData.senderName}`);
-            console.log('Notification received from', notificationData.senderName); // Ajoutez ce message console
-
-            // Émettre la notification à tous les clients connectés avec les données de notification reçues
-            this.server.emit('notification', notificationData);
-           this.logger.log('Notification successfully sent to frontend',notificationData );
+            
+            this.server.emit('getNotification', {
+                senderName: data.senderName,
+               
+            });
+            console.log(data.senderName + ' sendername log backend');
+            console.log(data.receiverName + ' receivername log backend');
+        
     
             // Log pour vérifier que la notification a été envoyée avec succès au frontend
            // this.logger.log('Notification successfully sent to frontend');
         } catch (error) {
             this.logger.error('Erreur lors de l\'envoi de la notification :', error);
         }
+    }
+    handleDisconnect(client: Socket) {
+        this.logger.log(`Client disconnected: ${client.id}`);
     }
     
     
