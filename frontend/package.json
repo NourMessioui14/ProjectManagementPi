@@ -26,10 +26,7 @@
     "nodemailer": "^6.9.13",
     "react": "^18.2.0",
     "react-beautiful-dnd": "^13.1.1",
-<<<<<<< HEAD
     "react-chartjs-2": "^5.2.0",
-=======
->>>>>>> 0864f2bfb3a45079dd9de1d4f671b003a45f3a72
     "react-color": "^2.19.3",
     "react-datepicker": "^6.6.0",
     "react-dom": "^18.2.0",
