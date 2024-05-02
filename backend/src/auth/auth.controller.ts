@@ -159,7 +159,6 @@ export class AuthController {
   }
 
 
-
   @Post('/upload')
   @UseInterceptors(FileInterceptor('file', {
     storage: diskStorage({
@@ -193,7 +192,6 @@ export class AuthController {
 
 
   
-
   @Post('/upload')
   @UseInterceptors(FileInterceptor('file', {
     storage: diskStorage({
