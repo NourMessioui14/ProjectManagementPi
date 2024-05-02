@@ -57,7 +57,7 @@ function DashboardCards() {
       />
       <DashboardCard
         title="Claims"
-        value="18"
+        value="7"
         icon={AiOutlineClockCircle}
         colorScheme="orange.500"
       />

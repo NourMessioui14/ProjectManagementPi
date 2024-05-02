@@ -135,8 +135,8 @@ const handleNotification = () => {
       FetchReclamations();
       setStatusButtonColor('green'); // Changer la couleur du bouton en vert
       toast({
-        title: 'Statut mis à jour',
-        description: 'Le statut de la réclamation a été mis à jour avec succès.',
+        title: 'Status updated',
+        description: 'The claim status has been successfully updated.',
         status: 'success',
         duration: 4000,
         isClosable: true,
@@ -157,10 +157,10 @@ const handleNotification = () => {
 
   const generatePDF = () => {
     const doc = new jsPDF();
-    doc.text(`user name: ${user?.name}`, 10, 40);
-    doc.text(`Subject: ${Subject}`, 10, 10);
-    doc.text(`Category: ${Category}`, 10, 20);
-    doc.text(`Description: ${Description}`, 10, 30);
+    doc.text(`user name: ${user?.name}`, 10, 10);
+    doc.text(`Subject: ${Subject}`, 10, 20);
+    doc.text(`Category: ${Category}`, 10, 30);
+    doc.text(`Description: ${Description}`, 10, 40);
     doc.text(`Created At: ${createdAt}`, 10, 50);
     doc.save(`reclamation_${id}.pdf`);
   };
@@ -239,9 +239,9 @@ const handleNotification = () => {
         <Text fontWeight="bold" color="#566573" fontSize="16px">{Subject}</Text>
       </div>
       <Text color="#5D6D7E" fontSize="16px">Category: {Category}</Text>
-      <Text color="#5D6D7E" fontSize="16px">Description: {expanded ? Description : `${Description.slice(0, 100)}${Description.length > 100 ? "..." : ""}`}</Text>
+      <Text color="#5D6D7E" fontSize="16px">Description: {expanded ? Description : `${Description.slice(0, 135)}${Description.length > 135 ? "..." : ""}`}</Text>
 
-      {Description.length > 100 && (
+      {Description.length > 135 && (
   <>
     <Button
       colorScheme="pink"

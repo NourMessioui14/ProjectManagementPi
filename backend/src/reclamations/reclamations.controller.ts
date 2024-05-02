@@ -115,7 +115,11 @@ export class ReclamationsController {
     {
         return this.service.Search();
     }
-
+    
+    @Put('/updateAllToPending')
+    async updateAllToPending(): Promise<Reclamation[]> {
+        return this.service.updateAllToPending();
+    }
 
 
 

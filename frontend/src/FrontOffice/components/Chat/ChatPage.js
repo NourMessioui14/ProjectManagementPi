@@ -49,11 +49,13 @@ const ChatPage = () => {
   };
 
   return (
+    <div className="col-12 grid-margin stretch-card" style={{ marginTop: '125px' }}>
+      <NavbarFront /> 
     <div style={{ marginTop: '140px' }}>
  
      
        {/* Add the NavbarFront component here */}
-      <div className="chat-page" style={{ display: 'flex', flexDirection: 'row', height: '100vh', overflow: 'hidden' }}>
+      <div className="chat-page" style={{ display: 'flex', flexDirection: 'row', height: '100vh', overflow: 'hidden', }}>
         <ChatSideBarLeft onSelectChatroom={handleSelectChatroom} onchatroomname={handleSelectChatroomName} onSelectUserId={handleSelectUserId} />
         <div className="chat-page-center w-full p-2" style={{ flex: '1', display: 'flex', flexDirection: 'column', width: '100%', overflowY: 'auto' }}>
           <ChatroomHeader roomName={`Chatroom ${currentRoomName}`} />
@@ -63,6 +65,7 @@ const ChatPage = () => {
         <ChatSideBarRight onSelectChatroom={handleSelectChatroom} />
       </div>
   
+    </div>
     </div>
   );
 };
