@@ -11,7 +11,7 @@ import NavbarFront from '../../NavbarFront';
 const styles = `
 body {
     margin: 0;
-    padding-top: 120px; /* Ajustez cette valeur pour donner de l'espace au Navbar */
+    padding-top: 40px; /* Ajustez cette valeur pour donner de l'espace au Navbar */
     color: #2e323c;
     background: #f5f6fa;
     position: relative;
@@ -76,8 +76,12 @@ body {
 }
 
 .container {
-    margin-top: 160px; /* Ajustez cette valeur pour déplacer le formulaire plus bas */
+    margin-top: 40px; /* Ajustez cette valeur pour déplacer le formulaire plus haut */
 }
+.small-space {
+  margin-right: 10px; // Vous pouvez ajuster cette valeur pour contrôler la taille de l'espace
+}
+
 `;
 
 function Profile() {
@@ -127,7 +131,6 @@ function Profile() {
   return (
     <div>
       {/* NavbarFront placé en haut de la page avec classe navbar-fixed */}
-      <NavbarFront className="navbar-fixed" />
 
       <style>{styles}</style> {/* Include CSS Styles */}
 
@@ -145,7 +148,7 @@ function Profile() {
                     <h6 className='user-email'>{userData.email}</h6>
                   </div>
                   <div className='about'>
-                    <h5>About</h5>
+                    <h5>About</h5>Full Stack Designer I enjoy creating user-centric, delightful and human experiences.
                     <p>{userData.about}</p>
                   </div>
                 </div>
@@ -190,12 +193,16 @@ function Profile() {
                     </FormControl>
                   </div>
                   <div className='col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12'>
-                    <Button colorScheme="blue" onClick={handleSubmit}>Update</Button>
-                    <ChakraLink as={Link} to="/userconnected" color="teal.500" _hover={{ color: 'teal.700', textDecoration: 'underline' }}>
-                      Retour
-                    </ChakraLink>
-                  </div>
-                </div>
+  <div className="d-flex justify-content-between">
+    <button className="btn btn-primary buttonSH" style={{ width: '30%', height: '50px' }} onClick={handleSubmit}>
+      Update
+    </button>
+    <Button as={Link} to="/userconnected" className="btn btn-primary buttonSH " style={{ width: '30%', height: '50px' }}>
+      Retour
+    </Button>
+  </div>
+</div>
+              </div>
               </div>
             </div>
           </div>
