@@ -9,7 +9,11 @@ export enum ReclamationCategory {
   MissingDocumentation = 'Missing Documentation',
   Other = 'Other',
 }
-
+export enum ReclamationStatus {
+  PENDING = 'Pending',
+  IN_PROGRESS = 'In Progress',
+  RESOLVED = 'Resolved',
+}
 export type ReclamationDocument = Reclamation & Document;
 
 @Schema()
@@ -22,6 +26,9 @@ export class Reclamation {
 
   @Prop({ required: true })
   Description: string;
+
+  @Prop({ required: true, enum: ReclamationStatus, default: ReclamationStatus.PENDING })
+  Status: ReclamationStatus;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
   user: User;

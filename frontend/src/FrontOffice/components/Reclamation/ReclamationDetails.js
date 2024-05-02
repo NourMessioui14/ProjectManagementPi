@@ -26,7 +26,7 @@ function ReclamationDetails({ isOpen, onClose, reclamation }) {
         fetchResponseTexts();
     }, [reclamation]);
 
-    console.log(responseTexts); // Affiche les textes des réponses dans la console
+    //console.log(responseTexts); // Affiche les textes des réponses dans la console
 
     return (
         <Modal isOpen={isOpen} onClose={onClose} size="xl">

@@ -37,6 +37,7 @@ import TicketPredictor from './FrontOffice/ticketPrediction';
 import ChartPage from './Backoffice/components/Reclamation/ChartPage';
 import MyVideocalls from './FrontOffice/components/Chat/myvideocalls';
 import Zoomjdid from './FrontOffice/components/Chat/zoomjdid';
+import TicketStatistics from './Backoffice/components/Ticket/TicketStatistics';
 
 function App() {
   return (
@@ -100,7 +101,9 @@ function App() {
         <Route path="/details/:projectId" element={<DetailsProject />} /> {/* Configurez la route pour les détails du projet avec un paramètre d'identifiant de projet */}
 
         <Route path="/charts" element={<ChartPage />} />
+        <Route path="/ticketcharts" element={<TicketStatistics />} />
 
+        
         <Route path="/myvideocalls" element={<MyVideocalls/>} />
         <Route path="/zoomjdid" element={<Zoomjdid/>} />
 

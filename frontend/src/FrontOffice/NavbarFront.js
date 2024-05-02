@@ -1,13 +1,30 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import TaskModal from '../Backoffice/components/Ticket/TaskModal';
 import { FaCog } from 'react-icons/fa'; // Import de l'icône de paramètre
 import LogoutButton from '../Backoffice/components/LogoutButton';
-
+import { io } from 'socket.io-client';
 function NavbarFront() {
   const [showCreateTaskModal, setShowCreateTaskModal] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const [showProfileDropdown, setShowProfileDropdown] = useState(false); // État pour afficher ou masquer le dropdown de profil
+  const [notifications, setNotifications] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [socket, setSocket] = useState(null);
+  const [notification, setNotification] = useState('');
+
+
+  useEffect(() => {
+    const socket = io('http://localhost:5001'); // Assurez-vous de remplacer l'URL par celle de votre serveur
+
+    socket.on('notification', (data) => {
+      setNotification(data.message);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
 
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
@@ -24,6 +41,108 @@ function NavbarFront() {
   const toggleProfileDropdown = () => {
     setShowProfileDropdown(!showProfileDropdown);
   };
+
+
+
+
+  // const fetchData = async () => {
+  //   try {
+  //     const notifsResponse = await axios.get('http://localhost:9090/api/order/notifs');
+  //     setNotifications(notifsResponse.data);
+
+  //   } catch (error) {
+  //     console.error('Error fetching data:', error);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   // Se connecter au serveur WebSocket
+  //   const socket = io('http://localhost:5001');
+
+  //   // Écouter l'événement de notification du serveur
+  //   socket.on('notification', (notificationData) => {
+  //     // Ajouter la nouvelle notification à la liste des notifications
+  //     setNotifications((prevNotifications) => [...prevNotifications, notificationData]);
+
+  //     // Afficher la notification dans la console
+
+  //   });
+
+  //   // Nettoyer l'écouteur lors du démontage du composant
+  //   return () => {
+  //     socket.disconnect();
+  //   };
+  // }, []);
+
+  // const handleRead = () => {
+
+  //   const response = { read: "true" };
+  //   if (response.data) {
+  //     return response.data;
+  //   }
+  //   setNotifications([]);
+  //   setOpen(false);
+  // };
+
+  // ******************notification*****************//
+  /*useEffect(() => {
+    try {
+      const newSocket = io("http://localhost:5001");
+      setSocket(newSocket);
+      console.log('Socket connecté avec succès');
+
+      // Log pour vérifier la réception des notifications côté client
+      newSocket.on('getNotification', (notificationData) => {
+        console.log('Notification received:', notificationData);
+      });
+    } catch (error) {
+      console.log('Erreur lors de la connexion au socket:', error);
+    }
+  }, []);
+
+  const unreadNotifications = notifications.filter(notification => !notification.read);
+
+  useEffect(() => {
+    if (!socket) return;
+    console.log("socket");
+    console.log(socket);
+    const handleNotification = (data) => {
+      // Ajouter la nouvelle notification à la liste des notifications
+      setNotifications(prevNotifications => [...prevNotifications, data]);
+    };
+
+    socket.on("getNotification ", handleNotification);
+    
+
+  }, [socket]);
+
+  console.log("notification");
+  console.log(notifications);
+
+  const displayNotification = ({ senderName }) => {
+    return (
+      <>
+        <span className="notification"><FcApproval size={30} />{`  ${senderName} répond à votre réclamation`}</span>
+        <hr style={{
+          width: "100%", // Ajustez la largeur si nécessaire
+          height: "1px", // Ajustez la hauteur si nécessaire
+          backgroundColor: "black", // Ajustez la couleur si nécessaire
+          border: "none",
+          borderColor: "black", // Ajustez la couleur de la bordure si nécessaire
+          margin: "5px 0", // Ajustez les marges si nécessaire
+        }} />
+      </>
+    );
+  };
+*/
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    window.location.href = '/login';
+  };
+
+
+
 
   return (
     <header className="header-area header-sticky">

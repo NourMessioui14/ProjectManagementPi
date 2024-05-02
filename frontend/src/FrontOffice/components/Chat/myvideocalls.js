@@ -32,8 +32,11 @@ const MyVideocalls = () => {
   };
 
   const handleJoinMeeting = (videocallId) => {
+    //const { history } = this.props;
     // Logic to join the meeting
     console.log(`Joining meeting ${videocallId}`);
+    window.location.href = '/zoomjdid';
+    //this.props.history.push('/zoomjdid');
     
   };
 
@@ -78,13 +81,14 @@ const MyVideocalls = () => {
                 <td style={tableCellStyle}>{call.date}</td>
                 <td style={tableCellStyle}>{call.time}</td>
                 <td style={tableCellStyle}>
-                  <button
+                <a
+                    href="/zoomjdid"
                     style={buttonStyle}
                     onClick={() => handleJoinMeeting(call.videocallId)}
                     disabled={disabled}
                   >
                     Join Meeting
-                  </button>
+                  </a>
                 </td>
               </tr>
             );

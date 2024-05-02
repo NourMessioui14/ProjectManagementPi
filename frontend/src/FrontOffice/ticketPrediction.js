@@ -1,12 +1,31 @@
 import React, { useState } from 'react';
 import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter, Textarea, Button } from '@chakra-ui/react';
+import axios from 'axios';
 
 const TicketModal = ({ isOpen, onClose, onSave }) => {
   const [description, setDescription] = useState('');
 
-  const handleSave = () => {
-    onSave(description);
-    onClose();
+const createTicketFromDescription = async (description) => {
+  try {
+    const response = await axios.post('/ticket/create-from-description', { description });
+    console.log('New ticket created:', response.data);
+    return response.data; // Retournez la réponse complète du backend
+  } catch (error) {
+    console.error('Error creating ticket:', error.response.data);
+    throw error;
+  }
+};
+
+  
+
+  const handleSave = async () => {
+    try {
+      const newTicket = await createTicketFromDescription(description);
+      onSave(newTicket);
+      onClose();
+    } catch (error) {
+      // Gérer les erreurs ici
+    }
   };
 
   return (
