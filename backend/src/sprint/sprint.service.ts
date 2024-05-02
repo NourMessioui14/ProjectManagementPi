@@ -9,7 +9,6 @@ import { EmailSpService } from './email-sp.service';
 @Injectable()
 export class SprintService {
 
-
     private readonly logger = new Logger(SprintService.name);
 
 
