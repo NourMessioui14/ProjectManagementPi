@@ -37,7 +37,6 @@
     "react-pro-sidebar": "^1.1.0",
     "react-push-notification": "^1.5.4",
     "react-router-dom": "^6.23.0",
-    "react-scripts": "5.0.1",
     "react-select": "^5.8.0",
     "react-simple-typewriter": "^5.0.1",
     "react-toastify": "^10.0.4",
@@ -70,5 +69,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "react-scripts": "^5.0.1"
   }
 }

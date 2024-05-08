@@ -14,7 +14,7 @@ const styles = {
     borderRadius: '10px',
     scrollbarWidth: 'thin',
     scrollbarColor: '#bbb #f3f3f3',
-    marginTop: '20px', // Ajoute une marge en haut du composant
+   // marginTop: '20px', // Ajoute une marge en haut du composant
   },
   message: {
     display: 'flex',
