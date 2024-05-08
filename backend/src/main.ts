@@ -12,7 +12,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.enableCors({
-    origin: 'https://rococo-otter-2b11ca.netlify.app/', 
+    origin: 'https://rococo-otter-2b11ca.netlify.app/',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
     exposedHeaders: 'Set-Cookie',
