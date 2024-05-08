@@ -23,7 +23,7 @@ function EmailVerification() {
       }
   
       // Fetch data from your API
-      const response = await axios.get(`http://localhost:5001/auth/usermail/${email}`);
+      const response = await axios.get(`https://nestjspi.onrender.com/auth/usermail/${email}`);
       const responseData = response.data;
   
       // For debugging, log the response data

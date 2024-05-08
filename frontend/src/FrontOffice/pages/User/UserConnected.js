@@ -27,7 +27,7 @@ const UserConnected = () => {
         const decodedToken = jwtDecode(token);
         console.log('Contenu du jeton:', decodedToken);
   
-        const response = await axios.get('http://localhost:5001/auth/profile', {
+        const response = await axios.get('https://nestjspi.onrender.com/auth/profile', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -66,7 +66,7 @@ const UserConnected = () => {
     formData.append('file', file);
 
 
-    axios.post('http://localhost:5001/auth/upload', formData)
+    axios.post('https://nestjspi.onrender.com/auth/upload', formData)
       .then(response => {
         console.log('Fichier téléchargé avec succès:', response.data);
         // Stocker l'URL de la photo de profil dans le localStorage

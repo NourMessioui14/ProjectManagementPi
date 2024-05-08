@@ -9,7 +9,7 @@ const UserRolesChart = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:5001/auth/users');
+        const response = await axios.get('https://nestjspi.onrender.com/auth/users');
         setUserData(response.data);
       } catch (error) {
         console.error('Error fetching user data:', error);

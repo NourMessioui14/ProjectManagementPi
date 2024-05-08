@@ -176,7 +176,7 @@ export default function Wrapper({ children }) {
     };
     const fetchUsers = async () => {
       try {
-        const response = await fetch('http://localhost:5001/auth/users');
+        const response = await fetch('https://nestjspi.onrender.com/auth/users');
         if (!response.ok) {
           throw new Error('Error fetching users');
         }

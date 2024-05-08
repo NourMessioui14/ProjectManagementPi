@@ -41,7 +41,7 @@ export const WrapperChat = ({ children }) => {
   const getvideocallsByUserId = async (userId) => {
     try {
       const res = await axios.get(
-        `http://localhost:5001/videocalls/invited/${userId}`
+        `https://nestjspi.onrender.com/videocalls/invited/${userId}`
       );
       return res.data;
     } catch (err) {
@@ -58,7 +58,7 @@ export const WrapperChat = ({ children }) => {
   const findOneUserById = async (id) => {
     try {
       return axios
-        .get(`http://localhost:5001/auth/users/${id}`)
+        .get(`https://nestjspi.onrender.com/auth/users/${id}`)
         .then((res) => res.data);
     } catch (err) {
       console.log(err);
@@ -69,7 +69,7 @@ export const WrapperChat = ({ children }) => {
   const findUsers = async () => {
     try {
       const usersList = await axios
-        .get(`http://localhost:5001/auth/users`)
+        .get(`https://nestjspi.onrender.com/auth/users`)
         .then((res) => res.data);
       setUsers(usersList);
     } catch (err) {
@@ -81,7 +81,7 @@ export const WrapperChat = ({ children }) => {
   // chatroom functions
   const FetchChatrooms = async () => {
     try {
-      const res = await axios.get("http://localhost:5001/chatrooms");
+      const res = await axios.get("https://nestjspi.onrender.com/chatrooms");
       setChatrooms(res.data);
     } catch (err) {
       console.log(err.response.data);
@@ -91,7 +91,7 @@ export const WrapperChat = ({ children }) => {
   const getUserIdFromToken = async (token) => {
     try {
       const res = await axios.get(
-        `http://localhost:5001/chatrooms/user-id-from-token/${token}`
+        `https://nestjspi.onrender.com/chatrooms/user-id-from-token/${token}`
       );
       return res.data;
     } catch (err) {
@@ -103,7 +103,7 @@ export const WrapperChat = ({ children }) => {
   const getChatroomsByUserId = async (userId) => {
     try {
       const res = await axios.get(
-        `http://localhost:5001/chatrooms/user/${userId}`
+        `https://nestjspi.onrender.com/chatrooms/user/${userId}`
       );
       return res.data;
     } catch (err) {
@@ -115,7 +115,7 @@ export const WrapperChat = ({ children }) => {
   const getMessagesByChatroomId = async (chatroomId) => {
     try {
       const res = await axios.get(
-        `http://localhost:5001/messages/byChatroom/${chatroomId}`
+        `https://nestjspi.onrender.com/messages/byChatroom/${chatroomId}`
       );
       return res.data;
     } catch (err) {
@@ -127,7 +127,7 @@ export const WrapperChat = ({ children }) => {
   const getLastMessageByChatroomId = async (chatroomId) => {
     try {
       const res = await axios.get(
-        `http://localhost:5001/messages/lastMessage/${chatroomId}`
+        `https://nestjspi.onrender.com/messages/lastMessage/${chatroomId}`
       );
       return res.data;
     } catch (err) {
@@ -139,7 +139,7 @@ export const WrapperChat = ({ children }) => {
   const addMessage = async (messageData) => {
     try {
       const res = await axios.post(
-        "http://localhost:5001/messages",
+        "https://nestjspi.onrender.com/messages",
         messageData
       );
       return res.data;
@@ -151,7 +151,7 @@ export const WrapperChat = ({ children }) => {
 
   const DeleteMessage = (id) => {
     axios
-      .delete(`http://localhost:5001/messages/${id}`)
+      .delete(`https://nestjspi.onrender.com/messages/${id}`)
       .then((res) => {
         // Handle success if needed
         console.log("Message deleted:", id);
@@ -163,7 +163,7 @@ export const WrapperChat = ({ children }) => {
 
   const DeleteMessageByDate = (dateId) => {
     axios
-      .delete(`http://localhost:5001/messages/byDate/${dateId}`)
+      .delete(`https://nestjspi.onrender.com/messages/byDate/${dateId}`)
       .then((res) => {
         console.log("Message deleted by date:", dateId);
         // Gérer le succès si nécessaire
@@ -175,7 +175,7 @@ export const WrapperChat = ({ children }) => {
 
   const DeleteChatroom = (id) => {
     axios
-      .delete(`http://localhost:5001/chatrooms/${id}`)
+      .delete(`https://nestjspi.onrender.com/chatrooms/${id}`)
       .then((res) => {
         setChatrooms(chatrooms.filter((u) => u._id !== id));
         toast({
@@ -192,7 +192,7 @@ export const WrapperChat = ({ children }) => {
 
   const AddChatroom = (form, setForm) => {
     axios
-      .post("http://localhost:5001/chatrooms", form)
+      .post("https://nestjspi.onrender.com/chatrooms", form)
       .then((res) => {
         setChatrooms([...chatrooms, res.data]);
         toast({
@@ -212,7 +212,7 @@ export const WrapperChat = ({ children }) => {
 
   const UpdateChatroom = (form, setForm, id) => {
     axios
-      .put(`http://localhost:5001/chatrooms/${id}`, form)
+      .put(`https://nestjspi.onrender.com/chatrooms/${id}`, form)
       .then((res) => {
         toast({
           title: "Chatroom Updated",
@@ -234,7 +234,7 @@ export const WrapperChat = ({ children }) => {
 
   const fetchVideoCalls = async () => {
     try {
-      const res = await axios.get("http://localhost:5001/videocalls");
+      const res = await axios.get("https://nestjspi.onrender.com/videocalls");
       setVideoCalls(res.data);
     } catch (err) {
       console.log(err.response.data);
@@ -243,7 +243,7 @@ export const WrapperChat = ({ children }) => {
 
   const deleteVideoCall = (id) => {
     axios
-      .delete(`http://localhost:5001/videocalls/${id}`)
+      .delete(`https://nestjspi.onrender.com/videocalls/${id}`)
       .then((res) => {
         setVideoCalls(videoCalls.filter((u) => u._id !== id));
         toast({
@@ -260,7 +260,7 @@ export const WrapperChat = ({ children }) => {
 
   const addVideoCall = (form, setForm) => {
     axios
-      .post("http://localhost:5001/videocalls", form)
+      .post("https://nestjspi.onrender.com/videocalls", form)
       .then((res) => {
         setVideoCalls([...videoCalls, res.data]);
         toast({
@@ -280,7 +280,7 @@ export const WrapperChat = ({ children }) => {
 
   const updateVideoCall = (form, setForm) => {
     axios
-      .put(`http://localhost:5001/videocalls/${form.id}`, form)
+      .put(`https://nestjspi.onrender.com/videocalls/${form.id}`, form)
       .then((res) => {
         toast({
           title: "Video Call Updated",
@@ -301,7 +301,7 @@ export const WrapperChat = ({ children }) => {
   const FetchProjects = async () => {
     try {
       const projectsList = await axios
-        .get("http://localhost:5001/project")
+        .get("https://nestjspi.onrender.com/project")
         .then((res) => res.data); // Assuming the endpoint is correct
 
       setProjects(projectsList);

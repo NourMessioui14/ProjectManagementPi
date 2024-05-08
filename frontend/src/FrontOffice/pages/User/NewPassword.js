@@ -26,7 +26,7 @@ function NewPassword() {
                 password: newPass,
             };
     
-            axios.patch(`http://localhost:5001/auth/forgetpass/${id}`, updatedData)
+            axios.patch(`https://nestjspi.onrender.com/auth/forgetpass/${id}`, updatedData)
             .then((response) => {
                 // Handle successful response
                 toast.success("Password Changed Successfully!");

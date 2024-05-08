@@ -64,7 +64,7 @@ function App() {
             </div>
           }
         />
-        <Route path="/home" element={<HomePage />} />
+        <Route path="/" element={<HomePage />} />
 
         <Route path="/login" element={<RegisterForm />} />
         <Route path="/forgetPassword" element={<EmailVerification />} />

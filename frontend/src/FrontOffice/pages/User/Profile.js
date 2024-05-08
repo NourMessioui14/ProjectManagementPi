@@ -97,7 +97,7 @@ function Profile() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5001/auth/user/${id}`);
+        const response = await axios.get(`https://nestjspi.onrender.com/auth/user/${id}`);
         setUserData(response.data);
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -116,7 +116,7 @@ function Profile() {
     e.preventDefault();
 
     try {
-      await axios.put(`http://localhost:5001/auth/users/update/${id}`, userData);
+      await axios.put(`https://nestjspi.onrender.com/auth/users/update/${id}`, userData);
       alert('User updated successfully!');
     } catch (error) {
       console.error('Server error:', error.response.data);

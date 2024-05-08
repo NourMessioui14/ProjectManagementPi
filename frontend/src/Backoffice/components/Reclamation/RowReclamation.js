@@ -11,7 +11,7 @@ import { ArrowDownIcon, ArrowUpIcon, CheckIcon, DeleteIcon } from "@chakra-ui/ic
 import { Tooltip } from '@chakra-ui/react'
 import { Socket, io } from "socket.io-client";
 
-const socket = io('http://localhost:5001'); // Assurez-vous de remplacer l'URL par celle de votre serveur
+const socket = io('https://nestjspi.onrender.com'); // Assurez-vous de remplacer l'URL par celle de votre serveur
 
 
 
@@ -62,7 +62,7 @@ const Row = ({ id, user, Category, Subject, Description, reponses, createdAt, Re
   const [socket, setSocket] =   useState(null);
 
   useEffect(() => {
-    setSocket(io("http://localhost:5001"));
+    setSocket(io("https://nestjspi.onrender.com"));
   }, []);
 
 

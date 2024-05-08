@@ -12,7 +12,7 @@ const UserConnected = () => {
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:5001/auth/users/${id}`, { withCredentials: true });
+        const response = await axios.get(`https://nestjspi.onrender.com/auth/users/${id}`, { withCredentials: true });
         setUser(response.data);
         setLoading(false);
       } catch (error) {
