@@ -18,7 +18,7 @@ export default function Wrapper({ children }) {
     
     const FetchProjects = async () => {
         try {
-            const res = await axios.get('/project');
+            const res = await axios.get('https://nestjspi.onrender.com/project');
             setProjects(res.data);
         } catch (err) {
             console.log(err.response.data);

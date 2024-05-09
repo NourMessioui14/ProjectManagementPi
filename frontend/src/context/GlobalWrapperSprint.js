@@ -259,7 +259,7 @@ export default function WrapperS({ children }) {
         const ticketOwners = sprintTickets.map(ticket => ticket.responsable.name);
         console.log('Ticket Owners:', ticketOwners);
         // Récupérer le nom du sprint
-        const sprint = await axios.get(`/sprint/${id}`);
+        const sprint = await axios.get(`https://nestjspi.onrender.com/sprint/${id}`);
         const sprintName = sprint.data.sprintname;
         // Envoyer des notifications aux propriétaires des tickets
         ticketOwners.forEach(owner => {
