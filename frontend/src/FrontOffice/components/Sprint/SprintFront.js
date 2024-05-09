@@ -58,7 +58,7 @@ function SprintCard({ id, sprintname,description, startdate, enddate }) {
       
 
 <button class="buttonSH" style={{ marginLeft: '10px' }}>
-<a href={`https://rococo-otter-2b11ca.netlify.app/scrum?name=${sprintname}&description=${description}&id=${id}`}>  
+<a href={`https://rococo-otter-2b11ca.netlify.app/scrum`}>  
 
   <span class="buttonSH-content"> Show Table </span></a>
 </button>
