@@ -37,7 +37,7 @@ function ProjectListFront() {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await axios.get('project');
+        const response = await axios.get('https://nestjspi.onrender.com/project');
         setProjects(response.data);
       } catch (error) {
         console.error('Error fetching projects:', error);
@@ -49,7 +49,7 @@ function ProjectListFront() {
   const handleDelete = async () => {
     if (selectedProject) {
       try {
-        await axios.delete(`/project/${selectedProject._id}`);
+        await axios.delete(`https://nestjspi.onrender.com/project/${selectedProject._id}`);
         setProjects(prevProjects => prevProjects.filter(project => project._id !== selectedProject._id));
         setIsDeleteDialogOpen(false);
       } catch (error) {
@@ -83,7 +83,7 @@ function ProjectListFront() {
 
   const toggleFavorite = async (projectId) => {
     try {
-      await axios.put(`/project/${projectId}/favorite`);
+      await axios.put(`https://nestjspi.onrender.com/project/${projectId}/favorite`);
       const updatedProjects = projects.map(project => {
         if (project._id === projectId) {
           return { ...project, isFavorite: !project.isFavorite };

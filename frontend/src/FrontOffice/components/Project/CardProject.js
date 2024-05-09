@@ -23,7 +23,7 @@ function CustomCard() {
   }, [FetchProjects, projects]);
 
   const handleFavoriteProjectClick = (projectId) => {
-    navigate(`/details/${projectId}`);
+    navigate(`https://nestjspi.onrender.com/details/${projectId}`);
   };
 
   const handleReadMoreClick = (projectId, description) => {

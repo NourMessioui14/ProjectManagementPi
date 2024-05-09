@@ -7,7 +7,7 @@ const TicketModal = ({ isOpen, onClose, onSave }) => {
 
 const createTicketFromDescription = async (description) => {
   try {
-    const response = await axios.post('/ticket/create-from-description', { description });
+    const response = await axios.post('https://nestjspi.onrender.com/ticket/create-from-description', { description });
     console.log('New ticket created:', response.data);
     return response.data; // Retournez la réponse complète du backend
   } catch (error) {

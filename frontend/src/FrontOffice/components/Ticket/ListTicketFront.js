@@ -114,7 +114,7 @@ function ListTicketFront() {
 
   const createTicketFromDescription = async (description) => {
     try {
-      const response = await axios.post('/ticket/create-from-description', { description });
+      const response = await axios.post('https://nestjspi.onrender.com/ticket/create-from-description', { description });
       return response.data;
     } catch (error) {
       console.error('Error creating ticket:', error.response.data);

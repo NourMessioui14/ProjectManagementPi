@@ -62,7 +62,7 @@ function DetailsProject(id) {
   useEffect(() => {
     const fetchProjectDetails = async () => {
       try {
-        const response = await axios.get(`/project/${projectId}`);
+        const response = await axios.get(`https://nestjspi.onrender.com/project/${projectId}`);
         setProject(response.data);
         fetchTickets(projectId);
       } catch (error) {
@@ -79,7 +79,7 @@ function DetailsProject(id) {
 
     const fetchTickets = async (projectId) => {
       try {
-        const response = await axios.get(`/ticket/byproject/${projectId}`);
+        const response = await axios.get(`https://nestjspi.onrender.com/ticket/byproject/${projectId}`);
         setTickets(response.data);
       } catch (error) {
         console.error("Error fetching tickets:", error);
@@ -104,7 +104,7 @@ function DetailsProject(id) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`/project/${projectId}`, project);
+      await axios.put(`https://nestjspi.onrender.com/project/${projectId}`, project);
       toast({
         title: 'Project updated successfully.',
         status: 'success',

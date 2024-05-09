@@ -8,7 +8,7 @@ function TicketStatsDashboard() {
   useEffect(() => {
     const fetchProjectData = async () => {
       try {
-        const response = await axios.get('/project');
+        const response = await axios.get('https://nestjspi.onrender.com/project');
         setProjectData(response.data.projects);
       } catch (error) {
         console.error('Error fetching project data:', error);

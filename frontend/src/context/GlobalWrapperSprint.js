@@ -24,7 +24,7 @@ export default function WrapperS({ children }) {
 
     const FetchTicketsbyProject = async (projectName) => {
       try {
-          const res = await axios.get(`/ticket/project/${projectName}`);
+          const res = await axios.get(`https://nestjspi.onrender.com/ticket/project/${projectName}`);
           console.log('Tickets API Response:', res.data);
           setTickets(res.data);
       } catch (err) {
@@ -36,7 +36,7 @@ export default function WrapperS({ children }) {
 
     const FetchProjects = async () => {
       try {
-          const res = await axios.get('/project');
+          const res = await axios.get('https://nestjspi.onrender.com/project');
           setProjects(res.data);
       } catch (err) {
           console.log(err.response.data);
@@ -45,7 +45,7 @@ export default function WrapperS({ children }) {
 
     const DeleteProject = (id) => {
         axios
-          .delete(`/project/${id}`)
+          .delete(`https://nestjspi.onrender.com/project/${id}`)
           .then((res) => {
             setProjects(projects.filter((u) => u._id !== id));
             toast({
@@ -62,7 +62,7 @@ export default function WrapperS({ children }) {
 
     const AddProject = (form, setForm) => {
         axios
-          .post('/project', form)
+          .post('https://nestjspi.onrender.com/project', form)
           .then((res) => {
             setProjects([...projects, res.data])
             toast({
@@ -82,7 +82,7 @@ export default function WrapperS({ children }) {
 
     const FindOneProject = async (id) => {
       try {
-          const res = await axios.get(`/project/${id}`);
+          const res = await axios.get(`https://nestjspi.onrender.com/project/${id}`);
           setProject(res.data);
       } catch (err) {
           console.log(err.response.data);
@@ -92,7 +92,7 @@ export default function WrapperS({ children }) {
 
   const FetchTickets = async () => {
     try {
-      const response = await axios.get('/ticket');
+      const response = await axios.get('https://nestjspi.onrender.com/ticket');
       if (response.data) {
         setTickets(response.data);
       } else {
@@ -104,7 +104,7 @@ export default function WrapperS({ children }) {
   };
   const fetchTicketsBySprintId = async (sprintId) => {
     try {
-      const response = await axios.get(`/ticket/bysprint/${sprintId}`);
+      const response = await axios.get(`https://nestjspi.onrender.com/ticket/bysprint/${sprintId}`);
       // console.log("Tickets retrieved by sprintId:", response.data); // Ajouter ce log pour vérifier les tickets récupérés
   
       setTickets(response.data);
@@ -116,7 +116,7 @@ export default function WrapperS({ children }) {
     
     const AddTicket = (formT, setFormT) => {
         axios
-          .post('/ticket', formT) 
+          .post('https://nestjspi.onrender.com/ticket', formT) 
           .then((res) => {
             setTickets([...tickets, res.data])
             toast({
@@ -136,7 +136,7 @@ export default function WrapperS({ children }) {
     
     const DeleteTicket = (id) => {
         axios
-          .delete(`/ticket/${id}`)
+          .delete(`https://nestjspi.onrender.com/ticket/${id}`)
           .then((res) => {
             setTickets(tickets.filter((u) => u._id !== id));
             toast({
@@ -153,7 +153,7 @@ export default function WrapperS({ children }) {
 
     const FindOneTicket = async (id) => {
         try {
-            const res = await axios.get(`/ticket/${id}`);
+            const res = await axios.get(`https://nestjspi.onrender.com/ticket/${id}`);
             setTickets(res.data);
         } catch (err) {
             console.log(err.response.data);
@@ -162,7 +162,7 @@ export default function WrapperS({ children }) {
     
     const UpdateTicket = (formT, setFormT, id) => {
         axios
-          .put(`/ticket/${id}`, formT)
+          .put(`https://nestjspi.onrender.com/ticket/${id}`, formT)
           .then((res) => {
             toast({
               title: 'Ticket Updated',
@@ -182,7 +182,7 @@ export default function WrapperS({ children }) {
 
     const Update = (form, setForm, id) => {
       axios
-        .put(`/project/${id}`, form)
+        .put(`https://nestjspi.onrender.com/project/${id}`, form)
         .then((res) => {
           toast({
             title: 'User Updated',
@@ -202,7 +202,7 @@ export default function WrapperS({ children }) {
     
     const FetchSprints = async () => {
         try {
-            const res = await axios.get('/sprint');
+            const res = await axios.get('https://nestjspi.onrender.com/sprint');
             setSprints(res.data);
         } catch (err) {
             console.log(err.response.data);
@@ -211,7 +211,7 @@ export default function WrapperS({ children }) {
 
     const fetchSprintsByProjectId = async (projectId) => {
       try {
-          const response = await axios.get(`/sprint/byproject/${projectId}`);
+          const response = await axios.get(`https://nestjspi.onrender.com/sprint/byproject/${projectId}`);
           // console.log("sprints retrieved by projectId:", response.data); // Ajouter ce log pour vérifier les tickets récupérés
 
           setSprints(response.data);
@@ -222,7 +222,7 @@ export default function WrapperS({ children }) {
 
   const UpdateTicketEtat = async (ticketId, newEtat) => {
     try {
-      const response = await axios.put(`/ticket/${ticketId}/etat`, { etat: newEtat });
+      const response = await axios.put(`https://nestjspi.onrender.com/ticket/${ticketId}/etat`, { etat: newEtat });
       // Mettre à jour l'état local des tickets ou effectuer d'autres actions nécessaires
       console.log('Ticket state updated successfully:', response.data);
     } catch (error) {
@@ -252,7 +252,7 @@ export default function WrapperS({ children }) {
     const DeleteSprint = async (id) => {
       try {
         // Récupérer les tickets associés au sprint à supprimer
-        const response = await axios.get(`/ticket/bysprint/${id}`);
+        const response = await axios.get(`https://nestjspi.onrender.com/ticket/bysprint/${id}`);
         const sprintTickets = response.data;
     
         // Récupérer les propriétaires des tickets
@@ -276,7 +276,7 @@ export default function WrapperS({ children }) {
         });
     
         // Supprimer le sprint une fois les notifications envoyées
-        await axios.delete(`/sprint/${id}`);
+        await axios.delete(`https://nestjspi.onrender.com/sprint/${id}`);
         console.log('Sprint deleted successfully');
     
         // Mettre à jour l'état local et afficher une notification de succès
@@ -297,7 +297,7 @@ export default function WrapperS({ children }) {
 
     const AddSprint = (form, setForm) => {
       axios
-        .post('/sprint', form)
+        .post('https://nestjspi.onrender.com/sprint', form)
         .then((res) => {
           setSprints([...sprints, res.data])
           toast({
@@ -318,7 +318,7 @@ export default function WrapperS({ children }) {
     
     const findTicketsByProjectId = async (projectId) => {
       try {
-        const response = await axios.get(`/sprint/${projectId}/tickets`);
+        const response = await axios.get(`https://nestjspi.onrender.com/sprint/${projectId}/tickets`);
         return response.data;
       } catch (error) {
         console.error('Error fetching tickets by project ID:', error);
@@ -328,7 +328,7 @@ export default function WrapperS({ children }) {
 
     const FindOneSprint = async (id) => {
       try {
-          const res = await axios.get(`/sprint/${id}`);
+          const res = await axios.get(`https://nestjspi.onrender.com/sprint/${id}`);
           setSprint(res.data);
       } catch (err) {
           console.log(err.response.data);
@@ -337,7 +337,7 @@ export default function WrapperS({ children }) {
 
   const UpdateSprint = (form, setForm, id) => {
       axios
-        .put(`/sprint/${id}`, form)
+        .put(`https://nestjspi.onrender.com/sprint/${id}`, form)
         .then((res) => {
           toast({
             title: 'Sprint Updated',
@@ -358,7 +358,7 @@ export default function WrapperS({ children }) {
 
   const AssignTicketsToSprint = async (sprintId, ticketIds) => {
     try {
-        await axios.post(`/sprint/${sprintId}/tickets/assign`, { ticketIds });
+        await axios.post(`https://nestjspi.onrender.com/sprint/${sprintId}/tickets/assign`, { ticketIds });
         // Rafraîchir les données de sprint ou effectuer toute autre action nécessaire
         console.log('Tickets assigned to sprint successfully');
     } catch (error) {

@@ -19,7 +19,7 @@ function AddReclamation() {
     }, []);
 
     const fetchCategories = () => {
-        axios.get('/reclamations/categories')
+        axios.get('https://nestjspi.onrender.com/reclamations/categories')
             .then(response => {
                 setCategories(response.data.categories); // Stockage des catégories dans le state
             })
@@ -58,7 +58,7 @@ function AddReclamation() {
 
     const onAdd = () => {
         const token = localStorage.getItem('token');
-        axios.post(`/reclamations/addReclamation`, form, {
+        axios.post(`https://nestjspi.onrender.com/reclamations/addReclamation`, form, {
             headers: {
                 Authorization: `Bearer ${token}`,
             }

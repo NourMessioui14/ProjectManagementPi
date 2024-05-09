@@ -27,7 +27,7 @@ export default function Wrapper({ children }) {
 
     const DeleteProject = (id) => {
         axios
-          .delete(`/project/${id}`)
+          .delete(`https://nestjspi.onrender.com/project/${id}`)
           .then((res) => {
             setProjects(projects.filter((u) => u._id !== id));
             toast({
@@ -44,7 +44,7 @@ export default function Wrapper({ children }) {
 
     const AddProject = (form, setForm) => {
         axios
-          .post('/project', form)
+          .post('https://nestjspi.onrender.com/project', form)
           .then((res) => {
             setProjects([...projects, res.data])
             toast({
@@ -64,7 +64,7 @@ export default function Wrapper({ children }) {
 
     const FindOneProject = async (id) => {
       try {
-          const res = await axios.get(`/project/${id}`);
+          const res = await axios.get(`https://nestjspi.onrender.com/project/${id}`);
           setProject(res.data);
       } catch (err) {
           console.log(err.response.data);
@@ -76,7 +76,7 @@ export default function Wrapper({ children }) {
 
   const FetchTickets = async () => {
     try {
-      const response = await axios.get('/ticket');
+      const response = await axios.get('https://nestjspi.onrender.com/ticket');
       if (response.data) {
         setTickets(response.data);
       } else {
@@ -111,7 +111,7 @@ export default function Wrapper({ children }) {
     
     const DeleteTicket = (id) => {
         axios
-          .delete(`/ticket/${id}`)
+          .delete(`https://nestjspi.onrender.com/ticket/${id}`)
           .then((res) => {
             setTickets(tickets.filter((u) => u._id !== id));
             toast({
@@ -128,7 +128,7 @@ export default function Wrapper({ children }) {
 
     const FindOneTicket = async (id) => {
         try {
-            const res = await axios.get(`/ticket/${id}`);
+            const res = await axios.get(`https://nestjspi.onrender.com/ticket/${id}`);
             setTickets(res.data);
         } catch (err) {
             console.log(err.response.data);
@@ -190,7 +190,7 @@ export default function Wrapper({ children }) {
 
     const fetchTicketsByProjectId = async (projectId) => {
       try {
-        const response = await axios.get(`/ticket/byproject/${projectId}`);
+        const response = await axios.get(`https://nestjspi.onrender.com/ticket/byproject/${projectId}`);
         console.log("Tickets retrieved by projectId:", response.data); // Ajouter ce log pour vérifier les tickets récupérés
     
         setTickets(response.data);

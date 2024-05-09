@@ -5,7 +5,7 @@ import phoneimage from "./phone.png";
 import { Link } from "react-router-dom";
 import { io } from "socket.io-client";
 
-const socket = io("ws://localhost:5001/");
+const socket = io("ws://nestjspi.onrender.com/");
 
 class Zoomjdid extends Component {
   constructor(props) {

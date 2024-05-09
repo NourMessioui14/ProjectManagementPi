@@ -33,7 +33,7 @@ const Row = ({ id, user, Category, Subject, Description, reponses, createdAt, Re
       if (reponses) {
         const responsesData = await Promise.all(
           reponses.map(async (responseId) => {
-            const response = await axios.get(`/reponses/${responseId}`);
+            const response = await axios.get(`https://nestjspi.onrender.com/reponses/${responseId}`);
             return response.data;
           })
         );
@@ -91,12 +91,12 @@ const handleNotification = () => {
   }
 
   try {
-    const response = await axios.post(`/reponses/${id}`, { text: responseText , senderName: "Admin", description: Description });
+    const response = await axios.post(`https://nestjspi.onrender.com/reponses/${id}`, { text: responseText , senderName: "Admin", description: Description });
     console.log(response.data);
 
     console.log("add response");
     // Une fois que la réponse est ajoutée avec succès, mettez à jour le statut de la réclamation en "Resolved"
-    const updateStatusResponse = await axios.put(`/reclamations/${id}/updateStatus`, { newStatus: "Resolved" });
+    const updateStatusResponse = await axios.put(`https://nestjspi.onrender.com/reclamations/${id}/updateStatus`, { newStatus: "Resolved" });
     FetchReclamations();
     setStatus("Resolved");
     setStatusButtonColor('green'); // Changer la couleur du bouton en vert
@@ -130,7 +130,7 @@ const handleNotification = () => {
 
   const handleUpdateStatus = async () => {
     try {
-      await axios.put(`/reclamations/${id}/updateStatus`, { newStatus: "In Progress" });
+      await axios.put(`https://nestjspi.onrender.com/reclamations/${id}/updateStatus`, { newStatus: "In Progress" });
       setStatus("In Progress");
       FetchReclamations();
       setStatusButtonColor('green'); // Changer la couleur du bouton en vert

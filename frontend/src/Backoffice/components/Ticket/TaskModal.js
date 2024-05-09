@@ -37,7 +37,7 @@ function TaskModal({ isOpen, onClose }) {
     };
     const FetchSprints = async () => {
       try {
-          const res = await axios.get('/sprint');
+          const res = await axios.get('https://nestjspi.onrender.com/sprint');
           setSprints(res.data);
       } catch (err) {
           console.log(err.response.data);

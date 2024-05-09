@@ -22,7 +22,7 @@ export default function AddReclamation() {
     
     const onAdd = () => {
         const token = localStorage.getItem('token');
-        axios.post(`/reclamations/addReclamation`, form, {
+        axios.post(`https://nestjspi.onrender.com/reclamations/addReclamation`, form, {
             headers: {
                 Authorization: `Bearer ${token}`,
             }

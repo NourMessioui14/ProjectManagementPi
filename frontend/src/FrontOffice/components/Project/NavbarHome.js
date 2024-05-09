@@ -27,7 +27,6 @@ function NavbarHome() {
                   <li><a href="#features">Your Job</a></li>
                   <li><a href="#work-process">Agile Board</a></li>
                   <li><a href="#testimonials">Scrum Board</a></li>
-                  <li><Link to="/messenger">Chatroom</Link></li>
                   {/* Dropdown Réclamations */}
                 
                   <li><Link to="/login">Sign Up</Link></li>

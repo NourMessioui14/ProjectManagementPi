@@ -7,7 +7,7 @@ function ReclamationDetails({ isOpen, onClose, reclamation }) {
     // Fonction pour récupérer le texte de la réponse par son identifiant
     const getReponseById = async (id) => {
         try {
-            const response = await fetch(`/reponses/${id}`);
+            const response = await fetch(`https://nestjspi.onrender.com/reponses/${id}`);
             const data = await response.json();
             return data.text; // Retourne le texte de la réponse
         } catch (error) {

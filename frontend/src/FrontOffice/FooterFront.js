@@ -19,7 +19,7 @@ function FooterFront() {
             </div>
             <div className="row">
                 <div className="col-lg-12">
-                    <p className="copyright">Copyright &copy; 2024 ESPRIT - DRIMTIM</p>
+                    <p className="copyright">Copyright &copy; 2024 ESPRIT - DREAMTIM</p>
                 </div>
             </div>
         </div>

@@ -35,7 +35,7 @@ export default function WrapperRec({ children }) {
 // fonction bech tjybli les donnees 
 const FetchReclamations = () => {
   axios
-.get('/reclamations')
+.get('https://nestjspi.onrender.com/reclamations')
 .then((res) => {
   setClaims(res.data)
   console.log(res.data);
@@ -51,7 +51,7 @@ const FetchReclamations = () => {
 
   const DeleteRecalamation = (id) => {
       axios.
-      delete( `/reclamations/${id}`)
+      delete( `https://nestjspi.onrender.com/reclamations/${id}`)
       .then((res) =>{
           setClaims(Reclamations.filter((r) => r._id != id));
           
@@ -76,7 +76,7 @@ const FetchReclamations = () => {
     };
   
     axios
-      .post('/reclamations', requestData)
+      .post('https://nestjspi.onrender.com/reclamations', requestData)
       .then((res) => {
         setClaims([...Reclamations, res.data]);
         toast({
@@ -100,7 +100,7 @@ const FetchReclamations = () => {
 
 const FindOneRecalamation = async (id) => {
   await axios 
-  .get(`/reclamations/${id}`)
+  .get(`https://nestjspi.onrender.com/reclamations/${id}`)
   .then((res) => {
       SetReclamation(res.data);
 
@@ -113,7 +113,7 @@ const FindOneRecalamation = async (id) => {
 
 const UpdateRecalamation = (form, setForm, id) =>{
   axios.
-  put(`/reclamations/${id}` , form )
+  put(`https://nestjspi.onrender.com/reclamations/${id}` , form )
   .then(( res ) => {
      
       toast({
@@ -146,7 +146,7 @@ const [reponses, setReponses] = useState([]);
 // Fonction pour récupérer les réponses par leur identifiant
 const getReponseById = async (id) => {
     try {
-        const response = await fetch(`/reponses/${id}`);
+        const response = await fetch(`https://nestjspi.onrender.com/reponses/${id}`);
         const data = await response.json();
         return data.text; // Retourne le texte de la réponse
     } catch (error) {
@@ -158,7 +158,7 @@ const getReponseById = async (id) => {
 
 const Delete = (id) => {
   axios.
-  delete(` /reclamations/${id}`)
+  delete(`https://nestjspi.onrender.com/reclamations/${id}`)
   .then((res) =>{
       setClaims(Reclamations.filter((r) => r._id != id));
       
@@ -189,7 +189,7 @@ const FetchReclamationsUser = () => {
 
 
 const Add = (form , setForm) => {  
-    axios .post(`/reclamations`, form)
+    axios .post(`https://nestjspi.onrender.com/reclamations`, form)
 
    .then(( res ) => {
        setClaims([ ...Reclamations , res.data]);
@@ -215,7 +215,7 @@ const Add = (form , setForm) => {
 
 const FindOne = async (id) => {
     await axios 
-    .get(`/reclamations/${id}`)
+    .get(`https://nestjspi.onrender.com/reclamations/${id}`)
     .then((res) => {
         SetReclamation(res.data);
 
@@ -229,7 +229,7 @@ const FindOne = async (id) => {
 
 const Update = (form, setForm, id) =>{
   axios.
-  put(`/reclamations/${id}` , form )
+  put(`https://nestjspi.onrender.com/reclamations/${id}` , form )
   .then(( res ) => {
      
       toast({
@@ -254,7 +254,7 @@ const Update = (form, setForm, id) =>{
 
 const FetchTickets = async () => {
   try {
-    const response = await axios.get('/ticket');
+    const response = await axios.get('https://nestjspi.onrender.com/ticket');
     if (response.data) {
       setTickets(response.data);
     } else {
