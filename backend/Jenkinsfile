@@ -44,24 +44,24 @@ pipeline {
 }
 
         
-        stage('Build application') {
-            steps {
-                script {
-                    // Build the application (customize as needed)
-                    echo 'This is a testing stage for building the application.'
-                }
-            }
-        }
+        // stage('Build application') {
+        //     steps {
+        //         script {
+        //             // Build the application (customize as needed)
+        //             echo 'This is a testing stage for building the application.'
+        //         }
+        //     }
+        // }
 
 
-        stage('Building images (node and mongo)') {
-    steps {
-        script {
-                sh('docker-compose build') // Exécuter la commande dans le répertoire backend
+//         stage('Building images (node and mongo)') {
+//     steps {
+//         script {
+//                 sh('docker-compose build') // Exécuter la commande dans le répertoire backend
             
-        }
-    }
-}
+//         }
+//     }
+// }
 
         // stage('Deploy to Nexus') { 
         //     steps{ 
